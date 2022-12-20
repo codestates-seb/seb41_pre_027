@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 public interface QuestionMapper {
     // QuestionDto.Post 를 Question 로 변환
     Question questionPostDtoToQuestion(QuestionDto.Post requestBody);
+    Question questionPatchDtoToQuestion(QuestionDto.Patch requestBody);
     QuestionDto.Response questionToQuestionResponseDto(Question question);
 }
