@@ -6,7 +6,6 @@ import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.repository.QuestionRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import javax.swing.text.html.Option;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

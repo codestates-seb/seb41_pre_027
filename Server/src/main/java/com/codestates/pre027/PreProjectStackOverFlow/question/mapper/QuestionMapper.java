@@ -1,7 +1,6 @@
 package com.codestates.pre027.PreProjectStackOverFlow.question.mapper;
 
 import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
-import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto.Response;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import java.util.List;
 import org.mapstruct.Mapper;

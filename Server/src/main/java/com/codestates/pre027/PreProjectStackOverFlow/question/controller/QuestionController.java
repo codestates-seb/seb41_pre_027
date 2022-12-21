@@ -1,12 +1,12 @@
 package com.codestates.pre027.PreProjectStackOverFlow.question.controller;
 
 
+import com.codestates.pre027.PreProjectStackOverFlow.dto.MultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.mapper.QuestionMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.question.repository.QuestionRepository;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
-import com.codestates.pre027.PreProjectStackOverFlow.response.MultiResponseDto;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
