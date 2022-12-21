@@ -9,6 +9,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberServic
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,11 @@ public class AnswerService {
             .ifPresent(text->findAnswer.setText(text));
         findAnswer.setModifiedAt(LocalDateTime.now());
         return answerRepository.save(findAnswer);
+    }
+
+    public List<Answer> findAnswers(long questId){
+        Question question = questionService.findQuestion(questId);
+        return answerRepository.findByQuest(questId);
     }
     public Answer findAnswer(long answerId){
         return findVerifiedAnswerByQuery(answerId);

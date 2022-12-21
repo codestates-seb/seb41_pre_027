@@ -5,6 +5,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.mapper.AnswerMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.service.AnswerService;
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,8 @@ public class AnswerController {
     }
 
     @PostMapping("/questions/{quest-id}/answers")
-    public ResponseEntity postAnswer(@PathVariable("quest-id") @Positive long questId,
+    public ResponseEntity postAnswer(
+        @PathVariable("quest-id") @Positive long questId,
         @Valid @RequestBody AnswerDto.Post answerPostDto){
         Answer answer = answerService.createAnswer(answerMapper.answerPostDto_to_Answer(answerPostDto),
             questId);
@@ -48,7 +50,7 @@ public class AnswerController {
         answerPatchDto.setAnswerId(answerId);
         Answer answer = answerService.updateAnswer(answerMapper.answerPatchDto_to_Answer(answerPatchDto));
         AnswerDto.Response response = answerMapper.answer_to_AnswerResponseDto(answer);
-        return new ResponseEntity(
+        return new ResponseEntity<>(
             response,
             HttpStatus.OK);
     }
@@ -56,7 +58,12 @@ public class AnswerController {
     @GetMapping("/questions/{quest-id}/answers")
     public ResponseEntity getAnswers(@PathVariable("quest-id") @Positive long questId){
 
-        return new ResponseEntity(
+        List<Answer> answers = answerService.findAnswers(questId);
+
+        List<AnswerDto.Response> responses=
+            answerMapper.answers_to_AnswerResponseDtos(answers);
+
+        return new ResponseEntity<>(responses,
             HttpStatus.OK);
     }
 
