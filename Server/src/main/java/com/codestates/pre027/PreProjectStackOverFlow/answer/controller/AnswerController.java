@@ -53,8 +53,9 @@ public class AnswerController {
             HttpStatus.OK);
     }
 
-    @GetMapping("/answers/{answer-id}")
-    public ResponseEntity getAnswer(@PathVariable("answer-id") @Positive long answerId){
+    @GetMapping("/questions/{quest-id}/answers")
+    public ResponseEntity getAnswers(@PathVariable("quest-id") @Positive long questId){
+
         return new ResponseEntity(
             HttpStatus.OK);
     }
