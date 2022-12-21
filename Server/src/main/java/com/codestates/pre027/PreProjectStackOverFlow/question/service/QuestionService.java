@@ -34,6 +34,11 @@ public class QuestionService {
         return questionRepository.save(findQuestion);
     }
 
+    public Question findQuestion(long questionId) {
+        Question findQuestion = findVerifiedQuestion(questionId);
+        return findQuestion;
+    }
+
     public Question findVerifiedQuestion(long questionId) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         Question findQuestion = optionalQuestion.orElseThrow(
