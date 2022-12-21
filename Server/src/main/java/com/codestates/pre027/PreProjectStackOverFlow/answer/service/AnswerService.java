@@ -50,9 +50,18 @@ public class AnswerService {
         Question question = questionService.findQuestion(questId);
         return answerRepository.findByQuest(questId);
     }
+
+    public void deleteAnswer(long answerId){
+        Answer findAnswer = findAnswer(answerId);
+
+        answerRepository.delete(findAnswer);
+
+    }
+
     public Answer findAnswer(long answerId){
         return findVerifiedAnswerByQuery(answerId);
     }
+
     private Answer findVerifiedAnswerByQuery(long answerId){
         Optional<Answer> optionalAnswer = answerRepository.findByAnswer(answerId);
         Answer findAnswer = optionalAnswer.orElseThrow(()->new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
