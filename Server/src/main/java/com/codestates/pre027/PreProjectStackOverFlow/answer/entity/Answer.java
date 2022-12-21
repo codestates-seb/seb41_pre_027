@@ -32,6 +32,9 @@ public class Answer {
     @Column(nullable = true)
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
+    @Column(nullable = false)
+    private long questionId;
+
     /*@ManyToOne
     @JoinColumn(name = "member-id")
     private Member member;

@@ -4,6 +4,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.answer.dto.AnswerDto;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.mapper.AnswerMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.service.AnswerService;
+import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
+    private final JwtTokenizer jwtTokenizer;
 
-    public AnswerController(AnswerService answerService, AnswerMapper answerMapper){
+    public AnswerController(AnswerService answerService, AnswerMapper answerMapper,JwtTokenizer jwtTokenizer){
         this.answerMapper = answerMapper;
         this.answerService = answerService;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
     @PostMapping("/questions/{quest-id}/answers")

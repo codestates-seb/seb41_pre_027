@@ -4,6 +4,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.repository.AnswerRepository;
 import com.codestates.pre027.PreProjectStackOverFlow.exception.BusinessLogicException;
 import com.codestates.pre027.PreProjectStackOverFlow.exception.ExceptionCode;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class AnswerService {
 
         answer.setQuestion(question);
         answer.setMember(member);*/
+        answer.setQuestionId(questId);
         return answerRepository.save(answer);
     }
 
@@ -30,7 +32,7 @@ public class AnswerService {
 
         Optional.ofNullable(answer.getText())
             .ifPresent(text->findAnswer.setText(text));
-
+        findAnswer.setModifiedAt(LocalDateTime.now());
         return answerRepository.save(findAnswer);
     }
     public Answer findAnswer(long answerId){
