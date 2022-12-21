@@ -47,6 +47,11 @@ public class QuestionService {
             Sort.by("questionId").descending()));
     }
 
+    public void deleteQuestion(long questionId) {
+        Question findQuestion = findVerifiedQuestion(questionId);
+        questionRepository.delete(findQuestion);
+    }
+
     public Question findVerifiedQuestion(long questionId) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         Question findQuestion = optionalQuestion.orElseThrow(
