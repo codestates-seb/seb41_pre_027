@@ -13,4 +13,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query(value = "SELECT c FROM ANSWERS c WHERE QUEST_QUESTION_ID = :questId")
     List<Answer> findByQuest(long questId);
+
+    @Query(value = "SELECT c FROM ANSWERS c WHERE WRITER_MEMBER_ID = :memberId")
+    List<Answer> findByWriter(long memberId);
 }

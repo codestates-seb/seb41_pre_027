@@ -46,9 +46,14 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
 
-    public List<Answer> findAnswers(long questId){
+    public List<Answer> findAnswersByQuestionId(long questId){
         Question question = questionService.findQuestion(questId);
-        return answerRepository.findByQuest(questId);
+        return answerRepository.findByQuest(question.getQuestionId());
+    }
+
+    public List<Answer> findAnswersByMemberId(long memberId){
+        Member member = memberService.findMember(memberId);
+        return answerRepository.findByWriter(member.getMemberId());
     }
 
     public void deleteAnswer(long answerId){

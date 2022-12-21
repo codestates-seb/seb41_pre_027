@@ -56,9 +56,21 @@ public class AnswerController {
     }
 
     @GetMapping("/questions/{quest-id}/answers")
-    public ResponseEntity getAnswers(@PathVariable("quest-id") @Positive long questId){
+    public ResponseEntity getAnswersByQuestion(@PathVariable("quest-id") @Positive long questId){
 
-        List<Answer> answers = answerService.findAnswers(questId);
+        List<Answer> answers = answerService.findAnswersByQuestionId(questId);
+
+        List<AnswerDto.Response> responses=
+            answerMapper.answers_to_AnswerResponseDtos(answers);
+
+        return new ResponseEntity<>(responses,
+            HttpStatus.OK);
+    }
+
+    @GetMapping("/members/{member-id}/answers")
+    public ResponseEntity getAnswersByMember(@PathVariable("member-id") @Positive long memberId){
+
+        List<Answer> answers = answerService.findAnswersByMemberId(memberId);
 
         List<AnswerDto.Response> responses=
             answerMapper.answers_to_AnswerResponseDtos(answers);
