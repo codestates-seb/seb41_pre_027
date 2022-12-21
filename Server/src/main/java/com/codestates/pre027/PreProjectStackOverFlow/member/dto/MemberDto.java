@@ -20,17 +20,19 @@ public class MemberDto {
     }
 
     @Getter
-    @Setter
     @AllArgsConstructor
     //    controller 에서 patchMember 로 받아오는 값
     public static class Patch {
 
+        @Setter
         private long memberId;
 
         private String email;
 
+        @Setter
         private String password;
 
+        @Setter
         private String name;
 
     }

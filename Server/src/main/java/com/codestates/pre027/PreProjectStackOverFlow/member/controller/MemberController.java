@@ -5,7 +5,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.member.dto.MemberDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.mapper.MemberMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
-import com.codestates.pre027.PreProjectStackOverFlow.response.MultiResponseDto;
+import com.codestates.pre027.PreProjectStackOverFlow.dto.MultiResponseDto;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
