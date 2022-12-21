@@ -40,7 +40,7 @@ public class Member {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.PERSIST)
     private List<Answer> answerList = new ArrayList<>();
 
     public void addAnswer(Answer answer){

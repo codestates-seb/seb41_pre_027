@@ -1,6 +1,5 @@
 package com.codestates.pre027.PreProjectStackOverFlow.answer.dto;
 
-import com.codestates.pre027.PreProjectStackOverFlow.member.dto.MemberDto;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ public class AnswerDto {
     public static class Response{
         private long questionId;
         private long answerId;
-        private MemberDto.Response member;
+        private long memberId;
         private String text;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;

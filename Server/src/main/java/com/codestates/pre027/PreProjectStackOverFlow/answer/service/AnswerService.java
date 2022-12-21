@@ -4,6 +4,10 @@ import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.repository.AnswerRepository;
 import com.codestates.pre027.PreProjectStackOverFlow.exception.BusinessLogicException;
 import com.codestates.pre027.PreProjectStackOverFlow.exception.ExceptionCode;
+import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
+import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
+import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
+import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -12,18 +16,23 @@ import org.springframework.stereotype.Service;
 public class AnswerService {
     private final AnswerRepository answerRepository;
 
-    public AnswerService(AnswerRepository answerRepository){
+    private final QuestionService questionService;
+
+    private final MemberService memberService;
+
+    public AnswerService(AnswerRepository answerRepository,QuestionService questionService, MemberService memberService){
         this.answerRepository = answerRepository;
+        this.questionService = questionService;
+        this.memberService = memberService;
     }
 
     public Answer createAnswer(Answer answer,long questId){
-        /*Member member = memberService.findMember(1L);
+        Member member = memberService.findMember(1L);
         Question question = questionService.findQuestion(questId);
-        Question question = new Question();
 
-        answer.setQuestion(question);
-        answer.setMember(member);*/
-        answer.setQuestionId(questId);
+        answer.setQuest(question);
+        answer.setWriter(member);
+
         return answerRepository.save(answer);
     }
 

@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "ANSWERS")
 public class Answer {
 
     @Id
@@ -33,22 +32,10 @@ public class Answer {
     @Column(nullable = true)
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
-    @Column(nullable = false)
-    private long questionId;
+    @ManyToOne
+    private Member writer;
 
     @ManyToOne
-    @JoinColumn(name = "member-id")
-    private Member member;
+    private Question quest;
 
-    @ManyToOne
-    @JoinColumn(name = "question-id")
-    private Question question;
-
-    public void addMember(Member member){
-        this.member = member;
-    }
-
-    public void addQuestion(Question question){
-        this.question = question;
-    }
 }

@@ -8,6 +8,15 @@ import org.mapstruct.Mapper;
 public interface AnswerMapper {
     Answer answerPostDto_to_Answer(AnswerDto.Post answerPostDto);
     Answer answerPatchDto_to_Answer(AnswerDto.Patch answerPatchDto);
-    AnswerDto.Response answer_to_AnswerResponseDto(Answer answer);
+    default AnswerDto.Response answer_to_AnswerResponseDto(Answer answer){
+        AnswerDto.Response answerResponseDto = new AnswerDto.Response(answer.getQuest().getQuestionId(),
+            answer.getAnswerId(),
+            answer.getWriter().getMemberId(),
+            answer.getText(),
+            answer.getCreatedAt(),
+            answer.getModifiedAt()
+            );
+        return answerResponseDto;
+    }
 
 }
