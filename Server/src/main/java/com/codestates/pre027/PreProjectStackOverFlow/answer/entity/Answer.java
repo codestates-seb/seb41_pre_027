@@ -23,9 +23,6 @@ public class Answer {
     @Column(nullable = false)
     private String text;
 
-    @Column(nullable = true)
-    private String imgURL;
-
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

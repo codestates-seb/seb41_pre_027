@@ -36,8 +36,9 @@ public class AnswerController {
         @Valid @RequestBody AnswerDto.Post answerPostDto){
         Answer answer = answerService.createAnswer(answerMapper.answerPostDto_to_Answer(answerPostDto),
             questId);
+        AnswerDto.Response response = answerMapper.answer_to_AnswerResponseDto(answer);
         return new ResponseEntity<>(
-                answerPostDto,
+                response,
                 HttpStatus.CREATED);
     }
 
@@ -46,8 +47,9 @@ public class AnswerController {
         @Valid @RequestBody AnswerDto.Patch answerPatchDto){
         answerPatchDto.setAnswerId(answerId);
         Answer answer = answerService.updateAnswer(answerMapper.answerPatchDto_to_Answer(answerPatchDto));
+        AnswerDto.Response response = answerMapper.answer_to_AnswerResponseDto(answer);
         return new ResponseEntity(
-            answerPatchDto,
+            response,
             HttpStatus.OK);
     }
 
