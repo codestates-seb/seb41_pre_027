@@ -14,6 +14,18 @@ public class QuestionDto {
 
     @Getter
     @AllArgsConstructor
+    public static class Patch {
+        private long questionId;
+        private String title;
+        private String text;
+
+        public void setQuestionId(long questionId) {
+            this.questionId = questionId;
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class Response {
         private long questionId;
         private String title;
