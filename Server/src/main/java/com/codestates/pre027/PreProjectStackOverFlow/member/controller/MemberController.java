@@ -85,9 +85,8 @@ public class MemberController {
 
         requestBody.setMemberId(memberId);
 
-        Member member = memberMapper.memberPatchDtoToMember(requestBody);
-
-        memberService.updateMember(member, jwtTokenizer.getMemberId(token));
+        Member member = memberService.updateMember(memberMapper.memberPatchDtoToMember(requestBody),
+            jwtTokenizer.getMemberId(token));
 
         return new ResponseEntity<>(memberMapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
