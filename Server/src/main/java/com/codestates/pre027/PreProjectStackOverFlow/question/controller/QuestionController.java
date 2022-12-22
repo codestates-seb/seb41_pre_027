@@ -5,7 +5,6 @@ import com.codestates.pre027.PreProjectStackOverFlow.dto.MultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.mapper.QuestionMapper;
-import com.codestates.pre027.PreProjectStackOverFlow.question.repository.QuestionRepository;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
 import java.util.List;
 import javax.validation.Valid;
@@ -82,5 +81,13 @@ public class QuestionController {
         questionService.deleteQuestion(questionId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity searchQuestion(@RequestParam String search) {
+        List<Question> searchQuestionList = questionService.searchQuestion(search);
+        List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(searchQuestionList);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

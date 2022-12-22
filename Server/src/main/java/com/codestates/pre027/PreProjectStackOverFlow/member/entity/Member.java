@@ -1,6 +1,7 @@
 package com.codestates.pre027.PreProjectStackOverFlow.member.entity;
 
 import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
+import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -45,5 +46,12 @@ public class Member {
 
     public void addAnswer(Answer answer){
         answerList.add(answer);
+    }
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    private List<Question> questionList = new ArrayList<>();
+
+    public void addQuestion(Question question) {
+        questionList.add(question);
     }
 }

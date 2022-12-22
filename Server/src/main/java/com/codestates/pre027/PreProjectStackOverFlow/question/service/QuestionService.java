@@ -5,6 +5,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.exception.ExceptionCode;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.repository.QuestionRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +45,12 @@ public class QuestionService {
     public Page<Question> findQuestions(int page, int size) {
         return questionRepository.findAll(PageRequest.of(page, size,
             Sort.by("questionId").descending()));
+    }
+
+    public List<Question> searchQuestion(String search) {
+        List<Question> questionList = questionRepository.findByTitleContaining(search);
+
+        return questionList;
     }
 
     public void deleteQuestion(long questionId) {
