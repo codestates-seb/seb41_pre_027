@@ -53,17 +53,27 @@ public class MemberService {
     }
 
     //    특정 회원 수정
-    public Member updateMember(Member member) {
+    public Member updateMember(Member member, long tokenId) {
+
+        if (member.getMemberId() != tokenId) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
+
         Member findMember = findVerifiedMember(member.getMemberId());
 
-        findMember.setName(member.getName());
-        findMember.setPassword(passwordEncoder.encode(member.getPassword()));
+        Optional.ofNullable(member.getName())
+            .ifPresent(findMember::setName);
+        Optional.ofNullable(passwordEncoder.encode(member.getPassword()))
+            .ifPresent(findMember::setPassword);
 
         return  memberRepository.save(findMember);
     }
 
     //    특정 회원 삭제
-    public void deleteMember(long memberId) {
+    public void deleteMember(long memberId, long tokenId) {
+        if (memberId != tokenId) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
         //    memberId 조회해서 있으면 멤버를 리턴 없으면 MEMBER_NOT_FOUND exception 발생
         Member findMember = findVerifiedMember(memberId);
 
@@ -84,5 +94,10 @@ public class MemberService {
         if (member.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
+    }
+    //  회원의 닉네임으로 회원 검색하기
+    public List<Member> searchMember(String search) {
+        List<Member> memberList = memberRepository.findByNameContaining(search);
+        return memberList;
     }
 }
