@@ -30,5 +30,6 @@ public class QuestionDto {
         private long questionId;
         private String title;
         private String text;
+        private long memberId;
     }
 }

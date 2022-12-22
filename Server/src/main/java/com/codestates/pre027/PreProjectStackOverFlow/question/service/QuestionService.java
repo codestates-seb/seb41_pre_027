@@ -2,6 +2,8 @@ package com.codestates.pre027.PreProjectStackOverFlow.question.service;
 
 import com.codestates.pre027.PreProjectStackOverFlow.exception.BusinessLogicException;
 import com.codestates.pre027.PreProjectStackOverFlow.exception.ExceptionCode;
+import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
+import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.repository.QuestionRepository;
 import java.time.LocalDateTime;
@@ -15,17 +17,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
+    private final MemberService memberService;
 
-    public QuestionService(QuestionRepository questionRepository) {
+    public QuestionService(QuestionRepository questionRepository, MemberService memberService) {
         this.questionRepository = questionRepository;
+        this.memberService = memberService;
     }
 
-    public Question createQuestion(Question question) {
+    public Question createQuestion(Question question, long tokenId) {
+        Member member = memberService.findMember(tokenId);
+        question.setMember(member);
+
         return questionRepository.save(question);
     }
 
-    public Question updateQuestion(Question question) {
+    public Question updateQuestion(Question question, long tokenId) {
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
+        Member findMember = findQuestion.getMember();
+
+        if(findMember.getMemberId() != tokenId) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
 
         Optional.ofNullable(question.getTitle())
             .ifPresent(findQuestion::setTitle);
@@ -33,7 +45,6 @@ public class QuestionService {
             .ifPresent(findQuestion::setText);
 
         findQuestion.setModifiedAt(LocalDateTime.now());
-
         return questionRepository.save(findQuestion);
     }
 
@@ -53,8 +64,14 @@ public class QuestionService {
         return questionList;
     }
 
-    public void deleteQuestion(long questionId) {
+    public void deleteQuestion(long questionId, long tokenId) {
         Question findQuestion = findVerifiedQuestion(questionId);
+        Member findMember = findQuestion.getMember();
+
+        if(findMember.getMemberId() != tokenId) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
+
         questionRepository.delete(findQuestion);
     }
 
