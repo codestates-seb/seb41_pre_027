@@ -29,10 +29,8 @@ public class MemberDto {
 
         private String email;
 
-        @Setter
         private String password;
 
-        @Setter
         private String name;
 
     }
