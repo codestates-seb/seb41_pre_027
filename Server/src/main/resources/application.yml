@@ -4,7 +4,7 @@ spring:
       enabled: true
       path: /h2
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:mem:test;MODE=MYSQL
   jpa:
     hibernate:
       ddl-auto: create
@@ -16,6 +16,6 @@ mail:
   address:
     admin: admin@gmail.com
 jwt:
-  secret-key: ${JWT_SECRET_KEY}
+  secret-key: pre027pre027pre027pre027pre027pre027pre027pre027
   access-token-expiration-minutes: 40
   refresh-token-expiration-minutes: 420
