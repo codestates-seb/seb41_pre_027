@@ -46,4 +46,11 @@ public class Member {
     public void addAnswer(Answer answer){
         answerList.add(answer);
     }
+
+    public Member(Long memberId, String email, String password, String name) {
+        this.memberId = memberId;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
 }

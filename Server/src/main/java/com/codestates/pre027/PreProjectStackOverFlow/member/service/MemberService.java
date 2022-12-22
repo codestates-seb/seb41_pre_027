@@ -10,6 +10,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class MemberService {
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
 
+        //  db에 member 저장
         return memberRepository.save(member);
     }
 
@@ -47,36 +49,46 @@ public class MemberService {
     }
 
     //    전체 회원 조회
-    public Page<Member> findMembers(int page, int size) {
-        return memberRepository.findAll(PageRequest.of(page, size,
-            Sort.by("memberId").descending()));
+    public Page<Member> findMembers(Pageable pageable) {
+
+        //  db 에서 memberId 기준으로 멤버 전체 조회
+        return memberRepository.findAll(pageable);
     }
 
     //    특정 회원 수정
     public Member updateMember(Member member, long tokenId) {
 
+        //  수정하려는 member 의 memberId 와 접속해있는 token 의 memberId 비교
         if (member.getMemberId() != tokenId) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
         }
 
+        //  수정하려는 member 가 존재하는지 memberId로 조회
         Member findMember = findVerifiedMember(member.getMemberId());
 
+        //  null 값이 아니면 회원 닉네임 수정
         Optional.ofNullable(member.getName())
             .ifPresent(findMember::setName);
+
+        //  null 값이 아니면 패스워드 암호화후 회원 패스워드 수정
         Optional.ofNullable(passwordEncoder.encode(member.getPassword()))
             .ifPresent(findMember::setPassword);
 
+        //  db에 member 저장
         return  memberRepository.save(findMember);
     }
 
     //    특정 회원 삭제
     public void deleteMember(long memberId, long tokenId) {
+
+        //  삭제하려는 memberId 와 접속해있는 token 의 memberId 비교
         if (memberId != tokenId) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
         }
-        //    memberId 조회해서 있으면 멤버를 리턴 없으면 MEMBER_NOT_FOUND exception 발생
+        //  memberId 조회해서 있으면 멤버를 리턴 없으면 MEMBER_NOT_FOUND exception 발생
         Member findMember = findVerifiedMember(memberId);
 
+        //  db 에서 member 삭제
         memberRepository.delete(findMember);
     }
 
@@ -96,8 +108,8 @@ public class MemberService {
         }
     }
     //  회원의 닉네임으로 회원 검색하기
-    public List<Member> searchMember(String search) {
-        List<Member> memberList = memberRepository.findByNameContaining(search);
-        return memberList;
+    public Page<Member> searchMember(String search , Pageable pageable) {
+        Page<Member> memberPage = memberRepository.findByNameContaining(search , pageable);
+        return memberPage;
     }
 }
