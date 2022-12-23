@@ -101,6 +101,10 @@ public class QuestionController {
 
         List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(searchQuestionList);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        long searchQuestionCount = questionService.searchQuestionCount(search);
+
+        return new ResponseEntity<>(new CountMultiResponseDto<>(
+            response, searchQuestionCount
+        ), HttpStatus.OK);
     }
 }

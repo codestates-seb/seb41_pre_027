@@ -89,4 +89,11 @@ public class QuestionService {
 
         return questions.size();
     }
+
+    public long searchQuestionCount(String search) {
+        List<Question> questionList = questionRepository.findByTitleContaining(search);
+        long questionCount = questionList.size();
+
+        return questionCount;
+    }
 }
