@@ -51,8 +51,18 @@ public class MemberService {
     //    전체 회원 조회
     public Page<Member> findMembers(Pageable pageable) {
 
-        //  db 에서 memberId 기준으로 멤버 전체 조회
+        //  db 에서 Pageable 기준으로 멤버 전체 조회
         return memberRepository.findAll(pageable);
+    }
+
+    //  전체 회원 수 조회
+    public long findMemberCount() {
+
+        // db 에서 전체 멤버 조회 후 List 에 담기
+        List<Member> members = memberRepository.findAll();
+
+        // db 에서 받아온 리스트의 size 반환
+        return members.size();
     }
 
     //    특정 회원 수정
@@ -111,5 +121,14 @@ public class MemberService {
     public Page<Member> searchMember(String search , Pageable pageable) {
         Page<Member> memberPage = memberRepository.findByNameContaining(search , pageable);
         return memberPage;
+    }
+
+    //  닉네임으로 검색된 회원 수 조회
+    public long searchMemberCount(String search) {
+
+        List<Member> memberList = memberRepository.findByNameContaining(search);
+        long memberCount = memberList.size();
+
+        return memberCount;
     }
 }

@@ -2,11 +2,11 @@ package com.codestates.pre027.PreProjectStackOverFlow.member.controller;
 
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
+import com.codestates.pre027.PreProjectStackOverFlow.dto.MemberCountMultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.dto.MemberDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.mapper.MemberMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
-import com.codestates.pre027.PreProjectStackOverFlow.dto.MultiResponseDto;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 @Validated
 public class MemberController {
@@ -49,8 +49,11 @@ public class MemberController {
 
         Page<Member> pageMembers = memberService.findMembers(pageable);
         List<Member> members = pageMembers.getContent();
+        long memberCount = memberService.findMemberCount();
 
-        return new ResponseEntity<>(memberMapper.membersToMemberResponseDtos(members),
+        return new ResponseEntity<>(
+            new MemberCountMultiResponseDto<>(memberMapper.membersToMemberResponseDtos(members),
+                memberCount),
             HttpStatus.OK);
     }
 
@@ -100,12 +103,14 @@ public class MemberController {
 
     // 회원 닉네임으로 검색하기
     @GetMapping("/search")
-    public ResponseEntity searchMember(@RequestParam String search , Pageable pageable) {
+    public ResponseEntity searchMember(@RequestParam String search, Pageable pageable) {
 
-        Page<Member> searchMemberPage = memberService.searchMember(search , pageable);
+        Page<Member> searchMemberPage = memberService.searchMember(search, pageable);
         List<Member> searchMember = searchMemberPage.getContent();
+        long searchMemberCount = memberService.searchMemberCount(search);
 
-        return new ResponseEntity<>(memberMapper.membersToMemberResponseDtos(searchMember),
+        return new ResponseEntity<>(new MemberCountMultiResponseDto<>(
+            memberMapper.membersToMemberResponseDtos(searchMember), searchMemberCount),
             HttpStatus.OK);
     }
 }
