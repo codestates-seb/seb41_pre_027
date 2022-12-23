@@ -83,4 +83,10 @@ public class QuestionService {
 
         return findQuestion;
     }
+
+    public long findQuestionCount() {
+        List<Question> questions = questionRepository.findAll();
+
+        return questions.size();
+    }
 }

@@ -2,6 +2,7 @@ package com.codestates.pre027.PreProjectStackOverFlow.question.controller;
 
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
+import com.codestates.pre027.PreProjectStackOverFlow.dto.CountMultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.dto.MultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
@@ -76,10 +77,13 @@ public class QuestionController {
     public ResponseEntity getQuestions(Pageable pageable) {
 
         Page<Question> questionPage = questionService.findQuestions(pageable);
-
         List<Question> questions = questionPage.getContent();
+        long questionCount = questionService.findQuestionCount();
 
-        return new ResponseEntity<>(questionMapper.questionsToQuestionResponseDtos(questions), HttpStatus.OK);
+        return new ResponseEntity<>(
+            new CountMultiResponseDto<>(
+                questionMapper.questionsToQuestionResponseDtos(questions), questionCount),
+            HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}")
