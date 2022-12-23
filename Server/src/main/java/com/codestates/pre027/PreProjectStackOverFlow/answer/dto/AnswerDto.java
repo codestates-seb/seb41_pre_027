@@ -14,6 +14,7 @@ public class AnswerDto {
         private long questionId;
         private long answerId;
         private long memberId;
+        private String memberNick;
         private String text;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
