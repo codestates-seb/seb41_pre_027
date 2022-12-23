@@ -2,7 +2,7 @@ package com.codestates.pre027.PreProjectStackOverFlow.member.controller;
 
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
-import com.codestates.pre027.PreProjectStackOverFlow.dto.MemberCountMultiResponseDto;
+import com.codestates.pre027.PreProjectStackOverFlow.dto.CountMultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.dto.MemberDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.mapper.MemberMapper;
@@ -52,7 +52,7 @@ public class MemberController {
         long memberCount = memberService.findMemberCount();
 
         return new ResponseEntity<>(
-            new MemberCountMultiResponseDto<>(memberMapper.membersToMemberResponseDtos(members),
+            new CountMultiResponseDto<>(memberMapper.membersToMemberResponseDtos(members),
                 memberCount),
             HttpStatus.OK);
     }
@@ -109,7 +109,7 @@ public class MemberController {
         List<Member> searchMember = searchMemberPage.getContent();
         long searchMemberCount = memberService.searchMemberCount(search);
 
-        return new ResponseEntity<>(new MemberCountMultiResponseDto<>(
+        return new ResponseEntity<>(new CountMultiResponseDto<>(
             memberMapper.membersToMemberResponseDtos(searchMember), searchMemberCount),
             HttpStatus.OK);
     }
