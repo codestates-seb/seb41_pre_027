@@ -18,14 +18,14 @@ import lombok.Setter;
 @Setter
 @Entity(name = "TAGS")
 public class Tag {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long tagId;
-
     @Column(nullable = false)
     private String tagName;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.PERSIST)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long tagId;
+
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<QuestionTag> questionTags =new ArrayList<>();
 
 

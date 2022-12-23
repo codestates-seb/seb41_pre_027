@@ -11,6 +11,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.tag.entity.QuestionTag;
 import com.codestates.pre027.PreProjectStackOverFlow.tag.entity.Tag;
 import com.codestates.pre027.PreProjectStackOverFlow.tag.repository.TagRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,13 +36,35 @@ public class TagService {
         if(findMember.getMemberId() != tokenId){
             throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
         }
-        for(Tag tag:tags){
-            QuestionTag questionTag = new QuestionTag();
-            questionTag.setTag(tag);
-            questionTag.setQuestion(findQuestion);
-            tag.getQuestionTags().add(questionTag);
-        }
-        return tagRepository.saveAll(tags);
+        for(int i =0; i<tags.size();i++){
+            Tag tag = tags.get(i);
+            Tag findTag = findVerifiedAnswerByQuery(tag.getTagName());
+            if(findTag ==null) {
+                QuestionTag questionTag = new QuestionTag();
+                questionTag.setTag(tag);
+                questionTag.setQuestion(findQuestion);
+                tag.getQuestionTags().add(questionTag);
+                tagRepository.save(tag);
+            }else{
+                System.out.println(findTag.getTagName()+"이미존재하는태그#########################");
+                QuestionTag questionTag = new QuestionTag();
+                questionTag.setTag(findTag);
+                questionTag.setQuestion(findQuestion);
+                System.out.println(questionTag.getQuestion().getQuestionId()+"id<<<<<<<<<<<>>>>>>>>>>id"+questionTag.getTag().getTagId());
+                findTag.getQuestionTags().add(questionTag);
+                tagRepository.save(findTag);
+            }
 
+        }
+        return tags;
+    }
+
+    private Tag findVerifiedAnswerByQuery(String tagName){
+        Optional<Tag> tag = tagRepository.findByTag(tagName);
+        if(tag.isPresent()){
+            System.out.println("있음######################################################");
+            return tag.get();
+        }
+        else return null;
     }
 }
