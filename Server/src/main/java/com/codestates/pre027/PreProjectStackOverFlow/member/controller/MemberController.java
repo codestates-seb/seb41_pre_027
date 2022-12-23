@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -44,16 +45,13 @@ public class MemberController {
 
     //    전체 회원 조회하기
     @GetMapping
-    public ResponseEntity getMembers(@Positive @RequestParam int page,
-        @Positive @RequestParam int size) {
+    public ResponseEntity getMembers(Pageable pageable) {
 
-        Page<Member> pageMembers = memberService.findMembers(page - 1, size);
+        Page<Member> pageMembers = memberService.findMembers(pageable);
         List<Member> members = pageMembers.getContent();
-        return new ResponseEntity<>(
-            new MultiResponseDto<>(memberMapper.membersToMemberResponseDtos(members),
-                pageMembers),
-            HttpStatus.OK);
 
+        return new ResponseEntity<>(memberMapper.membersToMemberResponseDtos(members),
+            HttpStatus.OK);
     }
 
     //    특정 회원 조회하기
@@ -65,7 +63,7 @@ public class MemberController {
 
     //    회원가입 하기
     @PostMapping
-    public ResponseEntity postMember(@RequestBody MemberDto.Post requestBody) {
+    public ResponseEntity postMember(@RequestBody @Valid MemberDto.Post requestBody) {
 
         Member member = memberMapper.memberPostDtoToMember(requestBody);
 
@@ -102,10 +100,12 @@ public class MemberController {
 
     // 회원 닉네임으로 검색하기
     @GetMapping("/search")
-    public ResponseEntity searchMember(@RequestParam String search) {
-        List<Member> searchMemberList = memberService.searchMember(search);
+    public ResponseEntity searchMember(@RequestParam String search , Pageable pageable) {
 
-        return new ResponseEntity<>(memberMapper.membersToMemberResponseDtos(searchMemberList),
+        Page<Member> searchMemberPage = memberService.searchMember(search , pageable);
+        List<Member> searchMember = searchMemberPage.getContent();
+
+        return new ResponseEntity<>(memberMapper.membersToMemberResponseDtos(searchMember),
             HttpStatus.OK);
     }
 }

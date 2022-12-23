@@ -5,6 +5,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.member.dto.MemberDto.Respon
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import java.util.List;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {

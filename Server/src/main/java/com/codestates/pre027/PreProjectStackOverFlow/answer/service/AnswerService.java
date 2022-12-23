@@ -27,8 +27,8 @@ public class AnswerService {
         this.memberService = memberService;
     }
 
-    public Answer createAnswer(Answer answer,long questId){
-        Member member = memberService.findMember(1L);
+    public Answer createAnswer(Answer answer,long questId,long tokenId){
+        Member member = memberService.findMember(tokenId);
         Question question = questionService.findQuestion(questId);
 
         answer.setQuest(question);
@@ -37,9 +37,13 @@ public class AnswerService {
         return answerRepository.save(answer);
     }
 
-    public Answer updateAnswer(Answer answer){
-        Answer findAnswer = findVerifiedAnswerByQuery(answer.getAnswerId());
 
+    public Answer updateAnswer(Answer answer,long tokenId){
+        Answer findAnswer = findVerifiedAnswerByQuery(answer.getAnswerId());
+        Member findMember = findAnswer.getWriter();
+        if(findMember.getMemberId() != tokenId){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
         Optional.ofNullable(answer.getText())
             .ifPresent(text->findAnswer.setText(text));
         findAnswer.setModifiedAt(LocalDateTime.now());
@@ -56,8 +60,12 @@ public class AnswerService {
         return answerRepository.findByWriter(member.getMemberId());
     }
 
-    public void deleteAnswer(long answerId){
+    public void deleteAnswer(long answerId,long tokenId){
         Answer findAnswer = findAnswer(answerId);
+        Member findMember = findAnswer.getWriter();
+        if(findMember.getMemberId() != tokenId){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
 
         answerRepository.delete(findAnswer);
 

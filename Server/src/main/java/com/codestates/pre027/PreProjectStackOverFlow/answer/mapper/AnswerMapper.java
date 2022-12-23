@@ -16,6 +16,7 @@ public interface AnswerMapper {
         AnswerDto.Response answerResponseDto = new AnswerDto.Response(answer.getQuest().getQuestionId(),
             answer.getAnswerId(),
             answer.getWriter().getMemberId(),
+            answer.getWriter().getName(),
             answer.getText(),
             answer.getCreatedAt(),
             answer.getModifiedAt()

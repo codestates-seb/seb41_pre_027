@@ -53,5 +53,4 @@ public class Member {
 
     public void addQuestion(Question question) {
         questionList.add(question);
-    }
 }
