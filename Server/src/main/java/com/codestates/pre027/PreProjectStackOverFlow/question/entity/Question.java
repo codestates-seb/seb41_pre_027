@@ -2,6 +2,7 @@ package com.codestates.pre027.PreProjectStackOverFlow.question.entity;
 
 import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
+import com.codestates.pre027.PreProjectStackOverFlow.tag.entity.QuestionTag;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,9 @@ public class Question {
 
     @OneToMany(mappedBy = "quest", cascade = CascadeType.PERSIST)
     private List<Answer> answerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
+    private List<QuestionTag> questionTags =new ArrayList<>();
 
     public void addAnswer(Answer answer){
         answerList.add(answer);
