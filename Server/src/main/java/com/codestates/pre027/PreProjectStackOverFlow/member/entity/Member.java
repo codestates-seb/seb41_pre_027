@@ -1,6 +1,7 @@
 package com.codestates.pre027.PreProjectStackOverFlow.member.entity;
 
 import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
+import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -47,10 +48,9 @@ public class Member {
         answerList.add(answer);
     }
 
-    public Member(Long memberId, String email, String password, String name) {
-        this.memberId = memberId;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    private List<Question> questionList = new ArrayList<>();
+
+    public void addQuestion(Question question) {
+        questionList.add(question);
 }

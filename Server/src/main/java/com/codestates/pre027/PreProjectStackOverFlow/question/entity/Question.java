@@ -1,6 +1,7 @@
 package com.codestates.pre027.PreProjectStackOverFlow.question.entity;
 
 import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
+import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +11,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "QUESTIONS")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -49,4 +51,7 @@ public class Question {
     public void addAnswer(Answer answer){
         answerList.add(answer);
     }
+
+    @ManyToOne
+    private Member member;
 }
