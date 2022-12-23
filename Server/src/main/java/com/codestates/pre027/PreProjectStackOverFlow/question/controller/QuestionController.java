@@ -91,8 +91,10 @@ public class QuestionController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity searchQuestion(@RequestParam String search) {
-        List<Question> searchQuestionList = questionService.searchQuestion(search);
+    public ResponseEntity searchQuestion(@RequestParam String search, Pageable pageable) {
+        Page<Question> searchQuestionPage = questionService.searchQuestion(search, pageable);
+        List<Question> searchQuestionList = searchQuestionPage.getContent();
+
         List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(searchQuestionList);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

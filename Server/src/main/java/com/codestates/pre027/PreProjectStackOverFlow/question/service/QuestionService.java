@@ -58,10 +58,10 @@ public class QuestionService {
         return questionRepository.findAll(pageable);
     }
 
-    public List<Question> searchQuestion(String search) {
-        List<Question> questionList = questionRepository.findByTitleContaining(search);
+    public Page<Question> searchQuestion(String search, Pageable pageable) {
+        Page<Question> questionPage = questionRepository.findByTitleContaining(search, pageable);
 
-        return questionList;
+        return questionPage;
     }
 
     public void deleteQuestion(long questionId, long tokenId) {
