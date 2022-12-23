@@ -29,7 +29,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(nullable = false , unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -44,7 +44,7 @@ public class Member {
     @OneToMany(mappedBy = "writer", cascade = CascadeType.PERSIST)
     private List<Answer> answerList = new ArrayList<>();
 
-    public void addAnswer(Answer answer){
+    public void addAnswer(Answer answer) {
         answerList.add(answer);
     }
 
@@ -53,4 +53,5 @@ public class Member {
 
     public void addQuestion(Question question) {
         questionList.add(question);
+    }
 }
