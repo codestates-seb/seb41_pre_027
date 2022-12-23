@@ -100,7 +100,7 @@ public class SecurityConfiguration {
                 authenticationManager, jwtTokenizer);
 
             // default url 설정
-            jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+            jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
             // 인증 성공 후, 로그를 기록하거나 사용자 정보를 response 로 전송할 수 있다.
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(

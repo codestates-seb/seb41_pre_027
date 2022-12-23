@@ -11,6 +11,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/question")
+@RequestMapping("/api/questions")
 @Validated
 public class QuestionController {
     private final QuestionMapper questionMapper;
@@ -40,7 +41,7 @@ public class QuestionController {
         this.jwtTokenizer = jwtTokenizer;
     }
 
-    @PostMapping
+    @PostMapping("/posting")
     public ResponseEntity postQuestion(@RequestHeader(name = "Authorization") String token,
         @RequestBody QuestionDto.Post requestBody) {
         Question question = questionMapper.questionPostDtoToQuestion(requestBody);
@@ -72,16 +73,13 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity getQuestions(@Positive @RequestParam int page,
-        @Positive @RequestParam int size) {
+    public ResponseEntity getQuestions(Pageable pageable) {
 
-        Page<Question> questionPage = questionService.findQuestions(page-1, size);
+        Page<Question> questionPage = questionService.findQuestions(pageable);
 
         List<Question> questions = questionPage.getContent();
 
-        return new ResponseEntity<>(new MultiResponseDto<>(
-            questionMapper.questionsToQuestionResponseDtos(questions), questionPage
-        ), HttpStatus.OK);
+        return new ResponseEntity<>(questionMapper.questionsToQuestionResponseDtos(questions), HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}")

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -53,9 +54,8 @@ public class QuestionService {
         return findQuestion;
     }
 
-    public Page<Question> findQuestions(int page, int size) {
-        return questionRepository.findAll(PageRequest.of(page, size,
-            Sort.by("questionId").descending()));
+    public Page<Question> findQuestions(Pageable pageable) {
+        return questionRepository.findAll(pageable);
     }
 
     public List<Question> searchQuestion(String search) {
