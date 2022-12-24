@@ -3,7 +3,6 @@ package com.codestates.pre027.PreProjectStackOverFlow.question.controller;
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
 import com.codestates.pre027.PreProjectStackOverFlow.dto.CountMultiResponseDto;
-import com.codestates.pre027.PreProjectStackOverFlow.dto.MultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.mapper.QuestionMapper;
@@ -45,11 +44,11 @@ public class QuestionController {
     @PostMapping("/posting")
     public ResponseEntity postQuestion(@RequestHeader(name = "Authorization") String token,
         @RequestBody QuestionDto.Post requestBody) {
+
         Question question = questionMapper.questionPostDtoToQuestion(requestBody);
-
         Question createdQuestion = questionService.createQuestion(question,jwtTokenizer.getMemberId(token));
-
         QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(createdQuestion);
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
