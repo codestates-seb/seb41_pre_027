@@ -42,6 +42,9 @@ public class Question {
     private int views = 0;
 
     @Column(nullable = false)
+    private int rating = 0;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false, name = "LAST_MODIFIED_AT")
