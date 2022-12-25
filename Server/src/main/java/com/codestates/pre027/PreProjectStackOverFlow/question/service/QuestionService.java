@@ -49,6 +49,15 @@ public class QuestionService {
 
     public Question findQuestion(long questionId) {
         Question findQuestion = findVerifiedQuestion(questionId);
+        //  찾은 질문의 views 값에 1을 더함
+        int findViews = findQuestion.getViews() + 1;
+
+        // 찾은 질문의 views 값을 할당
+        findQuestion.setViews(findViews);
+
+        // repository 에 저장
+        questionRepository.save(findQuestion);
+
         return findQuestion;
     }
 
