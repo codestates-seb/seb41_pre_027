@@ -3,9 +3,11 @@ package com.codestates.pre027.PreProjectStackOverFlow.controller;
 import static com.codestates.pre027.PreProjectStackOverFlow.controller.ApiDocumentUtils.getRequestPreProcessor;
 import static com.codestates.pre027.PreProjectStackOverFlow.controller.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -280,6 +282,41 @@ public class AnswerControllerRestDocsTest {
 
     @Test
     public void deleteAnswerTest() throws Exception{
+        LocalDateTime createdAt = LocalDateTime.of(2022,12,31,23,59,00);
+        LocalDateTime modifiedAt = LocalDateTime.of(2022,12,31,23,59,00);
 
+
+
+        Question question = new Question(1L,"질문 제목","질문 내용",0,0,createdAt,modifiedAt);
+
+        Member member = new Member(1L,"dry@gmail.com","qwer1234","뜨륵이",1L);
+
+        Answer answer = new Answer(1L,"답변 내용입니다",createdAt,modifiedAt,member,question);
+
+        answer.setQuest(question);
+        answer.setWriter(member);
+
+        doNothing().when(answerService).deleteAnswer(answer.getAnswerId(),1L);
+
+        ResultActions resultActions = mockMvc.perform(
+            delete("/api/answers/{answer-id}",answer.getAnswerId())
+                .header("Authorization", "Bearer (accessToken)")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        resultActions.andExpect(status().isNoContent())
+            .andDo(
+                document(
+                    "delete-answer",
+                    getRequestPreProcessor(),
+                    getResponsePreProcessor(),
+                    pathParameters(parameterWithName("answer-id").description("답변 식별자")
+                    ),
+                    requestHeaders(
+                        headerWithName("Authorization").description("Bearer (accessToken)")
+                    )
+                )
+            );
     }
 }
