@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,18 +49,26 @@ public class QuestionService {
 
     public Question findQuestion(long questionId) {
         Question findQuestion = findVerifiedQuestion(questionId);
+        //  찾은 질문의 views 값에 1을 더함
+        int findViews = findQuestion.getViews() + 1;
+
+        // 찾은 질문의 views 값을 할당
+        findQuestion.setViews(findViews);
+
+        // repository 에 저장
+        questionRepository.save(findQuestion);
+
         return findQuestion;
     }
 
-    public Page<Question> findQuestions(int page, int size) {
-        return questionRepository.findAll(PageRequest.of(page, size,
-            Sort.by("questionId").descending()));
+    public Page<Question> findQuestions(Pageable pageable) {
+        return questionRepository.findAll(pageable);
     }
 
-    public List<Question> searchQuestion(String search) {
-        List<Question> questionList = questionRepository.findByTitleContaining(search);
+    public Page<Question> searchQuestion(String search, Pageable pageable) {
+        Page<Question> questionPage = questionRepository.findByTitleAndTextContaining(search, search, pageable);
 
-        return questionList;
+        return questionPage;
     }
 
     public void deleteQuestion(long questionId, long tokenId) {
@@ -82,5 +89,18 @@ public class QuestionService {
         );
 
         return findQuestion;
+    }
+
+    public long findQuestionCount() {
+        List<Question> questions = questionRepository.findAll();
+
+        return questions.size();
+    }
+
+    public long searchQuestionCount(String search) {
+        List<Question> questionList = questionRepository.findByTitleContaining(search);
+        long questionCount = questionList.size();
+
+        return questionCount;
     }
 }

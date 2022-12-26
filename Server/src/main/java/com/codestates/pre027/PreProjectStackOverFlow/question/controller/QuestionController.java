@@ -2,7 +2,7 @@ package com.codestates.pre027.PreProjectStackOverFlow.question.controller;
 
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
-import com.codestates.pre027.PreProjectStackOverFlow.dto.MultiResponseDto;
+import com.codestates.pre027.PreProjectStackOverFlow.dto.CountMultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.mapper.QuestionMapper;
@@ -11,6 +11,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/question")
+@RequestMapping("/api/questions")
 @Validated
 public class QuestionController {
     private final QuestionMapper questionMapper;
@@ -44,10 +45,9 @@ public class QuestionController {
     public ResponseEntity postQuestion(@RequestHeader(name = "Authorization") String token,
         @RequestBody QuestionDto.Post requestBody) {
         Question question = questionMapper.questionPostDtoToQuestion(requestBody);
-
         Question createdQuestion = questionService.createQuestion(question,jwtTokenizer.getMemberId(token));
-
         QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(createdQuestion);
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -72,16 +72,16 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity getQuestions(@Positive @RequestParam int page,
-        @Positive @RequestParam int size) {
+    public ResponseEntity getQuestions(Pageable pageable) {
 
-        Page<Question> questionPage = questionService.findQuestions(page-1, size);
-
+        Page<Question> questionPage = questionService.findQuestions(pageable);
         List<Question> questions = questionPage.getContent();
+        long questionCount = questionService.findQuestionCount();
 
-        return new ResponseEntity<>(new MultiResponseDto<>(
-            questionMapper.questionsToQuestionResponseDtos(questions), questionPage
-        ), HttpStatus.OK);
+        return new ResponseEntity<>(
+            new CountMultiResponseDto<>(
+                questionMapper.questionsToQuestionResponseDtos(questions), questionCount),
+            HttpStatus.OK);
     }
 
     @DeleteMapping("/{question-id}")
@@ -93,10 +93,16 @@ public class QuestionController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity searchQuestion(@RequestParam String search) {
-        List<Question> searchQuestionList = questionService.searchQuestion(search);
+    public ResponseEntity searchQuestion(@RequestParam String search, Pageable pageable) {
+        Page<Question> searchQuestionPage = questionService.searchQuestion(search, pageable);
+        List<Question> searchQuestionList = searchQuestionPage.getContent();
+
         List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(searchQuestionList);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        long searchQuestionCount = questionService.searchQuestionCount(search);
+
+        return new ResponseEntity<>(new CountMultiResponseDto<>(
+            response, searchQuestionCount
+        ), HttpStatus.OK);
     }
 }

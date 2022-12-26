@@ -42,6 +42,9 @@ public class Question {
     private int views = 0;
 
     @Column(nullable = false)
+    private int rating = 0;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false, name = "LAST_MODIFIED_AT")
@@ -57,7 +60,7 @@ public class Question {
         answerList.add(answer);
     }
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "member_id")
     private Member member;
 }
