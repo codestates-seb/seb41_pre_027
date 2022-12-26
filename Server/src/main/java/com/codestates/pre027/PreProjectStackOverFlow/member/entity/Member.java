@@ -57,4 +57,12 @@ public class Member {
     public void addQuestion(Question question) {
         questionList.add(question);
     }
+
+    public Member(Long memberId, String email, String password, String name, long memberImage) {
+        this.memberId = memberId;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.memberImage = memberImage;
+    }
 }

@@ -63,4 +63,15 @@ public class Question {
     @ManyToOne(optional = false)
     @JoinColumn(name = "member_id")
     private Member member;
+
+
+    public Question(long questionId, String title, String text, int views, int rating, LocalDateTime createdAt , LocalDateTime modifiedAt) {
+        this.questionId = questionId;
+        this.title = title;
+        this.text = text;
+        this.views = views;
+        this.rating = rating;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
 }

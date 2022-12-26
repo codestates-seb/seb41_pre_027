@@ -33,6 +33,7 @@ public class QuestionDto {
         private String title;
         private String text;
         private long memberId;
+        private long memberImage;
         private String name;
         private int views;
         private int rating;
