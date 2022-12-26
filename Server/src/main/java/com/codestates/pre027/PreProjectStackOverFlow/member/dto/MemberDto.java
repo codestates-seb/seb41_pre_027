@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 
 public class MemberDto {
@@ -25,6 +26,9 @@ public class MemberDto {
 
         @NotBlank(message = "회원 닉네임은 공백이 아니어야 합니다.")
         private String name;
+
+        @Range(min = 1, max =6, message = "프로필 이미지는 필수 사항입니다.")
+        private long memberImage;
     }
 
     @Getter
@@ -57,5 +61,6 @@ public class MemberDto {
 
         private String name;
 
+        private long memberImage;
     }
 }

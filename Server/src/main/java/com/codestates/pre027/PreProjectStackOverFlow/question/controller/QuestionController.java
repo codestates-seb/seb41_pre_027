@@ -41,10 +41,9 @@ public class QuestionController {
         this.jwtTokenizer = jwtTokenizer;
     }
 
-    @PostMapping("/posting")
+    @PostMapping
     public ResponseEntity postQuestion(@RequestHeader(name = "Authorization") String token,
         @RequestBody QuestionDto.Post requestBody) {
-
         Question question = questionMapper.questionPostDtoToQuestion(requestBody);
         Question createdQuestion = questionService.createQuestion(question,jwtTokenizer.getMemberId(token));
         QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(createdQuestion);

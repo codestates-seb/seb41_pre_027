@@ -1,39 +1,47 @@
 package com.codestates.pre027.PreProjectStackOverFlow.tag.controller;
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
+import com.codestates.pre027.PreProjectStackOverFlow.tag.dto.TagDto;
+import com.codestates.pre027.PreProjectStackOverFlow.tag.entity.Tag;
 import com.codestates.pre027.PreProjectStackOverFlow.tag.mapper.TagMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.tag.service.TagService;
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //@RestController
 @Validated
-@RequestMapping
+@RequestMapping("/api")
 public class TagController {
     private final TagService tagService;
     private final TagMapper tagMapper;
     private final JwtTokenizer jwtTokenizer;
 
-    private TagController(TagService tagService, TagMapper tagMapper, JwtTokenizer jwtTokenizer){
+    public TagController(TagService tagService, TagMapper tagMapper, JwtTokenizer jwtTokenizer){
         this.tagService = tagService;
         this.tagMapper = tagMapper;
         this.jwtTokenizer = jwtTokenizer;
     }
 
-    /*@PostMapping("/questions/{quest-id}/tags")
-    public ResponseEntity postTags(@RequestHeader(name = "Authorization") String token,
-        @PathVariable("quest-id") @Positive long questId){
-        //@Valid @RequestBody AnswerDto.Post answerPostDto){
-        Answer answer = answerService.createAnswer(answerMapper.answerPostDto_to_Answer(answerPostDto),
-            questId,
-            jwtTokenizer.getMemberId(token));
-        AnswerDto.Response response = answerMapper.answer_to_AnswerResponseDto(answer);
+    @PostMapping("/questions/{quest-id}/tags")
+    public ResponseEntity postTagsToQuestion(@RequestHeader(name = "Authorization") String token,
+        @PathVariable("quest-id") @Positive long questId,
+        @Valid @RequestBody TagDto.Post tagPostDto){
+        List<Tag> tags = tagService.createTags(tagMapper.tagPostDto_to_Tags(tagPostDto),questId,jwtTokenizer.getMemberId(token));
 
-
+        List<TagDto.Response> response = tagMapper.tags_to_TagResponseDtos(tags);
 
         return new ResponseEntity<>(
             response,
             HttpStatus.CREATED);
-    }*/
+    }
 }
