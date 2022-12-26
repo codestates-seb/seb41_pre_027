@@ -1,7 +1,9 @@
 package com.codestates.pre027.PreProjectStackOverFlow.question.dto;
 
+import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 public class QuestionDto {
 

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/question")
+@RequestMapping("/api/question")
 @Validated
 public class QuestionController {
     private final QuestionMapper questionMapper;
