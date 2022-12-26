@@ -8,9 +8,12 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -116,5 +119,61 @@ public class MemberControllerRestDocsTest {
             ));
     }
 
+    @Test
+    public void patchMemberTest() throws Exception {
+        // given
+        long memberId = 1L;
+        MemberDto.Patch patch = new MemberDto.Patch(memberId, "123456789a", "oheadnah1");
+        String content = gson.toJson(patch);
+
+        MemberDto.Response responseDto =
+            new MemberDto.Response(1L,
+                "hgd@gmail.com",
+                "oheadnah1",
+                1L);
+
+
+        given(mapper.memberPatchDtoToMember(Mockito.any(MemberDto.Patch.class))).willReturn(new Member());
+
+        given(memberService.updateMember(Mockito.any(Member.class),Mockito.anyLong())).willReturn(new Member());
+
+        given(mapper.memberToMemberResponseDto(Mockito.any(Member.class))).willReturn(responseDto);
+
+        // when
+        ResultActions actions =
+            mockMvc.perform(
+                patch("/api/member/{member-id}", memberId).with(csrf())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content)
+            );
+
+        // then
+        actions
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.memberId").value(patch.getMemberId()))
+            .andExpect(jsonPath("$.name").value(patch.getName()))
+            .andExpect(jsonPath("$.password").value(patch.getPassword()))
+            .andDo(document("patch-member",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                pathParameters(
+                    parameterWithName("member-id").description("회원 식별자")
+                ),
+                requestFields(
+                    List.of(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임").optional(),
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호").optional()
+                    )
+                ),
+                responseFields(
+                    List.of(
+                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
+                        fieldWithPath("name").type(JsonFieldType.NUMBER).description("회원 닉네임")
+                    )
+                )
+            ));
+    }
 
 }
