@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@RestController
+@RestController
 @Validated
 @RequestMapping("/api")
 public class TagController {
@@ -36,6 +36,7 @@ public class TagController {
     public ResponseEntity postTagsToQuestion(@RequestHeader(name = "Authorization") String token,
         @PathVariable("quest-id") @Positive long questId,
         @Valid @RequestBody TagDto.Post tagPostDto){
+        System.out.println("컨트롤러 도착");
         List<Tag> tags = tagService.createTags(tagMapper.tagPostDto_to_Tags(tagPostDto),questId,jwtTokenizer.getMemberId(token));
 
         List<TagDto.Response> response = tagMapper.tags_to_TagResponseDtos(tags);
