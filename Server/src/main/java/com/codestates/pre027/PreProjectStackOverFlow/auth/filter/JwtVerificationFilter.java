@@ -77,7 +77,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private void setAuthenticationToContext(Map<String, Object> claims) {
 
         //  JWT 에서 파싱한 Claims 에서 username 을 얻습니다.
-        String username = (String) claims.get("username");
+        String username = (String) claims.get("userEmail");
 
         //  JWT 의 Claims 에서 얻은 권한 정보를 기반으로 List<GrantedAuthority 를 생성합니다.
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities(
