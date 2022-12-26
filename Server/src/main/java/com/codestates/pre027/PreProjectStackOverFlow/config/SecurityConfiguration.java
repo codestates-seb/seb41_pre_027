@@ -12,8 +12,10 @@ import com.codestates.pre027.PreProjectStackOverFlow.auth.handler.MemberAuthenti
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
 import com.codestates.pre027.PreProjectStackOverFlow.auth.utils.CustomAuthorityUtils;
 import java.util.Arrays;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,16 +31,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
-    private final CustomAuthorityUtils authorityUtils; // 추가
-
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer,
-        CustomAuthorityUtils authorityUtils) {
-        this.jwtTokenizer = jwtTokenizer;
-        this.authorityUtils = authorityUtils;
-    }
+    private final CustomAuthorityUtils authorityUtils;
+    private final RedisTemplate redisTemplate;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

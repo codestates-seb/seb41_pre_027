@@ -5,10 +5,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
 import com.codestates.pre027.PreProjectStackOverFlow.auth.dto.LoginDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import java.io.IOException;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +13,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,16 +22,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 // 클라이언트의 로그인 인증 요청을 처리하는 엔트리포인트(Entrypoint)의 역할
 // UsernamePasswordAuthenticationFilter 는 폼로그인 방식에서 사용하는 디폴트 Security Filter
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
-        JwtTokenizer jwtTokenizer) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenizer = jwtTokenizer;
-    }
 
     //  메서드 내부에서 인증을 시도하는 로직을 구현
     @SneakyThrows
