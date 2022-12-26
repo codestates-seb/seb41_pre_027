@@ -2,13 +2,10 @@ package com.codestates.pre027.PreProjectStackOverFlow.controller;
 
 import static com.codestates.pre027.PreProjectStackOverFlow.controller.ApiDocumentUtils.getRequestPreProcessor;
 import static com.codestates.pre027.PreProjectStackOverFlow.controller.ApiDocumentUtils.getResponsePreProcessor;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -18,10 +15,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,25 +30,23 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@WebMvcTest(MemberController.class)
+@WebMvcTest(value = MemberController.class , excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-@WithMockUser
 public class MemberControllerRestDocsTest {
 
     @Autowired
@@ -93,7 +85,7 @@ public class MemberControllerRestDocsTest {
 
         ResultActions actions =
             mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/member").with(csrf())
+                MockMvcRequestBuilders.post("/api/member")
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(content)
@@ -128,7 +120,7 @@ public class MemberControllerRestDocsTest {
 
     @Test
     public void patchMemberTest() throws Exception {
-        // given
+
         long memberId = 1L;
         MemberDto.Patch patch = new MemberDto.Patch(memberId, "123456789a", "oheadnah1");
         String content = gson.toJson(patch);
@@ -147,17 +139,17 @@ public class MemberControllerRestDocsTest {
 
         given(mapper.memberToMemberResponseDto(Mockito.any(Member.class))).willReturn(responseDto);
 
-        // when
+
         ResultActions actions =
             mockMvc.perform(
-                patch("/api/member/{member-id}", memberId).with(csrf())
+                patch("/api/member/{member-id}", memberId)
                     .header("Authorization", "Bearer (accessToken)")
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(content)
             );
 
-        // then
+
         actions
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.memberId").value(patch.getMemberId()))
@@ -298,7 +290,7 @@ public class MemberControllerRestDocsTest {
         doNothing().when(memberService).deleteMember(member.getMemberId(), 1L);
 
         ResultActions resultActions = mockMvc.perform(
-            delete("/api/member/{member-id}", member.getMemberId()).with(csrf())
+            delete("/api/member/{member-id}", member.getMemberId())
                 .header("Authorization", "Bearer (accessToken)")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -327,7 +319,7 @@ public class MemberControllerRestDocsTest {
 
         Member member3 = new Member(3L, "hgd3@gmail.com", "12345678a", "oheadnah", 3L);
 
-        Page<Member> page = new PageImpl<>(List.of(member1, member3));
+        Page<Member> page = new PageImpl<>(List.of(member1, member2, member3));
 
         long count = 2L;
 

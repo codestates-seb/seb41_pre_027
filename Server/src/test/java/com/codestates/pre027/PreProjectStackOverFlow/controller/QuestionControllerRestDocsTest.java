@@ -15,7 +15,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,6 +35,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -45,15 +45,13 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 
-@WebMvcTest(QuestionController.class)
+@WebMvcTest(value = QuestionController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
-@WithMockUser
 public class QuestionControllerRestDocsTest {
 
     @Autowired
@@ -104,7 +102,7 @@ public class QuestionControllerRestDocsTest {
 
         ResultActions actions =
             mockMvc.perform(
-                post("/api/questions").with(csrf())
+                post("/api/questions")
                     .header("Authorization", "Bearer (accessToken)")
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -169,7 +167,7 @@ public class QuestionControllerRestDocsTest {
 
         ResultActions actions =
             mockMvc.perform(
-                patch("/api/questions/{question-id}", questionId).with(csrf())
+                patch("/api/questions/{question-id}", questionId)
                     .header("Authorization", "Bearer (accessToken)")
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -362,7 +360,7 @@ public class QuestionControllerRestDocsTest {
         doNothing().when(questionService).deleteQuestion(member.getMemberId(), 1L);
 
         ResultActions resultActions = mockMvc.perform(
-            delete("/api/questions/{question-id}", question.getQuestionId()).with(csrf())
+            delete("/api/questions/{question-id}", question.getQuestionId())
                 .header("Authorization", "Bearer (accessToken)")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
