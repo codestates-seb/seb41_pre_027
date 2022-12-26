@@ -39,8 +39,6 @@ public class MemberDto {
         @Setter
         private long memberId;
 
-        private String email;
-
         @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
         message = "비밀번호는 최소 8자이상 문자와 숫자가 들어가야 합니다")
         private String password;
