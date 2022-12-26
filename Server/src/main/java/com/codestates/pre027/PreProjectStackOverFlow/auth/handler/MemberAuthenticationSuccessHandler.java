@@ -1,10 +1,9 @@
 package com.codestates.pre027.PreProjectStackOverFlow.auth.handler;
 
-import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
+
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

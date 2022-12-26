@@ -19,7 +19,8 @@ public interface AnswerMapper {
             answer.getWriter().getName(),
             answer.getText(),
             answer.getCreatedAt(),
-            answer.getModifiedAt()
+            answer.getModifiedAt(),
+            answer.getWriter().getMemberImage()
             );
         return answerResponseDto;
     }
