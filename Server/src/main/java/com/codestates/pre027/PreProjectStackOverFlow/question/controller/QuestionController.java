@@ -99,7 +99,7 @@ public class QuestionController {
 
         List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(searchQuestionList);
 
-        long searchQuestionCount = questionService.searchQuestionCount(search);
+        long searchQuestionCount = searchQuestionList.size();
 
         return new ResponseEntity<>(new CountMultiResponseDto<>(
             response, searchQuestionCount

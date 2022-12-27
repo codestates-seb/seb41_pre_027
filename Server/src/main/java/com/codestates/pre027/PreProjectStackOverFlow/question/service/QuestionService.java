@@ -66,7 +66,7 @@ public class QuestionService {
     }
 
     public Page<Question> searchQuestion(String search, Pageable pageable) {
-        Page<Question> questionPage = questionRepository.findByTitleAndTextContaining(search, search, pageable);
+        Page<Question> questionPage = questionRepository.findByTitleContainingOrTextContaining(search, search, pageable);
 
         return questionPage;
     }
