@@ -6,6 +6,8 @@ import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.repository.QuestionRepository;
+import com.codestates.pre027.PreProjectStackOverFlow.rating.entity.Rating;
+import com.codestates.pre027.PreProjectStackOverFlow.rating.service.RatingService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,14 +20,21 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
 
-    public QuestionService(QuestionRepository questionRepository, MemberService memberService) {
+    private final RatingService ratingService;
+
+    public QuestionService(QuestionRepository questionRepository, MemberService memberService,
+        RatingService ratingService) {
         this.questionRepository = questionRepository;
         this.memberService = memberService;
+        this.ratingService = ratingService;
     }
 
     public Question createQuestion(Question question, long tokenId) {
         Member member = memberService.findMember(tokenId);
         question.setMember(member);
+//        Rating rating = ratingService.createQuestionRating();
+//        question.setRating(rating);
+
 
         return questionRepository.save(question);
     }

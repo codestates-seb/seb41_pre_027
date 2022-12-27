@@ -1,9 +1,7 @@
 package com.codestates.pre027.PreProjectStackOverFlow.question.dto;
 
-import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 public class QuestionDto {
 
@@ -35,6 +33,7 @@ public class QuestionDto {
         private long memberId;
         private String name;
         private int views;
-        private int rating;
+        private long ratingId;
+        private int ratingScore;
     }
 }

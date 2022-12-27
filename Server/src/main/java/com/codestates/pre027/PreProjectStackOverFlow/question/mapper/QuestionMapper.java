@@ -13,6 +13,7 @@ public interface QuestionMapper {
     Question questionPatchDtoToQuestion(QuestionDto.Patch requestBody);
     @Mapping(source = "member.memberId", target = "memberId")
     @Mapping(source = "member.name", target = "name")
+    @Mapping(source = "rating.ratingId", target = "ratingId")
     QuestionDto.Response questionToQuestionResponseDto(Question question);
     List<QuestionDto.Response> questionsToQuestionResponseDtos(List<Question> questions);
 }

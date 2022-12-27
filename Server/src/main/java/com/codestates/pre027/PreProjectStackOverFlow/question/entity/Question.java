@@ -2,6 +2,7 @@ package com.codestates.pre027.PreProjectStackOverFlow.question.entity;
 
 import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
+import com.codestates.pre027.PreProjectStackOverFlow.rating.entity.Rating;
 import com.codestates.pre027.PreProjectStackOverFlow.tag.entity.QuestionTag;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +30,7 @@ import lombok.Setter;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long questionId;
+    private Long questionId;
 
     @Column(nullable = false)
     private String title;
@@ -36,13 +38,13 @@ public class Question {
     @Column(nullable = false)
     private String text;
 
+    @Column(nullable = false)
+    private int ratingScore;
+
 //    private Object image;
 
     @Column(nullable = false)
     private int views = 0;
-
-    @Column(nullable = false)
-    private int rating = 0;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -63,4 +65,8 @@ public class Question {
     @ManyToOne(optional = false)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "question_id")
+    private Rating rating;
 }

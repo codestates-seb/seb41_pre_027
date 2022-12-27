@@ -7,6 +7,8 @@ import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.mapper.QuestionMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
+import com.codestates.pre027.PreProjectStackOverFlow.rating.entity.Rating;
+import com.codestates.pre027.PreProjectStackOverFlow.rating.service.RatingService;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -34,18 +36,22 @@ public class QuestionController {
     private final QuestionService questionService;
     private final JwtTokenizer jwtTokenizer;
 
+    private final RatingService ratingService;
+
     public QuestionController(QuestionMapper questionMapper, QuestionService questionService,
-        JwtTokenizer jwtTokenizer) {
+        JwtTokenizer jwtTokenizer, RatingService ratingService) {
         this.questionMapper = questionMapper;
         this.questionService = questionService;
         this.jwtTokenizer = jwtTokenizer;
+        this.ratingService = ratingService;
     }
 
-    @PostMapping
+    @PostMapping("/posting")
     public ResponseEntity postQuestion(@RequestHeader(name = "Authorization") String token,
         @RequestBody QuestionDto.Post requestBody) {
         Question question = questionMapper.questionPostDtoToQuestion(requestBody);
-        Question createdQuestion = questionService.createQuestion(question,jwtTokenizer.getMemberId(token));
+        Question createdQuestion = questionService.createQuestion(question, jwtTokenizer.getMemberId(token));
+
         QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(createdQuestion);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
