@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class AnswerDto {
@@ -18,16 +19,22 @@ public class AnswerDto {
         private String text;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+        private long memberImage;
     }
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Post{
         @NotBlank
         private String text;
     }
+
     @Getter
-    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Patch{
+        @Setter
         private long answerId;
 
         @NotBlank
