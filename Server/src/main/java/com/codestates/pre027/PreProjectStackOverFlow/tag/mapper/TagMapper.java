@@ -15,9 +15,11 @@ public interface TagMapper {
         List<Tag> tags = new ArrayList<>();
         String[] tagArray = tagPostDto.getTagString().split(",");
         for(int i=0; i<tagArray.length;i++){
-            Tag tag = new Tag();
-            tag.setTagName(tagArray[i]);
-            tags.add(tag);
+            if(!tagArray[i].isBlank()) {
+                Tag tag = new Tag();
+                tag.setTagName(tagArray[i]);
+                tags.add(tag);
+            }
         }
         return tags;
     }
