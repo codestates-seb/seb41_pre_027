@@ -4,11 +4,14 @@ import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.service.AnswerService;
 import com.codestates.pre027.PreProjectStackOverFlow.comment.entity.Comment;
 import com.codestates.pre027.PreProjectStackOverFlow.comment.repository.CommentRepository;
+import com.codestates.pre027.PreProjectStackOverFlow.exception.BusinessLogicException;
+import com.codestates.pre027.PreProjectStackOverFlow.exception.ExceptionCode;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,6 +55,26 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    public void deleteComment(long commentId,long tokenId){
+        Comment findComment = findComment(commentId);
+        Member findMember = findComment.getWriter();
+        if(findMember.getMemberId() != tokenId){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
+        commentRepository.delete(findComment);
+    }
+
+    public Comment findComment(long commentId){
+        return findVerifiedCommentByQuery(commentId);
+    }
+
+    private Comment findVerifiedCommentByQuery(long commentId){
+        Optional<Comment> optionalComment = commentRepository.findByComment(commentId);
+        Comment findComment = optionalComment.orElseThrow(()->new BusinessLogicException(
+            ExceptionCode.COMMENT_NOT_FOUND));
+        return findComment;
+    }
+
     public List<Comment> findCommentByQuestionId(long questId){
         Question question = questionService.findQuestion(questId);
         return commentRepository.findByQuest(questId);
@@ -61,5 +84,7 @@ public class CommentService {
         Answer answer = answerService.findAnswer(answerId);
         return commentRepository.findByAnswer(answerId);
     }
+
+
 
 }
