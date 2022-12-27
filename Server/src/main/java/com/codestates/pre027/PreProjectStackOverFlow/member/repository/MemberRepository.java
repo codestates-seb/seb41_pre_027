@@ -19,4 +19,5 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
 
     // db 에서 search 로 들어오는 string 값 name 에서 List 조회
     List<Member> findByNameContaining(String search);
+
 }
