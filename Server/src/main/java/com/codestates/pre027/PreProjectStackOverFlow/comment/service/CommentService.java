@@ -8,6 +8,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,4 +51,15 @@ public class CommentService {
 
         return commentRepository.save(comment);
     }
+
+    public List<Comment> findCommentByQuestionId(long questId){
+        Question question = questionService.findQuestion(questId);
+        return commentRepository.findByQuest(questId);
+    }
+
+    public List<Comment> findCommentByAnswerId(long answerId){
+        Answer answer = answerService.findAnswer(answerId);
+        return commentRepository.findByAnswer(answerId);
+    }
+
 }
