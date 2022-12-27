@@ -102,7 +102,7 @@ public class QuestionControllerRestDocsTest {
 
         ResultActions actions =
             mockMvc.perform(
-                post("/api/questions")
+                post("/api/questions/posting")
                     .header("Authorization", "Bearer (accessToken)")
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)

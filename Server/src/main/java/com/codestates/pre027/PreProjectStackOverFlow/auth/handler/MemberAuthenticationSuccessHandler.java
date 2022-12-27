@@ -1,6 +1,5 @@
 package com.codestates.pre027.PreProjectStackOverFlow.auth.handler;
 
-import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
