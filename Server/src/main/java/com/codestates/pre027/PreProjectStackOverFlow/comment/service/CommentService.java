@@ -1,5 +1,6 @@
 package com.codestates.pre027.PreProjectStackOverFlow.comment.service;
 
+import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
 import com.codestates.pre027.PreProjectStackOverFlow.answer.service.AnswerService;
 import com.codestates.pre027.PreProjectStackOverFlow.comment.entity.Comment;
 import com.codestates.pre027.PreProjectStackOverFlow.comment.repository.CommentRepository;
@@ -33,6 +34,18 @@ public class CommentService {
         comment.setInheritQuest(true);
         comment.setQuest(question);
         comment.setAnswer(null);
+        comment.setWriter(member);
+
+        return commentRepository.save(comment);
+    }
+
+    public Comment createCommentToAnswer(Comment comment, long answerId, long tokenId){
+        Member member = memberService.findMember(tokenId);
+        Answer answer = answerService.findAnswer(answerId);
+
+        comment.setInheritQuest(false);
+        comment.setQuest(null);
+        comment.setAnswer(answer);
         comment.setWriter(member);
 
         return commentRepository.save(comment);
