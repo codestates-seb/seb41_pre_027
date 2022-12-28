@@ -1,7 +1,8 @@
 import React from 'react';
+import CreateBoard from '../Components/Question/CreateBoard';
 
-const AskAQuestion = () => {
-  return <h2>질문 등록 페이지</h2>;
+const AskAQuestion = ({ boards }) => {
+  return <CreateBoard boards={boards} />;
 };
 
 export default AskAQuestion;
