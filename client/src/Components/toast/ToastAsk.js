@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 // Toast 에디터
 import { Editor } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
+// import '@toast-ui/editor/dist/toastui-editor.css';
 
 const Container = styled.div`
   border: 1px solid black;
@@ -21,7 +21,7 @@ const Button = styled.div`
   }
 `;
 
-export default function ToastAnswer({ handleSubmit }) {
+export default function ToastAnswer() {
   const editorRef = useRef();
   // 등록 버튼 핸들러
   const handleRegisterButton = () => {

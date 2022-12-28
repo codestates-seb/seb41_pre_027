@@ -14,11 +14,12 @@ const Content = styled.div`
     border-bottom: 1px solid #e6e9ea;
   }
   .detail__title {
-    margin-bottom: 13px;
+    margin-bottom: 15px;
   }
   .detail__body {
     margin-top: 20px;
     line-height: 1.4rem;
+    padding-right: 400px;
   }
   span {
     font-size: 13px;
@@ -102,7 +103,6 @@ function BoardDetail() {
                 <span>{board.body}</span>
               </div>
             </Content>
-            {/* <button onClick={handleUpdate}>게시글 수정하기</button> */}
           </article>
         )}
         <Clicks>
