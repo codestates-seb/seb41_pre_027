@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'; 
 import './fonts.css';
 
 const GlobalStyle = createGlobalStyle`  
@@ -58,12 +58,12 @@ const GlobalStyle = createGlobalStyle`
     }
     a {
         text-decoration:none;
+
         color:inherit;
     }
     article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
         display:block;
     }
-
     button {
     -webkit-appearance: none;
     -moz-appearance: none;
