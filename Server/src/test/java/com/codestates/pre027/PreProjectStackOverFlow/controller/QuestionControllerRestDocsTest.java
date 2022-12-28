@@ -29,6 +29,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.mapper.QuestionMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
+import com.codestates.pre027.PreProjectStackOverFlow.tag.service.TagService;
 import com.google.gson.Gson;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,6 +60,9 @@ public class QuestionControllerRestDocsTest {
 
     @MockBean
     private QuestionService questionService;
+
+    @MockBean
+    private TagService tagService;
 
     @MockBean
     private QuestionMapper mapper;
@@ -94,7 +98,8 @@ public class QuestionControllerRestDocsTest {
                 0,
                 0,
                 createdAt,
-                modifiedAt);
+                modifiedAt,
+                "");
 
         given(mapper.questionPostDtoToQuestion(Mockito.any(QuestionDto.Post.class))).willReturn(
             new Question());
@@ -141,7 +146,8 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
                     fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
                     fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
-                    fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일")
+                    fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일"),
+                    fieldWithPath("tagString").type(JsonFieldType.STRING).description("태그")
                 )
             ));
     }
@@ -166,7 +172,8 @@ public class QuestionControllerRestDocsTest {
                 0,
                 0,
                 createdAt,
-                modifiedAt);
+                modifiedAt,
+                "");
 
         given(mapper.questionPatchDtoToQuestion(Mockito.any(QuestionDto.Patch.class))).willReturn(
             new Question());
@@ -222,7 +229,8 @@ public class QuestionControllerRestDocsTest {
                         fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
                         fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
                         fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
-                        fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일")
+                        fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일"),
+                        fieldWithPath("tagString").type(JsonFieldType.STRING).description("태그")
                     )
                 )
             ));
@@ -246,7 +254,8 @@ public class QuestionControllerRestDocsTest {
                 0,
                 0,
                 createdAt,
-                modifiedAt);
+                modifiedAt,
+                "");
 
         given(questionService.findQuestion(Mockito.anyLong())).willReturn(new Question());
 
@@ -283,7 +292,8 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
                     fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
                     fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
-                    fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일")
+                    fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일"),
+                    fieldWithPath("tagString").type(JsonFieldType.STRING).description("태그")
                 )
             ));
     }
@@ -327,7 +337,8 @@ public class QuestionControllerRestDocsTest {
                         questions.get(0).getViews(),
                         questions.get(0).getRatingScore(),
                         questions.get(0).getCreatedAt(),
-                        questions.get(0).getModifiedAt()),
+                        questions.get(0).getModifiedAt(),
+                        ""),
                     new QuestionDto.Response(
                         questions.get(1).getQuestionId(),
                         questions.get(1).getTitle(),
@@ -338,7 +349,8 @@ public class QuestionControllerRestDocsTest {
                         questions.get(1).getViews(),
                         questions.get(1).getRatingScore(),
                         questions.get(1).getCreatedAt(),
-                        questions.get(1).getModifiedAt())
+                        questions.get(1).getModifiedAt(),
+                        "")
                 )
             );
 
@@ -360,6 +372,7 @@ public class QuestionControllerRestDocsTest {
             .andExpect(jsonPath("$.data[0].ratingScore").value(questions.get(0).getRatingScore()))
             .andExpect(jsonPath("$.data[0].createdAt").value("2022-12-31T23:59:00"))
             .andExpect(jsonPath("$.data[0].modifiedAt").value("2022-12-31T23:59:00"))
+            .andExpect(jsonPath("$.data[0].tagString").value(""))
             .andDo(document("get-questions",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -377,6 +390,7 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("data[].ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
                     fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
                     fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일"),
+                    fieldWithPath("data[].tagString").type(JsonFieldType.STRING).description("태그"),
                     fieldWithPath("count").type(JsonFieldType.NUMBER).description("전체 회원 수")
                 )
             ));
@@ -459,7 +473,8 @@ public class QuestionControllerRestDocsTest {
                         questions.get(0).getViews(),
                         questions.get(0).getRatingScore(),
                         questions.get(0).getCreatedAt(),
-                        questions.get(0).getModifiedAt()),
+                        questions.get(0).getModifiedAt(),
+                        ""),
                     new QuestionDto.Response(
                         questions.get(1).getQuestionId(),
                         questions.get(1).getTitle(),
@@ -470,7 +485,8 @@ public class QuestionControllerRestDocsTest {
                         questions.get(1).getViews(),
                         questions.get(1).getRatingScore(),
                         questions.get(1).getCreatedAt(),
-                        questions.get(1).getModifiedAt())
+                        questions.get(1).getModifiedAt(),
+                        "")
                 )
             );
 
@@ -493,6 +509,7 @@ public class QuestionControllerRestDocsTest {
             .andExpect(jsonPath("$.data[0].ratingScore").value(questions.get(0).getRatingScore()))
             .andExpect(jsonPath("$.data[0].createdAt").value("2022-12-31T23:59:00"))
             .andExpect(jsonPath("$.data[0].modifiedAt").value("2022-12-31T23:59:00"))
+            .andExpect(jsonPath("$.data[0].tagString").value(""))
             .andDo(document("get-search-questions",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -511,6 +528,7 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("data[].ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
                     fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
                     fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일"),
+                    fieldWithPath("data[].tagString").type(JsonFieldType.STRING).description("태그"),
                     fieldWithPath("count").type(JsonFieldType.NUMBER).description("검색된 게시글 수")
                 )
             ));
