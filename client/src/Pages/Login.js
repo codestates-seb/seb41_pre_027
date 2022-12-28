@@ -4,16 +4,23 @@ import github from '../Img/github.png';
 import facebook from '../Img/facebook.png';
 import styled from 'styled-components';
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../Redux/auth';
 
 const Container = styled.div`
-  background-color: #f1f2f3;
   width: 100%;
-  min-height: 800px;
+  padding: 24px;
+  min-height: calc(100vh - 53px);
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Content = styled.div`
-  padding-top: 100px;
+  width: 300px;
   font-size: 1.3rem;
   line-height: 30px;
   color: #232629;
@@ -25,12 +32,12 @@ const Logo = styled.div`
   justify-content: center;
   width: 100%;
   img {
-    width: 50px;
+    width: 64px;
   }
 `;
 
 const ButtonBox = styled.div`
-  margin: 5px;
+  margin: 16px 0;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -42,6 +49,8 @@ const Button = styled.button`
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
+  box-sizing: border-box;
+  font-size: 1rem;
 
   background-color: ${(props) => props.background};
   &:hover {
@@ -52,44 +61,55 @@ const Button = styled.button`
   img {
     width: 20px;
     vertical-align: middle;
-    margin: 0 3px;
+    margin-right: 3px;
   }
 `;
 
-const InputForm = styled.div`
+const InputForm = styled.form`
   background-color: white;
   border: 1px solid #d6d6d6;
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-  margin: 5px;
+  border-radius: 7px;
   width: 100%;
   padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05), 0 20px 48px rgba(0, 0, 0, 0.05),
+    0 1px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const InputBox = styled.div`
   padding: 5px;
   p {
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 10px 0;
+    font-weight: 700;
+    font-size: 1.15rem;
   }
   input {
     width: 100%;
-    padding: 10px 0;
+    padding: 0.6em 0.7em;
+    border: 1px solid #babfc4;
+    background-color: #fff;
+    color: #0c0d0e;
+    border-radius: 3px;
+    font-size: 1rem;
+    box-sizing: border-box;
     &:focus {
-      box-shadow: 0 0 5px 5px rgba(28, 107, 138, 0.3);
+      box-shadow: 0 0 0 4px rgba(0, 116, 204, 0.15);
+      border-color: #6bbbf7;
+      outline: none;
     }
   }
   span {
-    color: red;
-    font-size: 17px;
+    color: #ff0000;
+    font-size: 1rem;
     margin-top: 10px;
+    line-height: 1.3;
+    display: inline-block;
+    text-align: left;
   }
   > div {
     display: flex;
+    align-items: flex-end;
     justify-content: space-between;
     a {
-      margin-top: 10px;
       color: #0074cc;
       text-decoration: none;
       font-size: 12px;
@@ -113,7 +133,7 @@ const Signup = styled.div`
   font-size: 12px;
   margin: 40px 0;
   p {
-    margin: 20px 0;
+    margin: 4px 0;
   }
   a {
     color: #0074cc;
@@ -157,13 +177,44 @@ function Login() {
     return setPassword(false);
   }
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const loginSubmitHandler = (event) => {
+    event.preventDefault();
+    if (email && password) {
+      const reqBody = {
+        username: account.email,
+        password: account.password,
+      };
+      const sendLoginReq = async () => {
+        try {
+          const response = await axios.post('/api/login', reqBody);
+          const jwtToken = response.headers.get('Authorization');
+          const memberId = response.data.memberId;
+          localStorage.setItem('Authorization', jwtToken);
+          localStorage.setItem('memberId', memberId);
+          dispatch(authActions.login());
+          setTimeout(() => {
+            navigate('/');
+            window.location.reload();
+          }, 250);
+        } catch (error) {
+          console.log(error);
+          alert('인증에 실패했습니다.');
+        }
+      };
+      sendLoginReq();
+    }
+  };
+
   return (
     <Container>
       <Content>
         <Logo>
-          <a href>
+          <Link to="/">
             <img src={footerlogo} alt="logo" />
-          </a>
+          </Link>
         </Logo>
         <ButtonBox>
           <Button
@@ -173,7 +224,7 @@ function Login() {
             hover="#f1f1f1"
           >
             <img src={google} alt="google" />
-            Sign up with Google
+            Log in with Google
           </Button>
           <Button
             background="rgba(1,1,1)"
@@ -182,7 +233,7 @@ function Login() {
             hover="black"
           >
             <img src={github} alt="github" />
-            Sign up with Github
+            Log in with Github
           </Button>
           <Button
             background="#385499"
@@ -191,13 +242,13 @@ function Login() {
             hover="#00108A"
           >
             <img src={facebook} alt="facebook" />
-            Sign up with Facebook
+            Log in with Facebook
           </Button>
         </ButtonBox>
-        <InputForm>
+        <InputForm onSubmit={loginSubmitHandler}>
           <InputBox>
             <div>
-              <p>email</p>
+              <p>Email</p>
             </div>
             <input
               name="email"
@@ -206,19 +257,15 @@ function Login() {
               onChange={onChangeEmail}
             />
             <span>
-              <span>
-                {email === false && LoginSta === true ? (
-                  <span>The email is not a valid email address.</span>
-                ) : (
-                  <span></span>
-                )}
-              </span>
+              {email === false && LoginSta === true
+                ? 'The email is not a valid email address.'
+                : null}
             </span>
           </InputBox>
           <InputBox>
             <div>
               <p>Password</p>
-              <a href>Forgot password?</a>
+              <Link to={() => false}>Forgot password?</Link>
             </div>
             <input
               name="password"
@@ -227,19 +274,14 @@ function Login() {
               onChange={onChangeEmail}
             />
             <span>
-              <span>
-                {password === false && LoginSta === true ? (
-                  <span>
-                    Passwords must contain at least eight characters, including
-                    at least 1 letter and 1 number.
-                  </span>
-                ) : (
-                  <span></span>
-                )}
-              </span>
+              {password === false && LoginSta === true
+                ? `Passwords must contain at least eight characters, including
+                at least 1 letter and 1 number.`
+                : null}
             </span>
           </InputBox>
           <LoginButton
+            type="submit"
             value="Login"
             onClick={() => {
               setLoginSta(true);
@@ -252,10 +294,10 @@ function Login() {
         </InputForm>
         <Signup>
           <p>
-            Don’t have an account?<a href> Sign up</a>
+            Don’t have an account?<Link to="/signup"> Sign up</Link>
           </p>
           <p>
-            Are you an employer?<a href> Sign up on Talent</a>
+            Are you an employer?<Link to={() => false}> Sign up on Talent</Link>
           </p>
         </Signup>
       </Content>
