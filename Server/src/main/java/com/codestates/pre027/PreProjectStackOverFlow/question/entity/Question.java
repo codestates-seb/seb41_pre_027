@@ -42,7 +42,7 @@ public class Question {
     private int views = 0;
 
     @Column(nullable = false)
-    private int rating = 0;
+    private int ratingScore = 0;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -65,12 +65,12 @@ public class Question {
     private Member member;
 
 
-    public Question(long questionId, String title, String text, int views, int rating, LocalDateTime createdAt , LocalDateTime modifiedAt) {
+    public Question(long questionId, String title, String text, int views, int ratingScore, LocalDateTime createdAt , LocalDateTime modifiedAt) {
         this.questionId = questionId;
         this.title = title;
         this.text = text;
         this.views = views;
-        this.rating = rating;
+        this.ratingScore = ratingScore;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }

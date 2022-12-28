@@ -81,4 +81,12 @@ public class AnswerService {
 
         return findAnswer;
     }
+
+    public Answer findVerifiedAnswer(Long answerId) {
+        Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
+        Answer findAnswer = optionalAnswer.orElseThrow(
+            () -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND)
+        );
+        return findAnswer;
+    }
 }
