@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/member/favorite")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @Validated
 public class FavoriteController {
@@ -28,15 +28,18 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
     private final JwtTokenizer jwtTokenizer;
 
-    @PostMapping("/{member-id}")
+    @PostMapping("member/{member-id}/favorite")
     public ResponseEntity postFavorite(@RequestHeader(name = "Authorization") String token,
         @PathVariable("member-id") @Positive long memberId,
-        @RequestBody @Valid FavoriteDto.Post requestBody) {
+        @Valid @RequestBody FavoriteDto.Post requestBody) {
 
+        System.out.println("###########################맵퍼출발");
         Favorite favorite = favoriteMapper.favoritePostDtoToFavorite(requestBody);
 
+        System.out.println("###########################서비스출발");
         Favorite createdFavorite = favoriteService.createFavorite(favorite,memberId,jwtTokenizer.getMemberId(token));
 
+        System.out.println("###########################맵퍼 출발");
         FavoriteDto.Response response = favoriteMapper.favoriteToFavoriteResponseDto(createdFavorite);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);

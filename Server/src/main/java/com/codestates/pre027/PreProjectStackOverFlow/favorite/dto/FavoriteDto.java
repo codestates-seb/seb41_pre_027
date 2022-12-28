@@ -1,16 +1,16 @@
 package com.codestates.pre027.PreProjectStackOverFlow.favorite.dto;
 
-import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class FavoriteDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Post {
 
-        @NotBlank
         private long favorite;
 
     }
