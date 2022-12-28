@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Pagination from '../Components/UI/Pagination';
 import SidebarWidget from '../Components/Questions/SidebarWidget';
 import styled from 'styled-components';
@@ -218,7 +219,7 @@ const Questions = () => {
         <div className="questions__header flex-vertical-center">
           <h2>All Questions</h2>
           <div className="questions__header--button btn-style1">
-            <a href="/questions/ask">Ask Question</a>
+            <Link to="/questions/ask">Ask Question</Link>
           </div>
         </div>
         <p className="questions__volume">{countQuestions} questions</p>
@@ -233,16 +234,16 @@ const Questions = () => {
                     <li>{el.views} views</li>
                   </ul>
                   <div className="question__preview">
-                    <a
-                      href={'/questions/' + el.questionId}
+                    <Link
+                      to={'/questions/' + el.questionId}
                       className="question__title"
                     >
                       {el.title}
-                    </a>
+                    </Link>
                     <p className="question__content">{el.text}</p>
                     <div className="question__author flex-vertical-center">
                       <img src={avatars[el.memberImage - 1]} alt="유저아바타" />
-                      <a href={'/users/' + el.memberID}>{el.name}</a>
+                      <Link to={'/users/' + el.memberID}>{el.name}</Link>
                     </div>
                   </div>
                 </li>

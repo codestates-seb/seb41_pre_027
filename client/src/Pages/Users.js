@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Pagination from '../Components/UI/Pagination';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -247,7 +248,7 @@ const Users = () => {
                   <img src={avatars[el.memberImage - 1]} alt="유저네임아바타" />
                 </div>
                 <div className="users__list--info">
-                  <a href={'/users/' + el.memberId}>{el.name}</a>
+                  <Link to={'/users/' + el.memberId}>{el.name}</Link>
                   <span>{el.memberId}</span>
                 </div>
               </li>
