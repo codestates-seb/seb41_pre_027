@@ -7,6 +7,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.question.dto.QuestionDto;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import com.codestates.pre027.PreProjectStackOverFlow.question.mapper.QuestionMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
+import com.codestates.pre027.PreProjectStackOverFlow.tag.service.TagService;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -36,12 +37,14 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
     private final QuestionService questionService;
     private final JwtTokenizer jwtTokenizer;
+    private final TagService tagService;
 
     public QuestionController(QuestionMapper questionMapper, QuestionService questionService,
-        JwtTokenizer jwtTokenizer) {
+        JwtTokenizer jwtTokenizer,TagService tagService) {
         this.questionMapper = questionMapper;
         this.questionService = questionService;
         this.jwtTokenizer = jwtTokenizer;
+        this.tagService = tagService;
     }
 
     @PostMapping("/posting")
@@ -89,6 +92,18 @@ public class QuestionController {
         return new ResponseEntity<>(
             new CountMultiResponseDto<>(
                 questionMapper.questionsToQuestionResponseDtos(questions), questionCount),
+            HttpStatus.OK);
+    }
+
+    @GetMapping("/tags")
+    public ResponseEntity getQuestionsByTag(@RequestParam String tagName,
+        @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Question> questionPage = tagService.findQuestionByTag(pageable,tagName);
+        List<Question> questions = questionPage.getContent();
+
+        List<QuestionDto.Response> responses = questionMapper.questionsToQuestionResponseDtos(questions);
+
+        return new ResponseEntity<>(responses,
             HttpStatus.OK);
     }
 

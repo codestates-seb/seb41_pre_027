@@ -18,7 +18,8 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
 
-    public QuestionService(QuestionRepository questionRepository, MemberService memberService) {
+    public QuestionService(QuestionRepository questionRepository,
+        MemberService memberService) {
         this.questionRepository = questionRepository;
         this.memberService = memberService;
     }
@@ -64,6 +65,8 @@ public class QuestionService {
     public Page<Question> findQuestions(Pageable pageable) {
         return questionRepository.findAll(pageable);
     }
+
+
 
     public Page<Question> searchQuestion(String search, Pageable pageable) {
         Page<Question> questionPage = questionRepository.findByTitleContainingOrTextContaining(search, search, pageable);
