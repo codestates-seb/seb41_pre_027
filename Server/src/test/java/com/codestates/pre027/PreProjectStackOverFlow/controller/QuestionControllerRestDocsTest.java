@@ -134,7 +134,7 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지"),
                     fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
-                    fieldWithPath("rating").type(JsonFieldType.NUMBER).description("추천 수")
+                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
                 )
             ));
     }
@@ -208,7 +208,7 @@ public class QuestionControllerRestDocsTest {
                         fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지"),
                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
                         fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
-                        fieldWithPath("rating").type(JsonFieldType.NUMBER).description("추천 수")
+                        fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
                     )
                 )
             ));
@@ -246,7 +246,7 @@ public class QuestionControllerRestDocsTest {
             .andExpect(jsonPath("$.memberImage").value(responseDto.getMemberImage()))
             .andExpect(jsonPath("$.name").value(responseDto.getName()))
             .andExpect(jsonPath("$.views").value(responseDto.getViews()))
-            .andExpect(jsonPath("$.rating").value(responseDto.getRating()))
+            .andExpect(jsonPath("$.ratingScore").value(responseDto.getRatingScore()))
             .andDo(document("get-question",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -261,7 +261,7 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지"),
                     fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
-                    fieldWithPath("rating").type(JsonFieldType.NUMBER).description("추천 수")
+                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
                 )
             ));
     }
@@ -300,7 +300,7 @@ public class QuestionControllerRestDocsTest {
                         questions.get(0).getMember().getMemberImage(),
                         questions.get(0).getMember().getName(),
                         questions.get(0).getViews(),
-                        questions.get(0).getRating()),
+                        questions.get(0).getRatingScore()),
                     new QuestionDto.Response(
                         questions.get(1).getQuestionId(),
                         questions.get(1).getTitle(),
@@ -309,7 +309,7 @@ public class QuestionControllerRestDocsTest {
                         questions.get(1).getMember().getMemberImage(),
                         questions.get(1).getMember().getName(),
                         questions.get(1).getViews(),
-                        questions.get(1).getRating())
+                        questions.get(1).getRatingScore())
                 )
             );
 
@@ -328,7 +328,7 @@ public class QuestionControllerRestDocsTest {
             .andExpect(jsonPath("$.data[0].memberImage").value(questions.get(0).getMember().getMemberImage()))
             .andExpect(jsonPath("$.data[0].name").value(questions.get(0).getMember().getName()))
             .andExpect(jsonPath("$.data[0].views").value(questions.get(0).getViews()))
-            .andExpect(jsonPath("$.data[0].rating").value(questions.get(0).getRating()))
+            .andExpect(jsonPath("$.data[0].ratingScore").value(questions.get(0).getRatingScore()))
             .andDo(document("get-questions",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -343,7 +343,7 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("data[].memberImage").type(JsonFieldType.NUMBER).description("회원 이미지"),
                     fieldWithPath("data[].name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("data[].views").type(JsonFieldType.NUMBER).description("조회 수"),
-                    fieldWithPath("data[].rating").type(JsonFieldType.NUMBER).description("추천 수"),
+                    fieldWithPath("data[].ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
                     fieldWithPath("count").type(JsonFieldType.NUMBER).description("전체 회원 수")
                 )
             ));
@@ -421,7 +421,7 @@ public class QuestionControllerRestDocsTest {
                         questions.get(0).getMember().getMemberImage(),
                         questions.get(0).getMember().getName(),
                         questions.get(0).getViews(),
-                        questions.get(0).getRating()),
+                        questions.get(0).getRatingScore()),
                     new QuestionDto.Response(
                         questions.get(1).getQuestionId(),
                         questions.get(1).getTitle(),
@@ -430,7 +430,7 @@ public class QuestionControllerRestDocsTest {
                         questions.get(1).getMember().getMemberImage(),
                         questions.get(1).getMember().getName(),
                         questions.get(1).getViews(),
-                        questions.get(1).getRating())
+                        questions.get(1).getRatingScore())
                 )
             );
 
@@ -450,7 +450,7 @@ public class QuestionControllerRestDocsTest {
             .andExpect(jsonPath("$.data[0].memberImage").value(questions.get(0).getMember().getMemberImage()))
             .andExpect(jsonPath("$.data[0].name").value(questions.get(0).getMember().getName()))
             .andExpect(jsonPath("$.data[0].views").value(questions.get(0).getViews()))
-            .andExpect(jsonPath("$.data[0].rating").value(questions.get(0).getRating()))
+            .andExpect(jsonPath("$.data[0].ratingScore").value(questions.get(0).getRatingScore()))
             .andDo(document("get-search-questions",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -466,7 +466,7 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("data[].memberImage").type(JsonFieldType.NUMBER).description("회원 이미지"),
                     fieldWithPath("data[].name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("data[].views").type(JsonFieldType.NUMBER).description("조회 수"),
-                    fieldWithPath("data[].rating").type(JsonFieldType.NUMBER).description("추천 수"),
+                    fieldWithPath("data[].ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
                     fieldWithPath("count").type(JsonFieldType.NUMBER).description("검색된 게시글 수")
                 )
             ));
