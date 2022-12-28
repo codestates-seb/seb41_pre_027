@@ -10,8 +10,8 @@ import GNB from './Components/UI/GNB';
 import Questions from './Pages/Questions';
 import Tags from './Pages/Tags';
 import Users from './Pages/Users';
-import MyPage from './Pages/MyPage';
-import LogIn from './Pages/LogIn';
+import MyPage from './Pages/Mypage';
+import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import AskAQuestion from './Pages/AskAQuestion';
 import Footer from './Components/UI/Footer';
@@ -117,7 +117,7 @@ function App() {
           <Route path="/users/:memberId" element={<UserView />} />{' '}
           {/* 개별 유저 보기 */}
           <Route path="/mypage" element={<MyPage />} /> {/* 마이페이지 */}
-          <Route path="/login" element={<LogIn />} /> {/* 로그인 페이지 */}
+          <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
           <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
           <Route
             path="/main"
