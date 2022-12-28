@@ -141,6 +141,8 @@ function Login() {
   const emailRegex =
     /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
   function LoginAcess() {
     if (emailRegex.test(account.email)) {
       return setEmail(true);
@@ -148,8 +150,8 @@ function Login() {
     return setEmail(false);
   }
 
-  function PassVal() {
-    if (account.password.length >= 4) {
+  function passwordVal() {
+    if (passwordRegex.test(account.password)) {
       return setPassword(true);
     }
     return setPassword(false);
@@ -228,7 +230,8 @@ function Login() {
               <span>
                 {password === false && LoginSta === true ? (
                   <span>
-                    Please enter at least 4 characters for the password.
+                    Passwords must contain at least eight characters, including
+                    at least 1 letter and 1 number.
                   </span>
                 ) : (
                   <span></span>
@@ -241,7 +244,7 @@ function Login() {
             onClick={() => {
               setLoginSta(true);
               LoginAcess();
-              PassVal();
+              passwordVal();
             }}
           >
             Log in

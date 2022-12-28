@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 const Main = styled.div`
@@ -24,11 +24,20 @@ const Tab = styled.div`
   text-decoration: none;
   margin: 0.5px;
   padding: 5px 10px;
-  font-size: 0.8rem;
+  font-size: 1.3rem;
   color: #656b71;
   &:hover {
     background-color: #f1f2f3;
     border-radius: 30px;
+  &.clicked {
+      background-color: #f1823b;
+      border-radius: 30px;
+      color: white;
+    }
+  &.clicked::after {
+      background-color: #f1823b;
+      border-radius: 30px;
+      color: white;
   }
 
   cursor: pointer;
@@ -43,7 +52,7 @@ const Detail = styled.div`
   white-space: nowrap;
   display: flex;
   margin: 15px 5px;
-  font-size: 0.7rem;
+  font-size: 1.3rem;
 `;
 const Details = styled.div`
   margin: 5px 20px;
@@ -62,7 +71,7 @@ const Buttons = styled.div`
   height: 35px;
 `;
 const Button = styled.button`
-  font-size: 1rem;
+  font-size: 1.4rem;
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -108,7 +117,6 @@ function Mypage() {
               <Icon2></Icon2>
               Edit profile
             </Button>
-
             <Button>
               <Icon2></Icon2>
               Network profile
@@ -116,11 +124,11 @@ function Mypage() {
           </Buttons>
         </Head>
         <Tabs>
-          <Tab>profile</Tab>
+          <Tab>Profile</Tab>
 
           <Tab>Activity</Tab>
 
-          <Tab>saves</Tab>
+          <Tab>Saves</Tab>
 
           <Tab>Settings</Tab>
         </Tabs>

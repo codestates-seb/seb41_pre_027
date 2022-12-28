@@ -150,10 +150,10 @@ const AvatarBox = styled.div`
   text-align: center;
 
   .avatar1 {
-    width: 2rem;
-    heigth: 2rem;
+    width: 3rem;
+    heigth: 3rem;
     margin: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background-color: white;
     transition: all 0.2s linear;
     border: 1px solid #d6d6d6;
@@ -165,10 +165,10 @@ const AvatarBox = styled.div`
   }
 
   .avatar2 {
-    width: 2rem;
-    heigth: 2rem;
+    width: 3rem;
+    heigth: 3rem;
     margin: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: 1px solid #d6d6d6;
     background-color: white;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
@@ -180,10 +180,10 @@ const AvatarBox = styled.div`
   }
 
   .avatar3 {
-    width: 2rem;
-    heigth: 2rem;
+    width: 3rem;
+    heigth: 3rem;
     margin: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: 1px solid #d6d6d6;
     background-color: white;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
@@ -195,10 +195,10 @@ const AvatarBox = styled.div`
   }
 
   .avatar4 {
-    width: 2rem;
-    heigth: 2rem;
+    width: 3rem;
+    heigth: 3rem;
     margin: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: 1px solid #d6d6d6;
     background-color: white;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
@@ -210,10 +210,10 @@ const AvatarBox = styled.div`
   }
 
   .avatar5 {
-    width: 2rem;
-    heigth: 2rem;
+    width: 3rem;
+    heigth: 3rem;
     margin: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: 1px solid #d6d6d6;
     background-color: white;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
@@ -225,10 +225,10 @@ const AvatarBox = styled.div`
   }
 
   .avatar6 {
-    width: 2rem;
-    heigth: 2rem;
+    width: 3rem;
+    heigth: 3rem;
     margin: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: 1px solid #d6d6d6;
     background-color: white;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
