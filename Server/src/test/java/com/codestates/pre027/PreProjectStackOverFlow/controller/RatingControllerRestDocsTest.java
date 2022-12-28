@@ -60,17 +60,6 @@ public class RatingControllerRestDocsTest {
 
         long questionId = 1L;
 
-        LocalDateTime createdAt = LocalDateTime.now();
-        LocalDateTime modifiedAt = LocalDateTime.now();
-
-        Member member = new Member(1L, "hgd@gmail.com", "12345678a", "oheadnah", 1L);
-
-        Question question = new Question(1L, "제목1", "내용1", 0 , 0, createdAt, modifiedAt);
-
-        question.setMember(member);
-
-        Rating rating = new Rating(1L,member,question,1);
-
         RatingDto.QuestionResponse responseDto =
             new RatingDto.QuestionResponse(1L,
                 1L,
