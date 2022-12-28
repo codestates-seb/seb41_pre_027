@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledTopbarSearch = styled.div`
@@ -29,10 +30,36 @@ const StyledTopbarSearch = styled.div`
 `;
 
 const TopbarSearch = () => {
+  const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState('');
+
+  const handleChangeSearchKeyword = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleKeyUp = (event) => {
+    if (event.key === 'Enter') {
+      navigate(`/questions/search?search=${inputValue}`);
+      window.location.reload();
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
   return (
     <StyledTopbarSearch>
-      <form className="topbar__search flex-vertical-center">
-        <input type="text" placeholder="Search..." />
+      <form
+        className="topbar__search flex-vertical-center"
+        onSubmit={handleSubmit}
+      >
+        <input
+          type="text"
+          placeholder="Search..."
+          value={inputValue}
+          onChange={handleChangeSearchKeyword}
+          onKeyUp={handleKeyUp}
+        />
         <svg
           className="svg-icon iconSearch"
           width="18"

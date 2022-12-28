@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import axios from 'axios';
 import { authActions } from '../../Redux/auth';
 import avatar1 from '../../assets/images/avatar/1_@1x.png';
-// import avatar2 from '../../assets/images/avatar/2_@1x.png';
-// import avatar3 from '../../assets/images/avatar/3_@1x.png';
-// import avatar4 from '../../assets/images/avatar/4_@1x.png';
-// import avatar5 from '../../assets/images/avatar/5_@1x.png';
-// import avatar6 from '../../assets/images/avatar/6_@1x.png';
+import avatar2 from '../../assets/images/avatar/2_@1x.png';
+import avatar3 from '../../assets/images/avatar/3_@1x.png';
+import avatar4 from '../../assets/images/avatar/4_@1x.png';
+import avatar5 from '../../assets/images/avatar/5_@1x.png';
+import avatar6 from '../../assets/images/avatar/6_@1x.png';
 
 const StyledLoggedInHeader = styled.ul`
   display: flex;
@@ -56,15 +57,44 @@ const LoggedInHeader = () => {
 
   const logoutHandler = () => {
     dispatch(authActions.logout());
+    localStorage.removeItem('Authorization');
+    localStorage.removeItem('memberId');
   };
+
+  const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
+  const [userInfo, setUserInfo] = useState({});
+  const memberId = localStorage.getItem('memberId');
+
+  const getUserInfo = async () => {
+    try {
+      const response = await axios.get(`/api/member/${memberId}`);
+      setUserInfo(response.data);
+    } catch (error) {
+      if (error.response) {
+        // 요청이 전송되었고, 서버에서 20x 외의 코드로 응답 됨
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // 요청이 전송되었지만, 응답이 수신되지 않음
+        console.log(error.request);
+      } else {
+        // 오류가 발생한 요청을 설정하는 데 문제가 생김
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   return (
     <StyledLoggedInHeader>
       <li>
         <Link to="/mypage">
-          {/* 유저 아바타 정보는 우선 1번 이미지로 하드코딩함.
-          나중에 서버에서 전달받는 데이터에 따라 변경되도록 처리해야 한다. */}
-          <img src={avatar1} alt="아바타이미지" />
+          <img src={avatars[userInfo.memberImage - 1]} alt="아바타이미지" />
         </Link>
       </li>
       <li>

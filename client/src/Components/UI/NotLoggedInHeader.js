@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { authActions } from '../../Redux/auth';
 
 const StyledNotLoggedInHeader = styled.ul`
   display: flex;
@@ -39,21 +37,10 @@ const StyledNotLoggedInHeader = styled.ul`
 `;
 
 const NotLoggedInHeader = () => {
-  // 로그인 버튼을 눌렀을 때, 로그인 상태로 변경하는 dispatch이다
-  // 나중에 로그인 페이지로 라우팅해서 정상적인 로직을 통해 로그인이 작동하도록 수정해야 하는 부분
-  const dispatch = useDispatch();
-
-  const loginHandler = (event) => {
-    event.preventDefault();
-
-    dispatch(authActions.login());
-  };
   return (
     <StyledNotLoggedInHeader>
       <li className="btn-style2">
-        <Link to="/login" onClick={loginHandler}>
-          Log in
-        </Link>
+        <Link to="/login">Log in</Link>
       </li>
       <li className="btn-style1">
         <Link to="/signup">Sign up</Link>
