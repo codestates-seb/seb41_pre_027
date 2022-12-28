@@ -28,7 +28,7 @@ public class Answer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long answerId;
+    private Long answerId;
 
     @Column(nullable = false)
     private String text;
