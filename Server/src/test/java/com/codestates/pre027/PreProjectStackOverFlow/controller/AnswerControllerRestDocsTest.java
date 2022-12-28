@@ -184,6 +184,9 @@ public class AnswerControllerRestDocsTest {
                 requestHeaders(
                     headerWithName("Authorization").description("Bearer (accessToken")
                 ),
+                pathParameters(
+                    parameterWithName("answer-id").description("답변 식별자")
+                ),
                 requestFields(
                     List.of(
                         fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("수정될 답변 식별자"),
