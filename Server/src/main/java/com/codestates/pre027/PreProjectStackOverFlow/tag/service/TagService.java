@@ -6,6 +6,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.exception.ExceptionCode;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
+import com.codestates.pre027.PreProjectStackOverFlow.question.repository.QuestionRepository;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
 import com.codestates.pre027.PreProjectStackOverFlow.tag.entity.QuestionTag;
 import com.codestates.pre027.PreProjectStackOverFlow.tag.entity.Tag;
@@ -15,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,17 +28,20 @@ public class TagService {
     private final QuestionService questionService;
     private final AnswerService answerService;
     private final MemberService memberService;
+    private final QuestionRepository questionRepository;
 
     public TagService(TagRepository tagRepository,
         QuestionTagRepository questionTagRepository,
         QuestionService questionService,
         AnswerService answerService,
-        MemberService memberService){
+        MemberService memberService,
+        QuestionRepository questionRepository){
         this.tagRepository =tagRepository;
         this.questionTagRepository = questionTagRepository;
         this.questionService = questionService;
         this.answerService = answerService;
         this.memberService = memberService;
+        this.questionRepository = questionRepository;
     }
 
     //Tag 생성, 초기화, 업데이트를 전부 담당하는 메서드
@@ -106,6 +113,34 @@ public class TagService {
 
         }
         return tags;
+    }
+
+    public Page<Question> findQuestionByTag(Pageable pageable,String tagName){
+        Tag findTag = findVerifiedTag(tagName);
+        List<QuestionTag> questionTags = findTag.getQuestionTags();
+        List<Long> questionIdList = new ArrayList<>();
+        for(QuestionTag questionTag:questionTags){
+            Long questionId = questionTag.getQuestion().getQuestionId();
+            questionIdList.add(questionId);
+        }
+        List<Question> questions = questionRepository.findAllById(questionIdList);
+
+        Page<Question> questionPage = new PageImpl<>(questions,pageable,questions.size());
+
+        return questionPage;
+
+    }
+    public Tag findVerifiedTag(long tagId){
+        Optional<Tag> optionalQuestion = tagRepository.findById(tagId);
+        Tag findTag = optionalQuestion.orElseThrow(
+            () -> new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND)
+        );
+        return findTag;
+    }
+    public Tag findVerifiedTag(String tagName){
+        Tag findTag = findVerifiedTagByQuery(tagName);
+        if(findTag==null) throw new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND);
+        else return findTag;
     }
 
     private Tag findVerifiedTagByQuery(String tagName){

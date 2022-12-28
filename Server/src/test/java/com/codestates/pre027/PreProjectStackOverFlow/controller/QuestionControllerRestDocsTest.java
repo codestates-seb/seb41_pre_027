@@ -81,15 +81,20 @@ public class QuestionControllerRestDocsTest {
         QuestionDto.Post post = new QuestionDto.Post("제목입니다", "내용입니다");
         String content = gson.toJson(post);
 
+        LocalDateTime createdAt = LocalDateTime.now();
+        LocalDateTime modifiedAt = LocalDateTime.now();
+
         QuestionDto.Response responseDto =
             new QuestionDto.Response(1L,
                 "제목입니다",
                 "내용입니다",
                 1L,
-                1L,
+                1,
                 "oheadnah",
                 0,
-                0);
+                0,
+                createdAt,
+                modifiedAt);
 
         given(mapper.questionPostDtoToQuestion(Mockito.any(QuestionDto.Post.class))).willReturn(
             new Question());
@@ -134,7 +139,9 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지"),
                     fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
-                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
+                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                    fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
+                    fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일")
                 )
             ));
     }
@@ -146,15 +153,20 @@ public class QuestionControllerRestDocsTest {
         QuestionDto.Patch patch = new QuestionDto.Patch(questionId, "제목수정입니다", "내용수정입니다");
         String content = gson.toJson(patch);
 
+        LocalDateTime createdAt = LocalDateTime.now();
+        LocalDateTime modifiedAt = LocalDateTime.now();
+
         QuestionDto.Response responseDto =
             new QuestionDto.Response(1L,
                 "제목수정입니다",
                 "내용수정입니다",
                 1L,
-                1L,
+                1,
                 "oheadnah",
                 0,
-                0);
+                0,
+                createdAt,
+                modifiedAt);
 
         given(mapper.questionPatchDtoToQuestion(Mockito.any(QuestionDto.Patch.class))).willReturn(
             new Question());
@@ -208,7 +220,9 @@ public class QuestionControllerRestDocsTest {
                         fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지"),
                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
                         fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
-                        fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
+                        fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
+                        fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일")
                     )
                 )
             ));
@@ -218,15 +232,21 @@ public class QuestionControllerRestDocsTest {
     public void getQuestionTest() throws Exception {
 
         long questionId = 1L;
+
+        LocalDateTime createdAt = LocalDateTime.now();
+        LocalDateTime modifiedAt = LocalDateTime.now();
+
         QuestionDto.Response responseDto =
-            new QuestionDto.Response(questionId,
-                "제목수정입니다",
-                "내용수정입니다",
+            new QuestionDto.Response(1L,
+                "제목입니다",
+                "내용입니다",
                 1L,
-                1L,
+                1,
                 "oheadnah",
                 0,
-                0);
+                0,
+                createdAt,
+                modifiedAt);
 
         given(questionService.findQuestion(Mockito.anyLong())).willReturn(new Question());
 
@@ -261,7 +281,9 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지"),
                     fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회 수"),
-                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
+                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                    fieldWithPath("createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
+                    fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일")
                 )
             ));
     }
@@ -269,14 +291,17 @@ public class QuestionControllerRestDocsTest {
     @Test
     public void getQuestionsTest() throws Exception {
 
+        LocalDateTime createdAt = LocalDateTime.of(2022,12,31,23,59,00);
+        LocalDateTime modifiedAt = LocalDateTime.of(2022,12,31,23,59,00);
+
         Member member1 = new Member(1L, "hgd@gmail.com", "12345678a", "oheadnah", 1L);
 
         Member member2 = new Member(2L, "hgd2@gmail.com", "12345678a", "oheadnah2", 2L);
 
-        Question question1 = new Question(1L, "제목1", "내용1", 0 , 0, LocalDateTime.now(), LocalDateTime.now());
+        Question question1 = new Question(1L, "제목1", "내용1", 0 , 0, createdAt, modifiedAt);
         question1.setMember(member1);
 
-        Question question2 = new Question(2L, "제목2", "내용2", 0 , 0, LocalDateTime.now(), LocalDateTime.now());
+        Question question2 = new Question(2L, "제목2", "내용2", 0 , 0, createdAt, modifiedAt);
         question2.setMember(member2);
 
         Page<Question> page = new PageImpl<>(List.of(question1, question2));
@@ -300,7 +325,9 @@ public class QuestionControllerRestDocsTest {
                         questions.get(0).getMember().getMemberImage(),
                         questions.get(0).getMember().getName(),
                         questions.get(0).getViews(),
-                        questions.get(0).getRatingScore()),
+                        questions.get(0).getRatingScore(),
+                        questions.get(0).getCreatedAt(),
+                        questions.get(0).getModifiedAt()),
                     new QuestionDto.Response(
                         questions.get(1).getQuestionId(),
                         questions.get(1).getTitle(),
@@ -309,7 +336,9 @@ public class QuestionControllerRestDocsTest {
                         questions.get(1).getMember().getMemberImage(),
                         questions.get(1).getMember().getName(),
                         questions.get(1).getViews(),
-                        questions.get(1).getRatingScore())
+                        questions.get(1).getRatingScore(),
+                        questions.get(1).getCreatedAt(),
+                        questions.get(1).getModifiedAt())
                 )
             );
 
@@ -329,6 +358,8 @@ public class QuestionControllerRestDocsTest {
             .andExpect(jsonPath("$.data[0].name").value(questions.get(0).getMember().getName()))
             .andExpect(jsonPath("$.data[0].views").value(questions.get(0).getViews()))
             .andExpect(jsonPath("$.data[0].ratingScore").value(questions.get(0).getRatingScore()))
+            .andExpect(jsonPath("$.data[0].createdAt").value("2022-12-31T23:59:00"))
+            .andExpect(jsonPath("$.data[0].modifiedAt").value("2022-12-31T23:59:00"))
             .andDo(document("get-questions",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -344,6 +375,8 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("data[].name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("data[].views").type(JsonFieldType.NUMBER).description("조회 수"),
                     fieldWithPath("data[].ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                    fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
+                    fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일"),
                     fieldWithPath("count").type(JsonFieldType.NUMBER).description("전체 회원 수")
                 )
             ));
@@ -384,17 +417,20 @@ public class QuestionControllerRestDocsTest {
     @Test
     public void getSearchQuestionTest() throws Exception {
 
+        LocalDateTime createdAt = LocalDateTime.of(2022,12,31,23,59,00);
+        LocalDateTime modifiedAt = LocalDateTime.of(2022,12,31,23,59,00);
+
         Member member1 = new Member(1L, "hgd@gmail.com", "12345678a", "oheadnah", 1L);
 
         Member member2 = new Member(2L, "hgd2@gmail.com", "12345678a", "oheadnah2", 2L);
 
-        Question question1 = new Question(1L, "제목1", "내용1", 0 , 0, LocalDateTime.now(), LocalDateTime.now());
+        Question question1 = new Question(1L, "제목1", "내용1", 0 , 0, createdAt, modifiedAt);
         question1.setMember(member1);
 
-        Question question2 = new Question(2L, "2", "2", 0 , 0, LocalDateTime.now(), LocalDateTime.now());
+        Question question2 = new Question(2L, "2", "2", 0 , 0, createdAt, modifiedAt);
         question2.setMember(member2);
 
-        Question question3= new Question(3L, "제목3", "내용3", 0 , 0, LocalDateTime.now(), LocalDateTime.now());
+        Question question3= new Question(3L, "제목3", "내용3", 0 , 0, createdAt, modifiedAt);
         question3.setMember(member2);
 
 
@@ -421,7 +457,9 @@ public class QuestionControllerRestDocsTest {
                         questions.get(0).getMember().getMemberImage(),
                         questions.get(0).getMember().getName(),
                         questions.get(0).getViews(),
-                        questions.get(0).getRatingScore()),
+                        questions.get(0).getRatingScore(),
+                        questions.get(0).getCreatedAt(),
+                        questions.get(0).getModifiedAt()),
                     new QuestionDto.Response(
                         questions.get(1).getQuestionId(),
                         questions.get(1).getTitle(),
@@ -430,7 +468,9 @@ public class QuestionControllerRestDocsTest {
                         questions.get(1).getMember().getMemberImage(),
                         questions.get(1).getMember().getName(),
                         questions.get(1).getViews(),
-                        questions.get(1).getRatingScore())
+                        questions.get(1).getRatingScore(),
+                        questions.get(1).getCreatedAt(),
+                        questions.get(1).getModifiedAt())
                 )
             );
 
@@ -451,6 +491,8 @@ public class QuestionControllerRestDocsTest {
             .andExpect(jsonPath("$.data[0].name").value(questions.get(0).getMember().getName()))
             .andExpect(jsonPath("$.data[0].views").value(questions.get(0).getViews()))
             .andExpect(jsonPath("$.data[0].ratingScore").value(questions.get(0).getRatingScore()))
+            .andExpect(jsonPath("$.data[0].createdAt").value("2022-12-31T23:59:00"))
+            .andExpect(jsonPath("$.data[0].modifiedAt").value("2022-12-31T23:59:00"))
             .andDo(document("get-search-questions",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -467,6 +509,8 @@ public class QuestionControllerRestDocsTest {
                     fieldWithPath("data[].name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("data[].views").type(JsonFieldType.NUMBER).description("조회 수"),
                     fieldWithPath("data[].ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                    fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("게시글 생성일"),
+                    fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("게시글 최종 수정일"),
                     fieldWithPath("count").type(JsonFieldType.NUMBER).description("검색된 게시글 수")
                 )
             ));

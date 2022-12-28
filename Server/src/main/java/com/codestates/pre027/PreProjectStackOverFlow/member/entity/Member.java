@@ -1,6 +1,7 @@
 package com.codestates.pre027.PreProjectStackOverFlow.member.entity;
 
 import com.codestates.pre027.PreProjectStackOverFlow.answer.entity.Answer;
+import com.codestates.pre027.PreProjectStackOverFlow.favorite.entity.Favorite;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,13 @@ public class Member {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    private List<Favorite> favoriteList = new ArrayList<>();
+
+    public void addFavorite(Favorite favorite) {
+        favoriteList.add(favorite);
+    }
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.PERSIST)
     private List<Answer> answerList = new ArrayList<>();

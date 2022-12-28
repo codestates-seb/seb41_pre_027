@@ -37,4 +37,11 @@ public class Rating {
 
     @Range(min = -1, max = 1)
     private int amount;
+
+    public Rating(Long ratingId, Member member, Question question, int amount) {
+        this.ratingId = ratingId;
+        this.member = member;
+        this.question = question;
+        this.amount = amount;
+    }
 }

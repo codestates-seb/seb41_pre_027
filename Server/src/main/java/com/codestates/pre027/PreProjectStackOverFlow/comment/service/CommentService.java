@@ -55,6 +55,17 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    public Comment updateComment(Comment comment,long tokenId){
+        Comment findComment = findVerifiedCommentByQuery(comment.getCommentId());
+        Member findMember = findComment.getWriter();
+        if(findMember.getMemberId() != tokenId){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
+        Optional.ofNullable(comment.getText())
+            .ifPresent(text->findComment.setText(text));
+        return commentRepository.save(findComment);
+    }
+
     public void deleteComment(long commentId,long tokenId){
         Comment findComment = findComment(commentId);
         Member findMember = findComment.getWriter();

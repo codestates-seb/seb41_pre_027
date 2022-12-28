@@ -45,7 +45,7 @@ public class Answer {
     @ManyToOne
     private Question quest;
 
-    @OneToMany(mappedBy = "answer", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     private int ratingScore;

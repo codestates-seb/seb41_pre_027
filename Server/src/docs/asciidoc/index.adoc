@@ -235,6 +235,22 @@ include::{snippets}/get-search-questions/http-response.adoc[]
 .response-fields
 include::{snippets}/get-search-questions/response-fields.adoc[]
 
+=== 게시글 추천
+.curl-request
+include::{snippets}/question-rating-up/curl-request.adoc[]
+
+.http-request
+include::{snippets}/question-rating-up/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/question-rating-up/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/question-rating-up/http-response.adoc[]
+
+.response-fields
+include::{snippets}/question-rating-up/response-fields.adoc[]
+
 == AnswerController
 === 답변 등록
 .curl-request
