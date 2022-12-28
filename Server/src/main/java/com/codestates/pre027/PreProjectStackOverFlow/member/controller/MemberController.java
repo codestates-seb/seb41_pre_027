@@ -13,6 +13,8 @@ import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -45,7 +47,8 @@ public class MemberController {
 
     //    전체 회원 조회하기
     @GetMapping
-    public ResponseEntity getMembers(Pageable pageable) {
+    public ResponseEntity getMembers(
+        @PageableDefault(size = 20, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Member> pageMembers = memberService.findMembers(pageable);
         List<Member> members = pageMembers.getContent();
@@ -103,7 +106,8 @@ public class MemberController {
 
     // 회원 닉네임으로 검색하기
     @GetMapping("/search")
-    public ResponseEntity searchMember(@RequestParam String search, Pageable pageable) {
+    public ResponseEntity searchMember(@RequestParam String search,
+        @PageableDefault(size = 20, sort = "memberId", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Member> searchMemberPage = memberService.searchMember(search, pageable);
         List<Member> searchMember = searchMemberPage.getContent();

@@ -12,6 +12,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/questions")
 @Validated
 public class QuestionController {
+
     private final QuestionMapper questionMapper;
     private final QuestionService questionService;
     private final JwtTokenizer jwtTokenizer;
@@ -45,8 +48,10 @@ public class QuestionController {
     public ResponseEntity postQuestion(@RequestHeader(name = "Authorization") String token,
         @RequestBody QuestionDto.Post requestBody) {
         Question question = questionMapper.questionPostDtoToQuestion(requestBody);
-        Question createdQuestion = questionService.createQuestion(question,jwtTokenizer.getMemberId(token));
-        QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(createdQuestion);
+        Question createdQuestion = questionService.createQuestion(question,
+            jwtTokenizer.getMemberId(token));
+        QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(
+            createdQuestion);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -57,22 +62,25 @@ public class QuestionController {
         @Valid @RequestBody QuestionDto.Patch requestBody) {
         requestBody.setQuestionId(questionId);
 
-        Question updatedQuestion = questionService.updateQuestion(questionMapper.questionPatchDtoToQuestion(requestBody),
+        Question updatedQuestion = questionService.updateQuestion(
+            questionMapper.questionPatchDtoToQuestion(requestBody),
             jwtTokenizer.getMemberId(token));
 
-        QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(updatedQuestion);
+        QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(
+            updatedQuestion);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{question-id}")
     public ResponseEntity getQuestion(@PathVariable("question-id") @Positive long questionId) {
         Question question = questionService.findQuestion(questionId);
-        QuestionDto.Response response= questionMapper.questionToQuestionResponseDto(question);
+        QuestionDto.Response response = questionMapper.questionToQuestionResponseDto(question);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity getQuestions(Pageable pageable) {
+    public ResponseEntity getQuestions(
+        @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Question> questionPage = questionService.findQuestions(pageable);
         List<Question> questions = questionPage.getContent();
@@ -93,11 +101,13 @@ public class QuestionController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity searchQuestion(@RequestParam String search, Pageable pageable) {
+    public ResponseEntity searchQuestion(@RequestParam String search,
+        @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Question> searchQuestionPage = questionService.searchQuestion(search, pageable);
         List<Question> searchQuestionList = searchQuestionPage.getContent();
 
-        List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(searchQuestionList);
+        List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(
+            searchQuestionList);
 
         long searchQuestionCount = searchQuestionList.size();
 
