@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
     Comment commentPostDto_to_Comment(CommentDto.Post commentPostDto);
+    Comment commentPatchDto_to_Comment(CommentDto.Patch commentPostDto);
 
     List<Response> comments_to_CommentResponseDtos(List<Comment> comments);
     default CommentDto.Response comment_to_CommentResponseDto(Comment comment){
