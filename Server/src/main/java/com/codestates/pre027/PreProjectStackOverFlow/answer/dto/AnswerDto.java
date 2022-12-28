@@ -20,6 +20,7 @@ public class AnswerDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
         private long memberImage;
+        private int ratingScore;
     }
 
     @Getter
