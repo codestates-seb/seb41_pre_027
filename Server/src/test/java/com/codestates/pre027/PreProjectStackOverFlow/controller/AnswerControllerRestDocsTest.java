@@ -212,9 +212,9 @@ public class AnswerControllerRestDocsTest {
 
         Member member = new Member(1L,"dry@gmail.com","qwer1234","뜨륵이",1L);
 
-        Answer answer1 = new Answer(1L,"답변 내용 1입니다",createdAt,modifiedAt,member,question);
+        Answer answer1 = new Answer(1L,"답변 내용 1입니다",createdAt,modifiedAt,member,question,null);
 
-        Answer answer2 = new Answer(2L, "답변 내용 2입니다",createdAt,modifiedAt,member,question);
+        Answer answer2 = new Answer(2L, "답변 내용 2입니다",createdAt,modifiedAt,member,question,null);
 
         List<Answer> answers = List.of(answer1,answer2);
 
@@ -291,7 +291,7 @@ public class AnswerControllerRestDocsTest {
 
         Member member = new Member(1L,"dry@gmail.com","qwer1234","뜨륵이",1L);
 
-        Answer answer = new Answer(1L,"답변 내용입니다",createdAt,modifiedAt,member,question);
+        Answer answer = new Answer(1L,"답변 내용입니다",createdAt,modifiedAt,member,question,null);
 
         answer.setQuest(question);
         answer.setWriter(member);

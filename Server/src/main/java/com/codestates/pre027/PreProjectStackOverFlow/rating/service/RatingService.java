@@ -5,6 +5,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.answer.service.AnswerServic
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
 import com.codestates.pre027.PreProjectStackOverFlow.question.entity.Question;
+import com.codestates.pre027.PreProjectStackOverFlow.question.repository.QuestionRepository;
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
 import com.codestates.pre027.PreProjectStackOverFlow.rating.dto.RatingDto;
 import com.codestates.pre027.PreProjectStackOverFlow.rating.entity.Rating;
@@ -19,13 +20,16 @@ public class RatingService {
     private final MemberService memberService;
     private final QuestionService questionService;
     private final AnswerService answerService;
+    private final QuestionRepository questionRepository;
 
     public RatingService(RatingRepository ratingRepository, MemberService memberService,
-        QuestionService questionService, AnswerService answerService) {
+        QuestionService questionService, AnswerService answerService,
+        QuestionRepository questionRepository) {
         this.ratingRepository = ratingRepository;
         this.memberService = memberService;
         this.questionService = questionService;
         this.answerService = answerService;
+        this.questionRepository = questionRepository;
     }
 
     public RatingDto.QuestionResponse saveQuestionRating(long questionId, long memberId, int amount) {
@@ -36,12 +40,17 @@ public class RatingService {
         if(ratingList.isEmpty()) {
             Rating createdRating = createRating(findQuestion, findMember, 1);
             ratingRepository.save(createdRating);
+            //score라는 값을 뽑아서 저장하고, 각 Reposit에 저장
+            int score = ratingRepository.findAllByQuestion(findQuestion)
+                .stream()
+                .mapToInt(Rating::getAmount)
+                .sum();
+            findQuestion.setRatingScore(score);
+            questionRepository.save(findQuestion);
+
             return RatingDto.QuestionResponse.builder()
                 .memberId(memberId)
-                .ratingScore(ratingRepository.findAllByQuestion(findQuestion)
-                    .stream()
-                    .mapToInt(Rating::getAmount)
-                    .sum())
+                .ratingScore(score)
                 .upRating(amount == 1)
                 .downRating(amount == -1)
                 .questionId(questionId)
