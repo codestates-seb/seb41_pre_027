@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import NavInHeader from './NavInHeader';
 import HeaderSearch from './HeaderSearch';
@@ -123,6 +123,7 @@ const Header = () => {
       location === '/login' ||
       location === '/signup' ||
       location === '/questions/ask' ||
+      location === '/not-found-page' ||
       windowWidth <= 640
     ) {
       setIsShow(true);
@@ -138,9 +139,9 @@ const Header = () => {
         {isShow && <NavInHeader />}
 
         {/* 스택오버플로우 로고, 메인페이지 바로가기 버튼 */}
-        <a href="/" className="header__logo flex-vertical-center">
+        <Link to="/" className="header__logo flex-vertical-center">
           <span>Stack Overflow</span>
-        </a>
+        </Link>
 
         {/* 상단 바로가기 링크 - 모양만 나오는 빈 링크이다 */}
         <ul className="header__nav flex-vertical-center">

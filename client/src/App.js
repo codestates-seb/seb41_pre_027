@@ -28,7 +28,12 @@ import styled from 'styled-components';
 
 const StyledApp = styled.div`
   width: 100%;
-  background-color: ${(props) => (props.isFillBg ? '#f1f2f3' : 'transparent')};
+  background-color: ${(props) =>
+    props.isFillBg === 'gray'
+      ? '#f1f2f3'
+      : props.isFillBg === 'lightgray'
+      ? '#f8f9f9'
+      : 'transparent'};
 `;
 const MainContainer = styled.main`
   width: 97.2307692rem;
@@ -42,7 +47,7 @@ const MainContainer = styled.main`
 `;
 
 function App() {
-  const [isFillBg, setIsFillBg] = useState(false);
+  const [isFillBg, setIsFillBg] = useState('default');
   // 윈도우 가로 길이가 변경되면 windowWidth 상태를 변경한다.
   const dispatch = useDispatch();
   const windowWidth = useSelector((state) => state.windowWidth.width);
@@ -69,14 +74,14 @@ function App() {
       location === '/not-found-page'
     ) {
       setIsSideNavShow(false);
-      setIsFillBg(true);
+      setIsFillBg('gray');
       setIsFooterShow(false);
     } else if (location === '/questions/ask') {
       setIsSideNavShow(false);
-      setIsFillBg(true);
+      setIsFillBg('lightgray');
     } else {
       setIsSideNavShow(true);
-      setIsFillBg(false);
+      setIsFillBg('default');
     }
   }, [location]);
 
