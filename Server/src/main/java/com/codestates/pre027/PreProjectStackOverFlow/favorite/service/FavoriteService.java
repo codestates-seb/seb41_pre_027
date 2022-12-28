@@ -17,6 +17,7 @@ public class FavoriteService {
     private final MemberService memberService;
 
     public Favorite createFavorite(Favorite favorite,long memberId, long tokenId) {
+        System.out.println("###########################서비스 도착");
 
         if (memberId != tokenId) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);

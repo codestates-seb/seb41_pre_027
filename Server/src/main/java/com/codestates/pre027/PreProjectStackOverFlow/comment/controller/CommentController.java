@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,6 +61,20 @@ public class CommentController {
         return new ResponseEntity<>(
             response,
             HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/comments/{comment-id}")
+    public ResponseEntity patchComment(@RequestHeader(name = "Authorization") String token,
+        @PathVariable("comment-id") @Positive long commentId,
+        @Valid @RequestBody CommentDto.Patch commentPatchDto) {
+        commentPatchDto.setCommentId(commentId);
+        Comment comment = commentService.updateComment(
+            commentMapper.commentPatchDto_to_Comment(commentPatchDto),
+            jwtTokenizer.getMemberId(token));
+        CommentDto.Response response = commentMapper.comment_to_CommentResponseDto(comment);
+        return new ResponseEntity<>(
+            response,
+            HttpStatus.OK);
     }
 
     @GetMapping("/questions/{quest-id}/comments")

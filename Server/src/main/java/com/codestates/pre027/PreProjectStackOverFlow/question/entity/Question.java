@@ -51,13 +51,13 @@ public class Question {
     @Column(nullable = false, name = "LAST_MODIFIED_AT")
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "quest", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "quest", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Answer> answerList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "quest", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "quest", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<QuestionTag> questionTags =new ArrayList<>();
 
     public void addAnswer(Answer answer){
