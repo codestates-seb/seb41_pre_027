@@ -5,12 +5,12 @@
 :toc-title: Table of Contents
 :source-highlighter: prettify
 
-Pre027
+Codestates Pre Project
 
 v1.0.0, 2022.12.25
 
 ***
-API 문서 개요
+Pre027 StackOverFlow
 
 이 문서는 41기 Pre027 팀이 Spring MVC 기반의 REST API 기반 애플리케이션에 대해 직접 학습하며 만들어 가는 StackOverFlow Clone 애플리케이션입니다.
 애플리케이션을 사용해보고자 하는 분들은 이 문서를 통해 API 의 구체적인 사용법을 알 수 있습니다.
@@ -19,6 +19,25 @@ API 문서 개요
 
 
 ***
+== Login
+=== 로그인
+.curl-request
+include::{snippets}/login-account/curl-request.adoc[]
+
+.http-request
+include::{snippets}/login-account/http-request.adoc[]
+
+.request-fields
+include::{snippets}/login-account/request-fields.adoc[]
+
+.http-response
+include::{snippets}/login-account/http-response.adoc[]
+
+.response-header
+
+.response-fields
+include::{snippets}/login-account/response-fields.adoc[]
+
 == MemberController
 === 회원 등록
 .curl-request
@@ -80,6 +99,9 @@ include::{snippets}/get-members/curl-request.adoc[]
 .http-request
 include::{snippets}/get-members/http-request.adoc[]
 
+.request-parameter
+include::{snippets}/get-members/request-parameters.adoc[]
+
 .http-response
 include::{snippets}/get-members/http-response.adoc[]
 
@@ -105,6 +127,9 @@ include::{snippets}/get-search-members/curl-request.adoc[]
 
 .http-request
 include::{snippets}/get-search-members/http-request.adoc[]
+
+.request-parameter
+include::{snippets}/get-search-members/request-parameters.adoc[]
 
 .http-response
 include::{snippets}/get-search-members/http-response.adoc[]
@@ -172,6 +197,9 @@ include::{snippets}/get-questions/curl-request.adoc[]
 .http-request
 include::{snippets}/get-questions/http-request.adoc[]
 
+.request-parameter
+include::{snippets}/get-questions/request-parameters.adoc[]
+
 .http-response
 include::{snippets}/get-questions/http-response.adoc[]
 
@@ -198,8 +226,76 @@ include::{snippets}/get-search-questions/curl-request.adoc[]
 .http-request
 include::{snippets}/get-search-questions/http-request.adoc[]
 
+.request-parameter
+include::{snippets}/get-search-questions/request-parameters.adoc[]
+
 .http-response
 include::{snippets}/get-search-questions/http-response.adoc[]
 
 .response-fields
 include::{snippets}/get-search-questions/response-fields.adoc[]
+
+== AnswerController
+=== 답변 등록
+.curl-request
+include::{snippets}/post-answer/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-answer/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-answer/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-answer/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-answer/response-fields.adoc[]
+
+=== 답변 수정
+.curl-request
+include::{snippets}/patch-answer/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patch-answer/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-answer/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-answer/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-answer/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-answer/response-fields.adoc[]
+
+=== 답변 조회
+.curl-request
+include::{snippets}/get-answers-by-question/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-answers-by-question/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-answers-by-question/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-answers-by-question/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-answers-by-question/response-fields.adoc[]
+
+=== 답변 삭제
+.curl-request
+include::{snippets}/delete-answer/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-answer/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-answer/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-answer/http-response.adoc[]
