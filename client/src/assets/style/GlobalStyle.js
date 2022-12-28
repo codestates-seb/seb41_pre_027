@@ -1,10 +1,7 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'; 
+import './fonts.css';
 
-const GlobalStyle = createGlobalStyle`
-    @import url('https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
-    @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700&display=swap&subset=korean');
-    @import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900&display=swap&subset=latin-ext');
-    
+const GlobalStyle = createGlobalStyle`  
     html {
         font-size: 13px;
     }
@@ -61,10 +58,26 @@ const GlobalStyle = createGlobalStyle`
     }
     a {
         text-decoration:none;
-        color:#454545;
+
+        color:inherit;
     }
     article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
         display:block;
+    }
+    button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    }
+
+    .svg-icon {
+        fill: currentColor;
+    }
+
+    @media screen and (max-width: 640px) {
+        html {
+            font-size: 11px;
+        }   
     }
 `;
 
