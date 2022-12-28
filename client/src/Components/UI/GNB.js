@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledGNB = styled.nav`
@@ -53,6 +53,16 @@ const StyledGNB = styled.nav`
   }
 `;
 const GNB = () => {
+  const location = useLocation().pathname;
+  const [isQuestions, setIsQuestions] = useState(false);
+  useEffect(() => {
+    if (location.includes('/questions')) {
+      setIsQuestions(true);
+    } else {
+      setIsQuestions(false);
+    }
+  }, [location]);
+
   const questionsElement = () => {
     return (
       <span className="flex-vertical-center">
@@ -82,7 +92,13 @@ const GNB = () => {
         {gnbArr.map((el, index) => {
           return (
             <li key={index}>
-              <NavLink to={el.param}>{el.content}</NavLink>
+              <NavLink
+                to={el.param}
+                className={isQuestions && index === 0 ? 'active' : null}
+                onClick={window.location.reload}
+              >
+                {el.content}
+              </NavLink>
             </li>
           );
         })}
