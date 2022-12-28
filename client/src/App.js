@@ -22,8 +22,8 @@ import UserView from './Pages/UserView';
 import NotFound from './Pages/NotFound';
 import QuestionList from './Pages/Questions/QuestionList'; //cr추가
 import AskQuestions from './Pages/Questions/AskQuestions'; //cr추가
-import QuestionDetail from './Pages/Questions/QuestionDetail';//cr추가
-import EditQuestion from './Pages/Questions/EdItQuestion';//cr추가
+import QuestionDetail from './Pages/Questions/QuestionDetail'; //cr추가
+import EditQuestion from './Pages/Questions/EdItQuestion'; //cr추가
 import styled from 'styled-components';
 
 const StyledApp = styled.div`
@@ -80,7 +80,7 @@ function App() {
     }
   }, [location]);
 
-//cr추가
+  //cr추가
   const [boards, isPending, error, setBoard] = useFetch(
     'http://localhost:4000/boards/'
   );
@@ -92,35 +92,55 @@ function App() {
         {/* GNB를 보여주는 location이고 모바일 사이즈가 아닐 때 컴포넌트 사용 */}
         {isSideNavShow && windowWidth > 640 && <GNB />}
         <Routes>
-          <Route exact path="/" element={<Questions />} /> //질문 목록들
-          <Route exact path="/questions/search" element={<SearchResult />} /> //질문에 대한 검색
+          <Route exact path="/" element={<Questions />} /> {/*질문 목록들*/}
+          <Route
+            exact
+            path="/questions/search"
+            element={<SearchResult />}
+          />{' '}
+          {/*질문에 대한 검색*/}
           <Route
             exact
             path="/questions/tagged/:tag"
             element={<QuestionsTagged />}
-          /> //태그를 눌렀을 때 태그 검색하는 질문들
-          <Route path="/questions/:questionId" element={<QuestionView />} /> //각각 질문 id에 대해서 보여주는 상세페이지
-          <Route exact path="/questions/ask" element={<AskAQuestion />} /> //질문 생성 
-          <Route path="/tags" element={<Tags />} /> //태그 목록들
-          <Route exact path="/users" element={<Users />} /> //유저목록
-          <Route path="/users/:memberId" element={<UserView />} /> //개별 유저 보기
-          <Route path="/mypage" element={<MyPage />} /> //마이페이지
-          <Route path="/login" element={<LogIn />} /> //로그인 페이지
-          <Route path="/signup" element={<SignUp />} /> //회원가입 페이지
+          />{' '}
+          {/* 태그를 눌렀을 때 태그 검색하는 질문들 */}
+          <Route
+            path="/questions/:questionId"
+            element={<QuestionView />}
+          />{' '}
+          {/* 각각 질문 id에 대해서 보여주는 상세페이지 */}
+          <Route exact path="/questions/ask" element={<AskAQuestion />} />{' '}
+          {/* 질문 생성 */}
+          <Route path="/tags" element={<Tags />} /> {/* 태그 목록들*/}
+          <Route exact path="/users" element={<Users />} /> {/* 유저 목록 */}
+          <Route path="/users/:memberId" element={<UserView />} />{' '}
+          {/* 개별 유저 보기 */}
+          <Route path="/mypage" element={<MyPage />} /> {/* 마이페이지 */}
+          <Route path="/login" element={<LogIn />} /> {/* 로그인 페이지 */}
+          <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
           <Route
             path="/main"
             element={<QuestionList boards={boards} isPending={isPending} />}
-          /> //생성한 게시물 목록들
-          <Route path="/create" element={<AskQuestions boards={boards} />} /> //
+          />{' '}
+          {/* 생성한 게시물 목록들 */}
+          <Route
+            path="/create"
+            element={<AskQuestions boards={boards} />}
+          />{' '}
+          {/* 질문 생성 */}
           <Route
             path="/boards/:id"
             element={<QuestionDetail setBoard={setBoard} />}
-          /> //등록된 게시물 하나하나 페이지
+          />{' '}
+          {/* 등록된 게시물 하나하나 페이지 */}
           <Route
             path="/edit/:id"
             element={<EditQuestion boards={boards} setBoard={setBoard} />}
-          /> // 편집 페이지
-          <Route path="*" element={<NotFound />} /> //잘못된 경로 접속했을 때 
+          />{' '}
+          {/* 편집 페이지 */}
+          <Route path="*" element={<NotFound />} />{' '}
+          {/* 잘못된 경로 접속했을 때 */}
         </Routes>
       </MainContainer>
       {/* Footer를 보여주는 location일 때 컴포넌트 사용 */}

@@ -23,5 +23,12 @@
     "react/jsx-uses-react": 0,
     "no-unused-vars": "off",
     "react/prop-types": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
   }
 }
