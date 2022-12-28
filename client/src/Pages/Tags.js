@@ -270,7 +270,7 @@ const Tags = () => {
                   <img src={avatars[el.memberImage - 1]} alt="유저네임아바타" />
                 </div>
                 <div className="tags__list--info">
-                  <a href={'/tagged/' + el.memberId}>{el.name}</a>
+                  <a href={'/questions/tagged/' + el.memberId}>{el.name}</a>
                   <span>{el.memberId}</span>
                 </div>
               </li>
