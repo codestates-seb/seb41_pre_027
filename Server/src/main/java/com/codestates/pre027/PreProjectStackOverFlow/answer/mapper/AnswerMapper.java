@@ -20,7 +20,8 @@ public interface AnswerMapper {
             answer.getText(),
             answer.getCreatedAt(),
             answer.getModifiedAt(),
-            answer.getWriter().getMemberImage()
+            answer.getWriter().getMemberImage(),
+            answer.getRatingScore()
             );
         return answerResponseDto;
     }

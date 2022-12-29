@@ -48,4 +48,5 @@ public class Answer {
     @OneToMany(mappedBy = "answer", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    private int ratingScore;
 }
