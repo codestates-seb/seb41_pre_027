@@ -183,7 +183,7 @@ const QuestionsTagged = () => {
 
   const getQuestions = async () => {
     try {
-      const response = await axios.get(`/api/questions?page=${page - 1}`);
+      const response = await axios.get(`/api/questions/tags?tagName=${tag}`);
       setQuestionList(response.data.data);
       setCountQuestions(response.data.count);
     } catch (error) {

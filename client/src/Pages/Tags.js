@@ -271,7 +271,7 @@ const Tags = () => {
                   <img src={avatars[el.memberImage - 1]} alt="유저네임아바타" />
                 </div>
                 <div className="tags__list--info">
-                  <Link to={'/questions/tagged/' + el.memberId}>{el.name}</Link>
+                  <Link to={'/questions/tagged/' + el.name}>{el.name}</Link>
                   <span>{el.memberId}</span>
                 </div>
               </li>
