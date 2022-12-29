@@ -52,7 +52,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(value = QuestionController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @MockBean(JpaMetamodelMappingContext.class)
-@AutoConfigureRestDocs
+@AutoConfigureRestDocs(uriHost = "ec2-15-164-211-228.ap-northeast-2.compute.amazonaws.com")
 public class QuestionControllerRestDocsTest {
 
     @Autowired
