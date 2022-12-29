@@ -130,4 +130,15 @@ public class QuestionController {
             response, searchQuestionCount
         ), HttpStatus.OK);
     }
+
+    @GetMapping("/member/{member-id}")
+    public ResponseEntity memberQuestionList(@PathVariable("member-id") @Positive long memberId) {
+        List<Question> memberQuestionList = questionService.memberQuestionList(memberId);
+        List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(memberQuestionList);
+        long count = response.size();
+
+        return new ResponseEntity<>(new CountMultiResponseDto<>(
+            response, count
+        ), HttpStatus.OK);
+    }
 }
