@@ -29,15 +29,16 @@ const Tab = styled.div`
   &:hover {
     background-color: #f1f2f3;
     border-radius: 30px;
+  }
   &.clicked {
-      background-color: #f1823b;
-      border-radius: 30px;
-      color: white;
-    }
+    background-color: #f1823b;
+    border-radius: 30px;
+    color: white;
+  }
   &.clicked::after {
-      background-color: #f1823b;
-      border-radius: 30px;
-      color: white;
+    background-color: #f1823b;
+    border-radius: 30px;
+    color: white;
   }
 
   cursor: pointer;
