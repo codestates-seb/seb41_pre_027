@@ -21,10 +21,11 @@ const CommentRead = styled.div``;
 const Text = styled.div``;
 function CommentCreateDetail() {
   const { id } = useParams();
-  const [commentContent, setcommentContent] = useState('');
-
+  const [commentContent, setCommentContent] = useState('');
+  const [settingComment, setSettingComment] = useState('');
   const handleInputChange = (event) => {
-    setcommentContent(event.target.value);
+    setCommentContent(event.target.value);
+    console.log(commentContent);
   };
 
   useEffect(() => {
@@ -32,19 +33,16 @@ function CommentCreateDetail() {
   }, [commentContent]);
 
   const handleAnswerSubmit = () => {
-    fetch(
-      `http://ec2-43-201-73-28.ap-northeast-2.compute.amazonaws.com:8080/questions/${id}/answer`, //이 부분 써야함!!
-      {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          // Authorization: token,
-        },
-        body: JSON.stringify({
-          commentContent,
-        }),
-      }
-    )
+    fetch(`/api/questions/${id}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        //Authorization: token,
+      },
+      body: JSON.stringify({
+        commentContent,
+      }),
+    })
       .then((res) => {
         if (!res.ok) {
           throw Error('could not fetch the data for that resource');
@@ -58,7 +56,7 @@ function CommentCreateDetail() {
   const onCheckEnter = (e) => {
     if (e.key === 'Enter') {
       handleAnswerSubmit();
-      setcommentContent('');
+      setCommentContent('');
       console.log('post');
     }
   };
@@ -82,7 +80,7 @@ function CommentCreateDetail() {
       })
       .then((json) => {
         console.log('json', json);
-        setcommentContent(json.text);
+        setCommentContent(json.text);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -91,13 +89,13 @@ function CommentCreateDetail() {
     <>
       <CommentRead>
         <div className="comment__read">
-          {/*지금 여기 map 부분때문에 input에 enter 치지도 않았는데 새로고침된다.*/}
+          {/* 지금 여기 map 부분때문에 input에 enter 치지도 않았는데 새로고침된다.
           {commentContent &&
             commentContent.map((el) => {
               <div className="comment__read--id" key={el.id}>
                 <div className="comment__read--text">{el.text}</div>
               </div>;
-            })}
+            })} */}
         </div>
       </CommentRead>
       <CommentPost>
