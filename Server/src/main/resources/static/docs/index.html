@@ -569,8 +569,8 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJFbWFpbCI6ImhnZEBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MSwic3ViIjoiaGdkQGdtYWlsLmNvbSIsImlhdCI6MTY3MjIzMDk3NywiZXhwIjoxNjcyMjMzMzc3fQ.SpoEniuUl9Ssen6fFtRbeuYyMsSpcdciKUUuAzqE654
-Refresh: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjcyMjMwOTc3LCJleHAiOjE2NzIyNTYxNzd9.18XoxCK77WkXeiZ6wJXnOLbnO-ianBFW3JNqOYBtWfA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJFbWFpbCI6ImhnZEBnbWFpbC5jb20iLCJtZW1iZXJJZCI6MSwic3ViIjoiaGdkQGdtYWlsLmNvbSIsImlhdCI6MTY3MjIzMzQxNSwiZXhwIjoxNjcyMjM1ODE1fQ.h99RTGRuSK6VW3CBW6ornxDcmktbDEh5dAhvgdMEXkY
+Refresh: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZ2RAZ21haWwuY29tIiwiaWF0IjoxNjcyMjMzNDE1LCJleHAiOjE2NzIyNTg2MTV9.IrosDFmCCjFNjqy0RmqXRcVZEaALkS5le5zfKJkkMho
 Content-Type: application/json
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -1286,7 +1286,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json
-Content-Length: 287
+Content-Length: 308
 
 {
   "questionId" : 1,
@@ -1297,8 +1297,9 @@ Content-Length: 287
   "name" : "oheadnah",
   "views" : 0,
   "ratingScore" : 0,
-  "createdAt" : "2022-12-28T21:36:20.1746375",
-  "modifiedAt" : "2022-12-28T21:36:20.1746375"
+  "createdAt" : "2022-12-28T22:16:57.1512225",
+  "modifiedAt" : "2022-12-28T22:16:57.1512225",
+  "tagString" : ""
 }</code></pre>
 </div>
 </div>
@@ -1366,6 +1367,11 @@ Content-Length: 287
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>modifiedAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 최종 수정일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tagString</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그</p></td>
 </tr>
 </tbody>
 </table>
@@ -1454,7 +1460,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 297
+Content-Length: 318
 
 {
   "questionId" : 1,
@@ -1465,8 +1471,9 @@ Content-Length: 297
   "name" : "oheadnah",
   "views" : 0,
   "ratingScore" : 0,
-  "createdAt" : "2022-12-28T21:36:20.067638",
-  "modifiedAt" : "2022-12-28T21:36:20.067638"
+  "createdAt" : "2022-12-28T22:16:57.099223",
+  "modifiedAt" : "2022-12-28T22:16:57.099223",
+  "tagString" : ""
 }</code></pre>
 </div>
 </div>
@@ -1535,6 +1542,11 @@ Content-Length: 297
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 최종 수정일</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tagString</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1581,7 +1593,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 287
+Content-Length: 306
 
 {
   "questionId" : 1,
@@ -1592,8 +1604,9 @@ Content-Length: 287
   "name" : "oheadnah",
   "views" : 0,
   "ratingScore" : 0,
-  "createdAt" : "2022-12-28T21:36:20.2086383",
-  "modifiedAt" : "2022-12-28T21:36:20.2086383"
+  "createdAt" : "2022-12-28T22:16:57.175221",
+  "modifiedAt" : "2022-12-28T22:16:57.175221",
+  "tagString" : ""
 }</code></pre>
 </div>
 </div>
@@ -1662,6 +1675,11 @@ Content-Length: 287
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 최종 수정일</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tagString</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1708,7 +1726,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 594
+Content-Length: 640
 
 {
   "data" : [ {
@@ -1721,7 +1739,8 @@ Content-Length: 594
     "views" : 0,
     "ratingScore" : 0,
     "createdAt" : "2022-12-31T23:59:00",
-    "modifiedAt" : "2022-12-31T23:59:00"
+    "modifiedAt" : "2022-12-31T23:59:00",
+    "tagString" : ""
   }, {
     "questionId" : 2,
     "title" : "제목2",
@@ -1732,7 +1751,8 @@ Content-Length: 594
     "views" : 0,
     "ratingScore" : 0,
     "createdAt" : "2022-12-31T23:59:00",
-    "modifiedAt" : "2022-12-31T23:59:00"
+    "modifiedAt" : "2022-12-31T23:59:00",
+    "tagString" : ""
   } ],
   "count" : 2
 }</code></pre>
@@ -1802,6 +1822,11 @@ Content-Length: 594
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].modifiedAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 최종 수정일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].tagString</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>count</code></p></td>
@@ -1905,7 +1930,7 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 594
+Content-Length: 640
 
 {
   "data" : [ {
@@ -1918,7 +1943,8 @@ Content-Length: 594
     "views" : 0,
     "ratingScore" : 0,
     "createdAt" : "2022-12-31T23:59:00",
-    "modifiedAt" : "2022-12-31T23:59:00"
+    "modifiedAt" : "2022-12-31T23:59:00",
+    "tagString" : ""
   }, {
     "questionId" : 3,
     "title" : "제목3",
@@ -1929,7 +1955,8 @@ Content-Length: 594
     "views" : 0,
     "ratingScore" : 0,
     "createdAt" : "2022-12-31T23:59:00",
-    "modifiedAt" : "2022-12-31T23:59:00"
+    "modifiedAt" : "2022-12-31T23:59:00",
+    "tagString" : ""
   } ],
   "count" : 2
 }</code></pre>
@@ -1999,6 +2026,11 @@ Content-Length: 594
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].modifiedAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 최종 수정일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].tagString</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">태그</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>count</code></p></td>
@@ -2176,8 +2208,8 @@ Content-Length: 251
   "memberId" : 1,
   "memberNick" : "DryLeonhard",
   "text" : "답변내용입니다",
-  "createdAt" : "2022-12-28T21:36:14.5566372",
-  "modifiedAt" : "2022-12-28T21:36:14.5566372",
+  "createdAt" : "2022-12-28T22:16:52.7001935",
+  "modifiedAt" : "2022-12-28T22:16:52.7001935",
   "memberImage" : 1
 }</code></pre>
 </div>
@@ -2330,8 +2362,8 @@ Content-Length: 261
   "memberId" : 1,
   "memberNick" : "DryLeonhard",
   "text" : "수정된 답변내용입니다",
-  "createdAt" : "2022-12-28T21:36:14.6506377",
-  "modifiedAt" : "2022-12-28T21:36:14.6506377",
+  "createdAt" : "2022-12-28T22:16:52.7891961",
+  "modifiedAt" : "2022-12-28T22:16:52.7891961",
   "memberImage" : 1
 }</code></pre>
 </div>
