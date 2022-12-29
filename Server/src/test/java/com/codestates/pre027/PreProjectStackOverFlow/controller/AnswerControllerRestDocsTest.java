@@ -88,7 +88,7 @@ public class AnswerControllerRestDocsTest {
                 "답변내용입니다",
                 createdAt,
                 modifiedAt,
-                1L);
+                1L,0);
 
 
         given(answerMapper.answerPostDto_to_Answer(Mockito.any(AnswerDto.Post.class)))
@@ -132,7 +132,8 @@ public class AnswerControllerRestDocsTest {
                     fieldWithPath("text").type(JsonFieldType.STRING).description("답변 내용"),
                     fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 일자"),
                     fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("수정 일자"),
-                    fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지 코드")
+                    fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지 코드"),
+                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
                 )
             ));
     }
@@ -154,7 +155,8 @@ public class AnswerControllerRestDocsTest {
                 "수정된 답변내용입니다",
                 createdAt,
                 modifiedAt,
-                1L);
+                1L,
+                0);
 
         given(answerMapper.answerPatchDto_to_Answer(Mockito.any(AnswerDto.Patch.class)))
             .willReturn(new Answer());
@@ -201,7 +203,8 @@ public class AnswerControllerRestDocsTest {
                     fieldWithPath("text").type(JsonFieldType.STRING).description("수정된 답변 내용"),
                     fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 일자"),
                     fieldWithPath("modifiedAt").type(JsonFieldType.STRING).description("수정 일자"),
-                    fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지 코드")
+                    fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지 코드"),
+                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
                 )
             ));
     }
@@ -215,9 +218,9 @@ public class AnswerControllerRestDocsTest {
 
         Member member = new Member(1L,"dry@gmail.com","qwer1234","뜨륵이",1L);
 
-        Answer answer1 = new Answer(1L,"답변 내용 1입니다",createdAt,modifiedAt,member,question,null);
+        Answer answer1 = new Answer(1L,"답변 내용 1입니다",createdAt,modifiedAt,member,question,null,0);
 
-        Answer answer2 = new Answer(2L, "답변 내용 2입니다",createdAt,modifiedAt,member,question,null);
+        Answer answer2 = new Answer(2L, "답변 내용 2입니다",createdAt,modifiedAt,member,question,null,0);
 
         List<Answer> answers = List.of(answer1,answer2);
 
@@ -234,7 +237,8 @@ public class AnswerControllerRestDocsTest {
                         answers.get(0).getText(),
                         answers.get(0).getCreatedAt(),
                         answers.get(0).getModifiedAt(),
-                        answers.get(0).getWriter().getMemberImage()
+                        answers.get(0).getWriter().getMemberImage(),
+                        answers.get(0).getRatingScore()
                     ),
                     new AnswerDto.Response(
                         answers.get(1).getQuest().getQuestionId(),
@@ -244,7 +248,8 @@ public class AnswerControllerRestDocsTest {
                         answers.get(1).getText(),
                         answers.get(1).getCreatedAt(),
                         answers.get(1).getModifiedAt(),
-                        answers.get(1).getWriter().getMemberImage()
+                        answers.get(1).getWriter().getMemberImage(),
+                        answers.get(1).getRatingScore()
                     )
                 )
             );
@@ -264,6 +269,7 @@ public class AnswerControllerRestDocsTest {
             .andExpect(jsonPath("$[0].createdAt").value("2022-12-31T23:59:00"))
             .andExpect(jsonPath("$[0].modifiedAt").value("2022-12-31T23:59:00"))
             .andExpect(jsonPath("$[0].memberImage").value(answers.get(0).getWriter().getMemberImage()))
+            .andExpect(jsonPath("$[0].ratingScore").value(answers.get(0).getRatingScore()))
             .andDo(document("get-answers-by-question",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
@@ -277,7 +283,8 @@ public class AnswerControllerRestDocsTest {
                     fieldWithPath("[].text").type(JsonFieldType.STRING).description("답변 내용"),
                     fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("답변 생성일자"),
                     fieldWithPath("[].modifiedAt").type(JsonFieldType.STRING).description("답변 수정일자"),
-                    fieldWithPath("[].memberImage").type(JsonFieldType.NUMBER).description("작성자 사진")
+                    fieldWithPath("[].memberImage").type(JsonFieldType.NUMBER).description("작성자 사진"),
+                    fieldWithPath("[].ratingScore").type(JsonFieldType.NUMBER).description("추천 수")
                 )
             ));
 
@@ -294,7 +301,7 @@ public class AnswerControllerRestDocsTest {
 
         Member member = new Member(1L,"dry@gmail.com","qwer1234","뜨륵이",1L);
 
-        Answer answer = new Answer(1L,"답변 내용입니다",createdAt,modifiedAt,member,question,null);
+        Answer answer = new Answer(1L,"답변 내용입니다",createdAt,modifiedAt,member,question,null,0);
 
         answer.setQuest(question);
         answer.setWriter(member);

@@ -38,6 +38,7 @@ public class QuestionDto {
         private int ratingScore;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+        private long answerCount;
         private String tagString;
     }
 }

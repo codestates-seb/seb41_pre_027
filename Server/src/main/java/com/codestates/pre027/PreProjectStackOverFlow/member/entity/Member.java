@@ -45,21 +45,21 @@ public class Member {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Favorite> favoriteList = new ArrayList<>();
 
     public void addFavorite(Favorite favorite) {
         favoriteList.add(favorite);
     }
 
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
     private List<Answer> answerList = new ArrayList<>();
 
     public void addAnswer(Answer answer) {
         answerList.add(answer);
     }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Question> questionList = new ArrayList<>();
 
     public void addQuestion(Question question) {

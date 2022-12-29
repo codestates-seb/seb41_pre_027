@@ -38,6 +38,7 @@ public interface QuestionMapper {
             question.getRatingScore(),
             question.getCreatedAt(),
             question.getModifiedAt(),
+            question.getAnswerList().size(),
             tagString
         );
         return questionResponseDto;

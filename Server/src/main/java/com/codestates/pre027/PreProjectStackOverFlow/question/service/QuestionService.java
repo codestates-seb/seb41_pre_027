@@ -106,4 +106,9 @@ public class QuestionService {
 
         return questionCount;
     }
+
+    public List<Question> memberQuestionList(long memberId) {
+        List<Question> memberQuestionList = questionRepository.findByMember(memberId);
+        return memberQuestionList;
+    }
 }
