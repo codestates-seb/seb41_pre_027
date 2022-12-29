@@ -229,8 +229,8 @@ const Questions = () => {
               return (
                 <li key={el.questionId}>
                   <ul className="question__response">
-                    <li>{el.rating} votes</li>
-                    <li>10 answers</li>
+                    <li>{el.ratingScore} votes</li>
+                    <li>{el.answerCount} answers</li>
                     <li>{el.views} views</li>
                   </ul>
                   <div className="question__preview">
