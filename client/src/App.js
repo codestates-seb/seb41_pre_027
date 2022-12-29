@@ -20,10 +20,8 @@ import SearchResult from './Pages/SearchResult';
 import QuestionsTagged from './Pages/QuestionsTagged';
 import UserView from './Pages/UserView';
 import NotFound from './Pages/NotFound';
-import QuestionList from './Pages/Questions/QuestionList'; //cr추가
-import AskQuestions from './Pages/Questions/AskQuestions'; //cr추가
 import QuestionDetail from './Pages/Questions/QuestionDetail'; //cr추가
-import EditQuestion from './Pages/Questions/EdItQuestion'; //cr추가
+import PatchQuestion from './Pages/Questions/PatchQuestion';
 import styled from 'styled-components';
 import { authActions } from './Redux/auth';
 import { Cookies } from 'react-cookie';
@@ -94,10 +92,6 @@ function App() {
     }
   }, [location]);
 
-  //cr추가
-  const [boards, isPending, error, setBoard] = useFetch(
-    'http://localhost:4000/boards/'
-  );
   useScrollTop();
   return (
     <StyledApp isFillBg={isFillBg}>
@@ -119,12 +113,9 @@ function App() {
             element={<QuestionsTagged />}
           />{' '}
           {/* 태그를 눌렀을 때 태그 검색하는 질문들 */}
-          <Route
-            path="/questions/:questionId"
-            element={<QuestionView />}
-          />{' '}
-          {/* 각각 질문 id에 대해서 보여주는 상세페이지 */}
           <Route exact path="/questions/ask" element={<AskAQuestion />} />{' '}
+          <Route path="/questions/:id" element={<QuestionDetail />} />{' '}
+          <Route path="/patch/:id" element={<PatchQuestion />} />{' '}
           {/* 질문 생성 */}
           <Route path="/tags" element={<Tags />} /> {/* 태그 목록들*/}
           <Route exact path="/users" element={<Users />} /> {/* 유저 목록 */}
@@ -133,26 +124,7 @@ function App() {
           <Route path="/mypage" element={<MyPage />} /> {/* 마이페이지 */}
           <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
           <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
-          <Route
-            path="/main"
-            element={<QuestionList boards={boards} isPending={isPending} />}
-          />{' '}
-          {/* 생성한 게시물 목록들 */}
-          <Route
-            path="/create"
-            element={<AskQuestions boards={boards} />}
-          />{' '}
-          {/* 질문 생성 */}
-          <Route
-            path="/boards/:id"
-            element={<QuestionDetail setBoard={setBoard} />}
-          />{' '}
           {/* 등록된 게시물 하나하나 페이지 */}
-          <Route
-            path="/edit/:id"
-            element={<EditQuestion boards={boards} setBoard={setBoard} />}
-          />{' '}
-          {/* 편집 페이지 */}
           <Route path="*" element={<NotFound />} />{' '}
           {/* 잘못된 경로 접속했을 때 */}
         </Routes>
