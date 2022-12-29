@@ -243,7 +243,7 @@ const Questions = () => {
                     <p className="question__content">{el.text}</p>
                     <div className="question__author flex-vertical-center">
                       <img src={avatars[el.memberImage - 1]} alt="유저아바타" />
-                      <Link to={'/users/' + el.memberID}>{el.name}</Link>
+                      <Link to={'/users/' + el.memberId}>{el.name}</Link>
                     </div>
                   </div>
                 </li>
