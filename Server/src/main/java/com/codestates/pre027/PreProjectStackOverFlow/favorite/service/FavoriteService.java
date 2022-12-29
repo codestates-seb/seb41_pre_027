@@ -6,6 +6,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.favorite.entity.Favorite;
 import com.codestates.pre027.PreProjectStackOverFlow.favorite.repository.FavoriteRepository;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
+import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final MemberService memberService;
+    private final QuestionService questionService;
 
     public Favorite createFavorite(Favorite favorite,long memberId, long tokenId) {
         System.out.println("###########################서비스 도착");
@@ -23,16 +25,18 @@ public class FavoriteService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
         }
 
+        questionService.findVerifiedQuestion(favorite.getFavorite());
+
         Member member = memberService.findMember(memberId);
+
         favorite.setMember(member);
 
-//        for(int i=0; i<favorite.getMember().getFavoriteList().size(); i++) {
-//            if(favorite.getMember().getFavoriteList().get(i) == favorite){
-//                favoriteRepository.delete(favorite);
-//            }
-//        }
+        Favorite searchFavorite = favoriteRepository.findByFavoriteAndMember(favorite.getFavorite(), tokenId);
 
-        //  db에 favorite 저장
+        if(searchFavorite != null){
+            favoriteRepository.delete(searchFavorite);
+        }
+
         return favoriteRepository.save(favorite);
     }
 }
