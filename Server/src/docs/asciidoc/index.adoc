@@ -137,6 +137,22 @@ include::{snippets}/get-search-members/http-response.adoc[]
 .response-fields
 include::{snippets}/get-search-members/response-fields.adoc[]
 
+=== 회원이 작성한 게시글 조회
+.curl-request
+include::{snippets}/get-member-questionList/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-member-questionList/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-member-questionList/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-member-questionList/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-member-questionList/response-fields.adoc[]
+
 == QuestionController
 === 게시글 등록
 .curl-request
@@ -315,3 +331,106 @@ include::{snippets}/delete-answer/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/delete-answer/http-response.adoc[]
+
+== CommentController
+
+=== 댓글 등록(질문에)
+.curl-request
+include::{snippets}/post-comment-to-question/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-comment-to-question/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/post-comment-to-question/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/post-comment-to-question/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-comment-to-question/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-comment-to-question/response-fields.adoc[]
+=== 댓글 등록(답변에)
+.curl-request
+include::{snippets}/post-comment-to-question/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-comment-to-answers/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/post-comment-to-answers/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/post-comment-to-answers/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-comment-to-answers/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-comment-to-answers/response-fields.adoc[]
+
+=== 댓글 수정
+.curl-request
+include::{snippets}/patch-comment/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patch-comment/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-comment/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-comment/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-comment/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-comment/response-fields.adoc[]
+
+=== 질문에 달린 댓글 조회
+.curl-request
+include::{snippets}/get-comments-by-question/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-comments-by-question/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-comments-by-question/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-comments-by-question/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-comments-by-question/response-fields.adoc[]
+
+=== 답변에 달린 댓글 조회
+.curl-request
+include::{snippets}/get-comments-by-answer/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-comments-by-answer/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-comments-by-answer/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-comments-by-answer/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-comments-by-answer/response-fields.adoc[]
+
+=== 댓글 삭제
+.curl-request
+include::{snippets}/delete-comment/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-comment/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-comment/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-comment/http-response.adoc[]
