@@ -5,15 +5,18 @@ import { Provider } from 'react-redux';
 import App from './App';
 import GlobalStyle from './assets/style/GlobalStyle';
 import store from './Redux/store';
+import { CookiesProvider } from 'react-cookie';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <GlobalStyle />
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <CookiesProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <GlobalStyle />
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </CookiesProvider>
   </React.StrictMode>
 );

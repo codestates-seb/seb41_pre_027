@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import avatar3 from '../../assets/images/avatar/3_@1x.png';
 import avatar4 from '../../assets/images/avatar/4_@1x.png';
 import avatar5 from '../../assets/images/avatar/5_@1x.png';
 import avatar6 from '../../assets/images/avatar/6_@1x.png';
+import { Cookies } from 'react-cookie';
 
 const StyledLoggedInHeader = styled.ul`
   display: flex;
@@ -52,18 +53,22 @@ const StyledLoggedInHeader = styled.ul`
 `;
 
 const LoggedInHeader = () => {
+  const cookies = new Cookies();
   // 로그인 된 헤더. 마지막 아이콘 버튼을 눌러 로그아웃 할 수 있다.
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logoutHandler = () => {
     dispatch(authActions.logout());
-    localStorage.removeItem('Authorization');
-    localStorage.removeItem('memberId');
+    cookies.remove('Authorization');
+    cookies.remove('memberId');
+    navigate('/');
+    window.location.reload();
   };
 
   const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
   const [userInfo, setUserInfo] = useState({});
-  const memberId = localStorage.getItem('memberId');
+  const memberId = cookies.get('memberId');
 
   const getUserInfo = async () => {
     try {

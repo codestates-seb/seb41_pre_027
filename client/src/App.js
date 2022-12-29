@@ -25,6 +25,8 @@ import AskQuestions from './Pages/Questions/AskQuestions'; //cr추가
 import QuestionDetail from './Pages/Questions/QuestionDetail'; //cr추가
 import EditQuestion from './Pages/Questions/EdItQuestion'; //cr추가
 import styled from 'styled-components';
+import { authActions } from './Redux/auth';
+import { Cookies } from 'react-cookie';
 
 const StyledApp = styled.div`
   width: 100%;
@@ -47,6 +49,13 @@ const MainContainer = styled.main`
 `;
 
 function App() {
+  const cookies = new Cookies();
+  useEffect(() => {
+    const memberId = cookies.get('memberId');
+    if (memberId) {
+      dispatch(authActions.login());
+    }
+  }, []);
   const [isFillBg, setIsFillBg] = useState('default');
   // 윈도우 가로 길이가 변경되면 windowWidth 상태를 변경한다.
   const dispatch = useDispatch();

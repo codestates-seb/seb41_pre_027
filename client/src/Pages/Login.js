@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../Redux/auth';
+import { useCookies } from 'react-cookie';
 
 const Container = styled.div`
   width: 100%;
@@ -142,6 +143,9 @@ const Signup = styled.div`
 `;
 
 function Login() {
+  const [tokenCookie, setTokenCookie] = useCookies(['Authorization']);
+  const [memberIdCookie, setMemberIdCookie] = useCookies(['memberId']);
+
   const [account, setAccount] = useState({
     email: '',
     password: '',
@@ -192,9 +196,13 @@ function Login() {
           const response = await axios.post('/api/login', reqBody);
           const jwtToken = response.headers.get('Authorization');
           const memberId = response.data.memberId;
-          localStorage.setItem('Authorization', jwtToken);
-          localStorage.setItem('memberId', memberId);
-          dispatch(authActions.login());
+          setTokenCookie('Authorization', jwtToken, {
+            maxAge: 60 * 60 * 24 * 7,
+          }); // 60초 * 60분 * 24시간 * 7일
+          setMemberIdCookie('memberId', memberId, { maxAge: 60 * 60 * 24 * 7 });
+          if (tokenCookie && memberIdCookie) {
+            dispatch(authActions.login());
+          }
           setTimeout(() => {
             navigate('/');
             window.location.reload();
