@@ -1,8 +1,8 @@
 //api 문서화
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/';
-const BOARD_URL = 'http://localhost:3000/boards/';
+const BASE_URL = `/`;
+const BOARD_URL = '/api/questions/';
 
 export const fetchCreate = (url, data) => {
   fetch(url, {
@@ -54,7 +54,7 @@ export const fetchCreateComment = (url, id, data) => {
     body: JSON.stringify(data),
   })
     .then(() => {
-      window.location.href = `${BOARD_URL}${id}`;
+      window.location.href = `/questions/${id}`;
     })
     .catch((error) => {
       console.error('Error', error);
