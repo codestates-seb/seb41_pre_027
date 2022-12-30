@@ -267,6 +267,22 @@ include::{snippets}/question-rating-up/http-response.adoc[]
 .response-fields
 include::{snippets}/question-rating-up/response-fields.adoc[]
 
+=== 게시글 비추천
+.curl-request
+include::{snippets}/question-rating-down/curl-request.adoc[]
+
+.http-request
+include::{snippets}/question-rating-down/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/question-rating-down/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/question-rating-down/http-response.adoc[]
+
+.response-fields
+include::{snippets}/question-rating-down/response-fields.adoc[]
+
 == AnswerController
 === 답변 등록
 .curl-request
@@ -331,6 +347,38 @@ include::{snippets}/delete-answer/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/delete-answer/http-response.adoc[]
+
+=== 답변 추천
+.curl-request
+include::{snippets}/answer-rating-up/curl-request.adoc[]
+
+.http-request
+include::{snippets}/answer-rating-up/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/answer-rating-up/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/answer-rating-up/http-response.adoc[]
+
+.response-fields
+include::{snippets}/answer-rating-up/response-fields.adoc[]
+
+=== 답변 비추천
+.curl-request
+include::{snippets}/answer-rating-down/curl-request.adoc[]
+
+.http-request
+include::{snippets}/answer-rating-down/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/answer-rating-down/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/answer-rating-down/http-response.adoc[]
+
+.response-fields
+include::{snippets}/answer-rating-down/response-fields.adoc[]
 
 == CommentController
 
@@ -434,3 +482,4 @@ include::{snippets}/delete-comment/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/delete-comment/http-response.adoc[]
+
