@@ -5,6 +5,7 @@ import static com.codestates.pre027.PreProjectStackOverFlow.controller.ApiDocume
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -19,11 +20,14 @@ import com.codestates.pre027.PreProjectStackOverFlow.question.mapper.QuestionMap
 import com.codestates.pre027.PreProjectStackOverFlow.question.service.QuestionService;
 import com.codestates.pre027.PreProjectStackOverFlow.rating.controller.RatingController;
 import com.codestates.pre027.PreProjectStackOverFlow.rating.dto.RatingDto;
+import com.codestates.pre027.PreProjectStackOverFlow.rating.dto.RatingDto.QuestionResponse;
 import com.codestates.pre027.PreProjectStackOverFlow.rating.entity.Rating;
 import com.codestates.pre027.PreProjectStackOverFlow.rating.service.RatingService;
 import com.google.gson.Gson;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.Builder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -60,6 +64,7 @@ public class RatingControllerRestDocsTest {
 
         long questionId = 1L;
 
+        // Dto 기본 세팅
         RatingDto.QuestionResponse responseDto =
             new RatingDto.QuestionResponse(1L,
                 1L,
@@ -67,7 +72,9 @@ public class RatingControllerRestDocsTest {
                 true,
                 false);
 
+        // 가짜 객체를 전달
         given(ratingService.saveQuestionRating(Mockito.anyLong(),Mockito.anyLong(),Mockito.anyInt())).willReturn(responseDto);
+
 
         ResultActions actions =
             mockMvc.perform(
@@ -77,8 +84,10 @@ public class RatingControllerRestDocsTest {
                     .contentType(MediaType.APPLICATION_JSON)
             );
 
+        // 검증 작업 (결과값이 같은 지)
         actions
             .andExpect(status().isCreated())
+            // API 문서화 작업
             .andDo(document(
                 "question-rating-up",
                 getRequestPreProcessor(),
@@ -87,11 +96,145 @@ public class RatingControllerRestDocsTest {
                     parameterWithName("question-id").description("게시글 식별자")
                 ),
                 responseFields(
-                    fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
-                    fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
-                    fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
-                    fieldWithPath("upRating").type(JsonFieldType.BOOLEAN).description("추천을 눌렀는지 확인하는 값"),
-                    fieldWithPath("downRating").type(JsonFieldType.BOOLEAN).description("비추천을 눌렀는지 확인하는 값")
+                    List.of(
+                        fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                        fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                        fieldWithPath("upRating").type(JsonFieldType.BOOLEAN).description("추천을 눌렀는지 확인하는 값"),
+                        fieldWithPath("downRating").type(JsonFieldType.BOOLEAN).description("비추천을 눌렀는지 확인하는 값")
+                    )
+                )
+            ));
+    }
+
+    @Test
+    public void postQuestionDownRatingTest() throws Exception{
+        long questionId = 1L;
+
+        RatingDto.QuestionResponse responseDto =
+            new RatingDto.QuestionResponse(
+                1L,
+                1L,
+                1,
+                false,
+                true
+            );
+
+        given(ratingService.saveQuestionRating(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt())).willReturn(responseDto);
+
+        ResultActions actions =
+            mockMvc.perform(
+                RestDocumentationRequestBuilders.post("/api/questions/{question-id}/downratings", questionId)
+                    .header("Authorization", "Bearer (accessToken)")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
+
+        actions
+            .andExpect(status().isCreated())
+            .andDo(document(
+                "question-rating-down",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                pathParameters(
+                    parameterWithName("question-id").description("게시글 식별자")
+                ),
+                responseFields(
+                    List.of(
+                        fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                        fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                        fieldWithPath("upRating").type(JsonFieldType.BOOLEAN).description("추천을 눌렀는 지 확인하는 값"),
+                        fieldWithPath("downRating").type(JsonFieldType.BOOLEAN).description("비추천을 눌렀는 지 확인하는 값")
+                    )
+                )
+            ));
+    }
+
+    @Test
+    public void postAnswerUpRatingTest() throws Exception {
+        long answerId = 1L;
+
+        RatingDto.AnswerResponse responseDto =
+            new RatingDto.AnswerResponse(
+                1L,
+                1L,
+                1,
+                true,
+                false
+            );
+
+        given(ratingService.saveAnswerRating(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt())).willReturn(responseDto);
+
+        ResultActions actions =
+            mockMvc.perform(
+                RestDocumentationRequestBuilders.post("/api/answers/{answer-id}/upratings",answerId)
+                    .header("Authorization", "Bearer (accessToken)")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
+
+        actions
+            .andExpect(status().isCreated())
+            .andDo(document(
+                "answer-rating-up",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                pathParameters(
+                    parameterWithName("answer-id").description("답변 식별자")
+                ),
+                responseFields(
+                    List.of(
+                        fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
+                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                        fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                        fieldWithPath("upRating").type(JsonFieldType.BOOLEAN).description("추천을 눌렀는 지 확인하는 값"),
+                        fieldWithPath("downRating").type(JsonFieldType.BOOLEAN).description("비추천을 눌렀는 지 확인하는 값")
+                    )
+                )
+            ));
+    }
+
+    @Test
+    public void postAnswerDownRatingTest() throws Exception{
+        long answerId = 1L;
+
+        RatingDto.AnswerResponse responseDto =
+            new RatingDto.AnswerResponse(
+                1L,
+                1L,
+                1,
+                false,
+                true
+            );
+
+        given(ratingService.saveAnswerRating(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt())).willReturn(responseDto);
+
+        ResultActions actions =
+            mockMvc.perform(
+                RestDocumentationRequestBuilders.post("/api/answers/{answer-id}/downratings",answerId)
+                    .header("Authorization", "Bearer (accessToken)")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
+
+        actions
+            .andExpect(status().isCreated())
+            .andDo(document(
+                "answer-rating-down",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                pathParameters(
+                    parameterWithName("answer-id").description("답변 식별자")
+                ),
+                responseFields(
+                    List.of(
+                        fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변 식별자"),
+                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                        fieldWithPath("ratingScore").type(JsonFieldType.NUMBER).description("추천 수"),
+                        fieldWithPath("upRating").type(JsonFieldType.BOOLEAN).description("추천을 눌렀는 지 확인하는 값"),
+                        fieldWithPath("downRating").type(JsonFieldType.BOOLEAN).description("비추천을 눌렀는 지 확인하는 값")
+                    )
                 )
             ));
     }
