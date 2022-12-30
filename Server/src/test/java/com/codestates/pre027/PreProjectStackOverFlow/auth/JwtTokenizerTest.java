@@ -1,6 +1,7 @@
 package com.codestates.pre027.PreProjectStackOverFlow.auth;
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
+import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.io.Decoders;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -22,10 +24,11 @@ public class JwtTokenizerTest {
     private static JwtTokenizer jwtTokenizer;
     private String secretKey;
     private String base64EncodedSecretKey;
+    private static RedisDao redisDao;
 
     @BeforeAll
     public void init() {
-        jwtTokenizer = new JwtTokenizer();
+        jwtTokenizer = new JwtTokenizer(redisDao);
         secretKey = "pre027pre027pre027pre027pre027pre027pre027";
         base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(secretKey);
     }
@@ -57,12 +60,15 @@ public class JwtTokenizerTest {
 
     @Test
     public void generateRefreshTokenTest() {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("memberId", 1);
+
         String subject = "test refresh token";
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR, 24);
         Date expiration = calendar.getTime();
 
-        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+        String refreshToken = jwtTokenizer.generateRefreshToken(claims,subject, expiration, base64EncodedSecretKey);
 
         System.out.println(refreshToken);
 

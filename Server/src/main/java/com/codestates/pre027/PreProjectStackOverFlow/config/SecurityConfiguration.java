@@ -10,7 +10,7 @@ import com.codestates.pre027.PreProjectStackOverFlow.auth.handler.MemberAuthenti
 import com.codestates.pre027.PreProjectStackOverFlow.auth.handler.MemberAuthenticationFailureHandler;
 import com.codestates.pre027.PreProjectStackOverFlow.auth.handler.MemberAuthenticationSuccessHandler;
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
-//import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
+import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
 import com.codestates.pre027.PreProjectStackOverFlow.auth.utils.CustomAuthorityUtils;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-//    private final RedisDao redisDao;
+    private final RedisDao redisDao;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -111,9 +111,8 @@ public class SecurityConfiguration {
 
             // Spring Security 의 설정을 구성하는 SecurityConfigurer 간에 공유되는 객체 얻기
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(
-                authenticationManager, jwtTokenizer
-                //                ,redisDao);
-            );
+                authenticationManager, jwtTokenizer, redisDao);
+
 
             // default url 설정
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");

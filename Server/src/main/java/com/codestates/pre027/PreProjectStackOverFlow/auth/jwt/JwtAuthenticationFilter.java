@@ -1,7 +1,7 @@
 package com.codestates.pre027.PreProjectStackOverFlow.auth.jwt;
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.dto.LoginDto;
-//import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
+import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-//    private final RedisDao redisDao;
+    private final RedisDao redisDao;
 
 
     //  메서드 내부에서 인증을 시도하는 로직을 구현
@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = jwtTokenizer.delegateRefreshToken(member);
 
         //  redis 에 정보 저장
-//        redisDao.setValues(member.getEmail(), refreshToken, Duration.ofMinutes(jwtTokenizer.getRefreshTokenExpirationMinutes()));
+        redisDao.setValues(member.getEmail(), refreshToken, Duration.ofMinutes(jwtTokenizer.getRefreshTokenExpirationMinutes()));
 
         // response header 에 token 값 저장
         response.setHeader("Authorization", "Bearer " + accessToken);
