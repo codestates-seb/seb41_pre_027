@@ -3,6 +3,7 @@ import { fetchCreateComment } from '../../utils/api';
 import useInput from '../../utils/useInput';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+const Container = styled.div``;
 const CommentPost = styled.div`
   .comment__post {
     border: none;
@@ -31,45 +32,44 @@ function CommentCreateDetail() {
   const comment = useFetch(`/api/questions/${id}/comments`);
   const getcomment = comment[0];
   //comment 생성하기
-  const [commentContent, setCommentContent] = useInput('');
+  const commentContent = useInput('');
 
-  const submitForm = (e) => {
-    if (e.key === 'Enter') {
-      console.log(commentContent.value);
-      fetchCreateComment(
-        `/api/questions/${id}/comments`,
-        id,
-        commentContent.value
-      );
-    }
+  const submitForm = () => {
+    fetchCreateComment(`/api/questions/1/comments`, id, {
+      text: '올라가라',
+    });
   };
 
   return (
     <>
-      <CommentRead>
-        <div className="comment__read">
-          {getcomment &&
-            getcomment.map((el) => {
-              return (
-                <div className="comment__read--id" key={el.commentId}>
-                  <div className="comment__read--text">{el.text}</div>
-                </div>
-              );
-            })}
-        </div>
-      </CommentRead>
-      <CommentPost>
-        <form onSubmit={submitForm}>
-          <div className="comment__post">
-            <input
-              type="text"
-              placeholder="Add a comment"
-              {...commentContent}
-              onKeyDown={(e) => submitForm(e)}
-            ></input>
+      <Container>
+        <CommentRead>
+          <div className="comment__read">
+            {getcomment &&
+              getcomment.map((el) => {
+                return (
+                  <div className="comment__read--id" key={el.commentId}>
+                    <div className="comment__read--text">{el.text}</div>
+                  </div>
+                );
+              })}
           </div>
-        </form>
-      </CommentPost>
+        </CommentRead>
+        <CommentPost>
+          <form onSubmit>
+            <div className="comment__post">
+              <input
+                type="text"
+                placeholder="Add a comment"
+                {...commentContent}
+              ></input>
+              <button type="submit" onClick={submitForm}>
+                제출
+              </button>
+            </div>
+          </form>
+        </CommentPost>
+      </Container>
     </>
   );
 }
@@ -96,3 +96,7 @@ export default CommentCreateDetail;
 //       throw new Error(error);
 //     });
 // };
+
+// fetchCreateComment(`/api/questions/${id}/comments`, id, {
+//   text: '이거야',
+// });
