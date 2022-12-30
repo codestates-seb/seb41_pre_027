@@ -68,7 +68,7 @@ public class MemberService {
 
         //  수정하려는 member 의 memberId 와 접속해있는 token 의 memberId 비교
         if (member.getMemberId() != tokenId) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_FORBIDDEN);
         }
 
         //  수정하려는 member 가 존재하는지 memberId로 조회
@@ -91,7 +91,7 @@ public class MemberService {
 
         //  삭제하려는 memberId 와 접속해있는 token 의 memberId 비교
         if (memberId != tokenId) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_FORBIDDEN);
         }
         //  memberId 조회해서 있으면 멤버를 리턴 없으면 MEMBER_NOT_FOUND exception 발생
         Member findMember = findVerifiedMember(memberId);

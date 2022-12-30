@@ -10,7 +10,8 @@ public enum ExceptionCode {
     ANSWER_NOT_FOUND(404, "Answer not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
     TAG_NOT_FOUND(404, "Tag not found"),
-    MEMBER_UNAUTHORIZED(403,"Member Forbidden");
+    MEMBER_FORBIDDEN(403,"Member Forbidden"),
+    MEMBER_UNAUTHORIZED(401,"UNAUTHORIZED");
 
 
     @Getter
