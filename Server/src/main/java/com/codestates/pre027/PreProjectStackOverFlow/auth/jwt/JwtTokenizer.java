@@ -1,8 +1,11 @@
 package com.codestates.pre027.PreProjectStackOverFlow.auth.jwt;
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
+import com.codestates.pre027.PreProjectStackOverFlow.exception.BusinessLogicException;
+import com.codestates.pre027.PreProjectStackOverFlow.exception.ExceptionCode;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,11 +14,11 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -155,19 +158,26 @@ public class JwtTokenizer {
     }
 
     private Claims parseToken(String token) {
-        Key key = getKeyFromBase64EncodedKey(encodeBase64SecretKey(this.secretKey));
+        Key key = getKeyFromBase64EncodedKey(encodeBase64SecretKey(secretKey));
         String jws = token.replace("Bearer ", "");
+        Claims claims;
 
-        return Jwts.parserBuilder()
-            .setSigningKey(key)
-            .build()
-            .parseClaimsJws(jws)
-            .getBody();
+        try {
+                claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jws)
+                .getBody();
+        }   catch (ExpiredJwtException e) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+        }
+        return claims;
     }
 
     // token 에서 memberId 추출
     public Long getMemberId(String token) {
-        return parseToken(token).get("memberId", Long.class);
+        long memberId = parseToken(token).get("memberId", Long.class);
+        return memberId;
     }
 
     // redis 에 저장된 refreshToken 삭제
@@ -179,5 +189,12 @@ public class JwtTokenizer {
     public String reissueAtk(Member member) throws JwtException {
         String atk = delegateAccessToken(member);
         return atk;
+    }
+
+    // refreshToken 재발급
+    public String reissueRtk(Member member) throws JwtException {
+        String rtk = delegateRefreshToken(member);
+        redisDao.setValues(member.getEmail(), rtk, Duration.ofMinutes(getRefreshTokenExpirationMinutes()));
+        return rtk;
     }
 }

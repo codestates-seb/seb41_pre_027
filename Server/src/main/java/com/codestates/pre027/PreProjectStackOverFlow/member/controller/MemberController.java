@@ -126,7 +126,8 @@ public class MemberController {
             HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
+    // 회원 로그아웃
+    @PostMapping("/logout")
     public ResponseEntity logout(@RequestHeader("Authorization") String token) {
         long memberId = jwtTokenizer.getMemberId(token);
         String email = memberService.findMember(memberId).getEmail();
@@ -134,6 +135,7 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
+    // accessToken 재발급
     @GetMapping("/reissue")
     public ResponseEntity reissue(@RequestHeader("Refresh") String token) throws JwtException {
 
@@ -145,11 +147,12 @@ public class MemberController {
             throw new JwtException("토큰 만료");
         }
 
-        jwtTokenizer.deleteRtk(member);
+        String reissueRtk = jwtTokenizer.reissueRtk(member);
         String atk = jwtTokenizer.reissueAtk(member);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + atk);
+        headers.add("Refresh", reissueRtk);
 
         return ResponseEntity.ok().headers(headers).build();
     }

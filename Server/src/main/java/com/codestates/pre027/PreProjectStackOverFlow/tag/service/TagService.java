@@ -52,7 +52,7 @@ public class TagService {
 
         //우선 접근한 Question의 작성자와 현재 로그인한 유저가 같은지 검증
         if(findMember.getMemberId() != tokenId){
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_FORBIDDEN);
         }
 
         //원래 존재하던 QuestionId에 해당하는 QuestionTag를 다 지우고 시작함

@@ -42,7 +42,7 @@ public class AnswerService {
         Answer findAnswer = findVerifiedAnswerByQuery(answer.getAnswerId());
         Member findMember = findAnswer.getWriter();
         if(findMember.getMemberId() != tokenId){
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_FORBIDDEN);
         }
         Optional.ofNullable(answer.getText())
             .ifPresent(text->findAnswer.setText(text));
@@ -64,7 +64,7 @@ public class AnswerService {
         Answer findAnswer = findAnswer(answerId);
         Member findMember = findAnswer.getWriter();
         if(findMember.getMemberId() != tokenId){
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_FORBIDDEN);
         }
 
         answerRepository.delete(findAnswer);

@@ -36,7 +36,7 @@ public class QuestionService {
         Member findMember = findQuestion.getMember();
 
         if(findMember.getMemberId() != tokenId) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_FORBIDDEN);
         }
 
         Optional.ofNullable(question.getTitle())
@@ -79,7 +79,7 @@ public class QuestionService {
         Member findMember = findQuestion.getMember();
 
         if(findMember.getMemberId() != tokenId) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_UNAUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_FORBIDDEN);
         }
 
         questionRepository.delete(findQuestion);
