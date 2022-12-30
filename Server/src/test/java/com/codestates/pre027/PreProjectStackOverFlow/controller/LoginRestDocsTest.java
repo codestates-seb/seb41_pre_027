@@ -64,6 +64,7 @@ public class LoginRestDocsTest {
 
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.memberId").value(member.getMemberId()))
+            .andExpect(jsonPath("$.memberImage").value(member.getMemberImage()))
             .andDo(document(
                 "login-account",
                 getRequestPreProcessor(),
@@ -81,7 +82,8 @@ public class LoginRestDocsTest {
                 ),
                 responseFields(
                     List.of(
-                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자")
+                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+                        fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지")
                     )
                 )
             ));

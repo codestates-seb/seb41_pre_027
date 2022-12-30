@@ -118,3 +118,4 @@ public class MemberController {
             HttpStatus.OK);
     }
 }
+

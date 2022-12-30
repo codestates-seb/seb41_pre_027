@@ -1,5 +1,8 @@
 package com.codestates.pre027.PreProjectStackOverFlow.auth.jwt;
 
+
+//import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
+import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -10,13 +13,19 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenizer {
+
+//    private final RedisDao redisDao;
+
 
     //    JWT 생성 및 검증 시 사용되는 Secret Key 정보입니다
     @Getter
@@ -105,6 +114,44 @@ public class JwtTokenizer {
         return key;
     }
 
+    // Access Token 과 Refresh Token 을 생성하는 구체적인 로직
+    protected String delegateAccessToken(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("memberId", member.getMemberId());
+        claims.put("userEmail", member.getEmail());
+        claims.put("roles", member.getRoles());
+
+        String subject = member.getEmail();
+        Date expiration = getTokenExpiration(
+            getAccessTokenExpirationMinutes());
+
+        String base64EncodedSecretKey = encodeBase64SecretKey(
+            getSecretKey());
+
+        String accessToken = generateAccessToken(claims, subject, expiration,
+            base64EncodedSecretKey);
+
+        return accessToken;
+    }
+
+    //      Access Token 과 Refresh Token 을 생성하는 구체적인 로직
+    protected String delegateRefreshToken(Member member) {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("memberId", member.getMemberId());
+
+        String subject = member.getEmail();
+        Date expiration = getTokenExpiration(
+            getRefreshTokenExpirationMinutes());
+        String base64EncodedSecretKey = encodeBase64SecretKey(
+            getSecretKey());
+
+        String refreshToken = generateRefreshToken(subject, expiration,
+            base64EncodedSecretKey);
+
+        return refreshToken;
+    }
+
     private Claims parseToken(String token) {
         Key key = getKeyFromBase64EncodedKey(encodeBase64SecretKey(this.secretKey));
         String jws = token.replace("Bearer ", "");
@@ -116,7 +163,22 @@ public class JwtTokenizer {
             .getBody();
     }
 
+    // token 에서 memberId 추출
     public Long getMemberId(String token) {
         return parseToken(token).get("memberId", Long.class);
     }
+
+//    public void deleteRtk(Member member) throws JwtException {
+//        redisDao.deleteValues(member.getEmail());
+//    }
+//
+//    public String reissueAtk(Member member) throws JwtException {
+//        String rtkInRedis = redisDao.getValues(member.getEmail());
+//        if (Objects.isNull(rtkInRedis)) {
+//            throw new JwtException("인증 정보가 만료되었습니다.");
+//        }
+//
+//        String atk = delegateAccessToken(member);
+//        return atk;
+//    }
 }
