@@ -13,6 +13,9 @@ import avatar3 from '../Img/avatar3.png';
 import avatar4 from '../Img/avatar4.png';
 import avatar5 from '../Img/avatar5.png';
 import avatar6 from '../Img/avatar6.png';
+import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Container = styled.div`
   width: 100%;
@@ -95,7 +98,7 @@ const Button = styled.button`
   }
 `;
 
-const InputForm = styled.div`
+const InputForm = styled.form`
   background-color: white;
   border: 1px solid #d6d6d6;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
@@ -112,7 +115,9 @@ const InputBox = styled.div`
     font-size: 1rem;
     padding: 10px 0;
   }
-  input {
+  input[type='text'],
+  input[type='email'],
+  input[type='password'] {
     width: 100%;
     padding: 10px 0;
     &:focus {
@@ -148,10 +153,11 @@ const ConsentGuide = styled.div`
 
 const AvatarBox = styled.div`
   text-align: center;
+  display: flex;
 
   .avatar1 {
     width: 3rem;
-    heigth: 3rem;
+    height: 3rem;
     margin: 2px;
     margin-bottom: 10px;
     background-color: white;
@@ -166,7 +172,7 @@ const AvatarBox = styled.div`
 
   .avatar2 {
     width: 3rem;
-    heigth: 3rem;
+    height: 3rem;
     margin: 2px;
     margin-bottom: 10px;
     border: 1px solid #d6d6d6;
@@ -181,7 +187,7 @@ const AvatarBox = styled.div`
 
   .avatar3 {
     width: 3rem;
-    heigth: 3rem;
+    height: 3rem;
     margin: 2px;
     margin-bottom: 10px;
     border: 1px solid #d6d6d6;
@@ -196,7 +202,7 @@ const AvatarBox = styled.div`
 
   .avatar4 {
     width: 3rem;
-    heigth: 3rem;
+    height: 3rem;
     margin: 2px;
     margin-bottom: 10px;
     border: 1px solid #d6d6d6;
@@ -211,7 +217,7 @@ const AvatarBox = styled.div`
 
   .avatar5 {
     width: 3rem;
-    heigth: 3rem;
+    height: 3rem;
     margin: 2px;
     margin-bottom: 10px;
     border: 1px solid #d6d6d6;
@@ -226,7 +232,7 @@ const AvatarBox = styled.div`
 
   .avatar6 {
     width: 3rem;
-    heigth: 3rem;
+    height: 3rem;
     margin: 2px;
     margin-bottom: 10px;
     border: 1px solid #d6d6d6;
@@ -244,9 +250,11 @@ function Signup() {
   const [account, setAccount] = useState({
     email: '',
     password: '',
+    name: '',
+    memberImage: '1',
   });
 
-  const onChangeEmail = (e) => {
+  const onChangeInput = (e) => {
     setAccount({
       ...account,
       [e.target.name]: e.target.value,
@@ -262,7 +270,7 @@ function Signup() {
 
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // at least 1 letter and 1 digit
 
-  function signUpAcess() {
+  function emailVal() {
     if (emailRegex.test(account.email)) {
       return setEmail(true);
     }
@@ -275,6 +283,35 @@ function Signup() {
     }
     return setPassword(false);
   }
+
+  const navigate = useNavigate();
+
+  const signupSubmitHandler = (event) => {
+    event.preventDefault();
+    if (email && password) {
+      const reqSignupBody = {
+        email: account.email,
+        password: account.password,
+        name: account.name,
+        memberImage: account.memberImage,
+      };
+
+      const sendSignUpReq = async () => {
+        try {
+          const response = await axios.post('/api/member', reqSignupBody);
+          if (response.status === 201) {
+            alert('환영합니다.');
+            navigate('/login');
+            window.location.reload();
+          }
+        } catch (error) {
+          console.log(error);
+          alert('잘못된 요청입니다.');
+        }
+      };
+      sendSignUpReq();
+    }
+  };
 
   return (
     <Container>
@@ -303,9 +340,9 @@ function Signup() {
                 Collaborate and share knowledge with a private group for FREE.
               </span>
               <br />
-              <a href="/">
+              <Link to="">
                 Get Stack Overflow for Teams free for up to 50 users.
-              </a>
+              </Link>
             </Introduce>
           </LeftContent>
         </LeftBox>
@@ -339,10 +376,15 @@ function Signup() {
               Sign up with Facebook
             </Button>
           </ButtonBox>
-          <InputForm>
+          <InputForm onSubmit={signupSubmitHandler}>
             <InputBox>
               <p>Display name</p>
-              <input name="displayName" type="text" />
+              <input
+                name="name"
+                type="text"
+                value={account.name}
+                onChange={onChangeInput}
+              />
             </InputBox>
             <InputBox>
               <p>email</p>
@@ -350,7 +392,7 @@ function Signup() {
                 name="email"
                 type="email"
                 value={account.email}
-                onChange={onChangeEmail}
+                onChange={onChangeInput}
               />
               <span>
                 <span>
@@ -368,7 +410,7 @@ function Signup() {
                 name="password"
                 type="password"
                 value={account.password}
-                onChange={onChangeEmail}
+                onChange={onChangeInput}
               />
               <span>
                 <span>
@@ -386,12 +428,72 @@ function Signup() {
             <InputBox>
               <p>avatar</p>
               <AvatarBox>
-                <img src={avatar1} alt="avatar1" className="avatar1" />
-                <img src={avatar2} alt="avatar2" className="avatar2" />
-                <img src={avatar3} alt="avatar3" className="avatar3" />
-                <img src={avatar4} alt="avatar4" className="avatar4" />
-                <img src={avatar5} alt="avatar5" className="avatar5" />
-                <img src={avatar6} alt="avatar6" className="avatar6" />
+                <label htmlFor="avt1">
+                  <input
+                    id="avt1"
+                    type="radio"
+                    name="memberImage"
+                    value="1"
+                    checked={account.memberImage === '1'}
+                    onChange={onChangeInput}
+                  />
+                  <img src={avatar1} alt="avatar1" className="avatar1" />
+                </label>
+                <label htmlFor="avt2">
+                  <input
+                    id="avt2"
+                    type="radio"
+                    name="memberImage"
+                    value="2"
+                    checked={account.memberImage === '2'}
+                    onChange={onChangeInput}
+                  />
+                  <img src={avatar2} alt="avatar2" className="avatar2" />
+                </label>
+                <label htmlFor="avt3">
+                  <input
+                    id="avt3"
+                    type="radio"
+                    name="memberImage"
+                    value="3"
+                    checked={account.memberImage === '3'}
+                    onChange={onChangeInput}
+                  />
+                  <img src={avatar3} alt="avatar3" className="avatar3" />
+                </label>
+                <label htmlFor="avt4">
+                  <input
+                    id="avt4"
+                    type="radio"
+                    name="memberImage"
+                    value="4"
+                    checked={account.memberImage === '4'}
+                    onChange={onChangeInput}
+                  />
+                  <img src={avatar4} alt="avatar4" className="avatar4" />
+                </label>
+                <label htmlFor="avt5">
+                  <input
+                    id="avt5"
+                    type="radio"
+                    name="memberImage"
+                    value="5"
+                    checked={account.memberImage === '5'}
+                    onChange={onChangeInput}
+                  />
+                  <img src={avatar5} alt="avatar5" className="avatar5" />
+                </label>
+                <label htmlFor="avt6">
+                  <input
+                    id="avt6"
+                    type="radio"
+                    name="memberImage"
+                    value="6"
+                    checked={account.memberImage === '6'}
+                    onChange={onChangeInput}
+                  />
+                  <img src={avatar6} alt="avatar6" className="avatar6" />
+                </label>
               </AvatarBox>
             </InputBox>
             <SignUpButton
@@ -399,19 +501,18 @@ function Signup() {
               value="Signup"
               onClick={() => {
                 setsignSta(true);
-                signUpAcess();
+                emailVal();
                 passwordVal();
               }}
             >
-              Sign in
+              Sign up
             </SignUpButton>
             <ConsentGuide>
               <p>
                 By clicking “Sign up”, you agree to our
-                <a href="/">
-                  {' '}
+                <Link to="">
                   terms of service, privacy policy and cookie policy
-                </a>
+                </Link>
               </p>
             </ConsentGuide>
           </InputForm>
