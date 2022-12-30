@@ -5,10 +5,12 @@ import cake from '../Img/cake.png';
 import calender from '../Img/calendar.png';
 import clock from '../Img/clock.png';
 import pencil from '../Img/pencil.png';
+import NewestPosts from '../Components/Users/NewestPosts';
 
 const Main = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
 `;
 const Content = styled.div`
   display: flex;
@@ -164,6 +166,7 @@ function Mypage() {
           <Tab>Settings</Tab>
         </Tabs>
       </Content>
+      <NewestPosts />
     </Main>
   );
 }
