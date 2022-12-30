@@ -15,7 +15,6 @@ import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import AskAQuestion from './Pages/AskAQuestion';
 import Footer from './Components/UI/Footer';
-import QuestionView from './Pages/QuestionView';
 import SearchResult from './Pages/SearchResult';
 import QuestionsTagged from './Pages/QuestionsTagged';
 import UserView from './Pages/UserView';
@@ -115,13 +114,13 @@ function App() {
             element={<QuestionsTagged />}
           />{' '}
           {/* 태그를 눌렀을 때 태그 검색하는 질문들 */}
-          <Route exact path="/questions/ask" element={<AskAQuestion />} />{' '}
-          <Route path="/questions/:id" element={<QuestionDetail />} />{' '}
-          <Route path="/patch/:id" element={<PatchQuestion />} />{' '}
+          <Route exact path="/questions/ask" element={<AskAQuestion />} />
+          <Route path="/questions/:id" element={<QuestionDetail />} />
+          <Route path="/patch/:id" element={<PatchQuestion />} />
           {/* 질문 생성 */}
           <Route path="/tags" element={<Tags />} /> {/* 태그 목록들*/}
           <Route exact path="/users" element={<Users />} /> {/* 유저 목록 */}
-          <Route path="/users/:memberId" element={<UserView />} />{' '}
+          <Route path="/users/:memberId" element={<UserView />} />
           {/* 개별 유저 보기 */}
           <Route path="/mypage" element={<MyPage />} /> {/* 마이페이지 */}
           <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
