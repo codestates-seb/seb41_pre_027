@@ -22,7 +22,8 @@
     "react/react-in-jsx-scope": 0,
     "react/jsx-uses-react": 0,
     "no-unused-vars": "off",
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "import/no-unresolved": "off"
   },
   "settings": {
     "import/resolver": {
