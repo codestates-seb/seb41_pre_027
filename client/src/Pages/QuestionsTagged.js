@@ -101,6 +101,9 @@ const QuestionsList = styled.section`
       a {
         display: block;
         color: #0074cc;
+        :hover {
+          color: #0a95ff;
+        }
       }
       .question__title {
         font-size: 1.3rem;
@@ -223,8 +226,8 @@ const QuestionsTagged = () => {
               return (
                 <li key={el.questionId}>
                   <ul className="question__response">
-                    <li>{el.rating} votes</li>
-                    <li>10 answers</li>
+                    <li>{el.ratingScore} votes</li>
+                    <li>{el.answerCount} answers</li>
                     <li>{el.views} views</li>
                   </ul>
                   <div className="question__preview">

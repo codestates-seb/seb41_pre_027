@@ -109,6 +109,9 @@ const QuestionsList = styled.section`
       a {
         display: block;
         color: #0074cc;
+        :hover {
+          color: #0a95ff;
+        }
       }
       .question__title {
         font-size: 1.3rem;

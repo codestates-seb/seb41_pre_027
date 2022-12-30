@@ -116,6 +116,9 @@ const StyledTags = styled.section`
     text-align: left;
     a {
       color: #0074cc;
+      :hover {
+        color: #0a95ff;
+      }
     }
     span {
       font-size: 11px;
