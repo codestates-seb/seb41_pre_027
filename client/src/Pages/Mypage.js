@@ -1,5 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, Link } from 'react';
 import styled from 'styled-components';
+import EditProfile from './EditProfile';
+import cake from '../Img/cake.png';
+import calender from '../Img/calendar.png';
+import clock from '../Img/clock.png';
+import pencil from '../Img/pencil.png';
 
 const Main = styled.div`
   display: flex;
@@ -44,7 +49,7 @@ const Tab = styled.div`
   cursor: pointer;
 `;
 const H1 = styled.h1`
-  font-size: 2rem;
+  font-size: 3.5rem;
   margin-left: 10px;
 `;
 const Detail = styled.div`
@@ -53,7 +58,8 @@ const Detail = styled.div`
   white-space: nowrap;
   display: flex;
   margin: 15px 5px;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  margin: 20px;
 `;
 const Details = styled.div`
   margin: 5px 20px;
@@ -63,10 +69,26 @@ const Details = styled.div`
 `;
 const Icon = styled.div`
   margin: 0 5px 0 10px;
+  .cake {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 5px;
+    vertical-align: top;
+  }
+  .clock {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-right: 5px;
+    vertical-align: top;
+  }
+  .calendar {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 7px;
+    vertical-align: top;
+  }
 `;
-const Icon2 = styled.div`
-  margin-right: 5px;
-`;
+
 const Buttons = styled.div`
   display: flex;
   height: 35px;
@@ -83,12 +105,17 @@ const Button = styled.button`
     background-color: #f8f9f9;
   }
   text-decoration: none;
-  margin: 0 5px;
+  margin: 5 5 5 5px;
   color: #9ba2a9;
   background-color: white;
   border-color: #9ba2a9;
   border: 1px solid;
   cursor: pointer;
+  .pencil {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 8px;
+  }
 `;
 const Left = styled.div`
   display: flex;
@@ -102,25 +129,28 @@ function Mypage() {
           <Left>
             image
             <Details>
-              <H1>name</H1>
+              <H1>nickname</H1>
               <Detail>
-                <Icon></Icon>
-                Member for 3 days
-                <Icon></Icon>
-                Last seen this week
-                <Icon></Icon>
-                Visited 3 days, 3 consecutive
+                <Icon>
+                  <img src={cake} alt="cake" className="cake" />
+                  Member for 1 days
+                </Icon>
+                <Icon>
+                  <img src={clock} alt="clock" className="clock" />
+                  Last seen this week
+                </Icon>
+                <Icon>
+                  <img src={calender} alt="clock" className="calendar" />
+                  Visited 1 days, 3 consecutive
+                </Icon>
               </Detail>
             </Details>
           </Left>
+
           <Buttons>
-            <Button>
-              <Icon2></Icon2>
+            <Button as="a" href="mypage/editprofile">
+              <img src={pencil} alt="pencil" className="pencil" />
               Edit profile
-            </Button>
-            <Button>
-              <Icon2></Icon2>
-              Network profile
             </Button>
           </Buttons>
         </Head>

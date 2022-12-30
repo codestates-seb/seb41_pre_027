@@ -24,6 +24,7 @@ import PatchQuestion from './Pages/Questions/PatchQuestion';
 import styled from 'styled-components';
 import { authActions } from './Redux/auth';
 import { Cookies } from 'react-cookie';
+import Editprofile from './Pages/EditProfile';
 
 const StyledApp = styled.div`
   width: 100%;
@@ -125,6 +126,8 @@ function App() {
           <Route path="/mypage" element={<MyPage />} /> {/* 마이페이지 */}
           <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
           <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
+          <Route path="/mypage/editprofile" element={<Editprofile />} />
+          {/* 편집하기 */}
           {/* 등록된 게시물 하나하나 페이지 */}
           <Route path="*" element={<NotFound />} />{' '}
           {/* 잘못된 경로 접속했을 때 */}
