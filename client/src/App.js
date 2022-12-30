@@ -52,6 +52,8 @@ function App() {
     const memberId = cookies.get('memberId');
     if (memberId) {
       dispatch(authActions.login());
+    } else {
+      dispatch(authActions.logout());
     }
   }, []);
   const [isFillBg, setIsFillBg] = useState('default');

@@ -197,9 +197,9 @@ function Login() {
           const jwtToken = response.headers.get('Authorization');
           const memberId = response.data.memberId;
           setTokenCookie('Authorization', jwtToken, {
-            maxAge: 60 * 60 * 24 * 7,
-          }); // 60초 * 60분 * 24시간 * 7일
-          setMemberIdCookie('memberId', memberId, { maxAge: 60 * 60 * 24 * 7 });
+            maxAge: 60 * 30000,
+          }); // 60초 * 30000분
+          setMemberIdCookie('memberId', memberId, { maxAge: 60 * 30000 });
           if (tokenCookie && memberIdCookie) {
             dispatch(authActions.login());
           }
