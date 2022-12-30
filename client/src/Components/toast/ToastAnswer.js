@@ -10,7 +10,7 @@ const Container = styled.div`
 `;
 
 const Button = styled.div`
-  margin-top: 12px;
+  margin-top: 20px;
   button {
     font-size: 11px;
     background-color: #0a95ff;
