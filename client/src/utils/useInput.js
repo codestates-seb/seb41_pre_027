@@ -1,16 +1,30 @@
 import { useState } from 'react';
 
-const useInput = () => {
-  const [value, setValue] = useState('');
+const useInput = (initialValue) => {
+  const [value, setValue] = useState(initialValue);
 
-  const bind = {
-    target: { value },
-    onChange: (e) => {
-      setValue(e.target.value);
-    },
+  const onChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setValue(value);
   };
 
-  return [value, bind];
+  return [value, onChange];
 };
 
 export default useInput;
+
+// import { useState } from 'react';
+
+// const useInput = (initialValue) => {
+//   const [value, setValue] = useState(initialValue);
+
+//   const handleChange = (event) => {
+//     setValue(value)
+//   };
+
+//   return [{value, onChange:handleChange}];
+// };
+
+// export default useInput;
