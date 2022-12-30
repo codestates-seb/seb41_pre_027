@@ -16,6 +16,9 @@ import avatar6 from '../Img/avatar6.png';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../Redux/auth';
+import { useCookies } from 'react-cookie';
 
 const Container = styled.div`
   width: 100%;
@@ -285,6 +288,40 @@ function Signup() {
   }
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const reqLoginBody = {
+    username: account.email,
+    password: account.password,
+  };
+  const [tokenCookie, setTokenCookie] = useCookies(['Authorization']);
+  const [refreshCookie, setRefreshCookie] = useCookies(['Refresh']);
+  const [memberIdCookie, setMemberIdCookie] = useCookies(['memberId']);
+  const sendLoginReq = async () => {
+    try {
+      const response = await axios.post('/api/login', reqLoginBody);
+      const jwtToken = response.headers.get('Authorization');
+      const refreshToken = response.headers.get('Refresh');
+      const memberId = response.data.memberId;
+      setTokenCookie('Authorization', jwtToken, {
+        maxAge: 60 * 30000,
+      }); // 60초 * 30000분
+      setRefreshCookie('Refresh', refreshToken, {
+        maxAge: 60 * 30000,
+      }); // 60초 * 30000분
+      setMemberIdCookie('memberId', memberId, { maxAge: 60 * 30000 });
+      if (tokenCookie && memberIdCookie && refreshCookie) {
+        dispatch(authActions.login());
+      }
+      setTimeout(() => {
+        navigate('/');
+        window.location.reload();
+      }, 250);
+    } catch (error) {
+      console.log(error);
+      alert('인증에 실패했습니다.');
+    }
+  };
 
   const signupSubmitHandler = (event) => {
     event.preventDefault();
@@ -301,8 +338,7 @@ function Signup() {
           const response = await axios.post('/api/member', reqSignupBody);
           if (response.status === 201) {
             alert('환영합니다.');
-            navigate('/login');
-            window.location.reload();
+            sendLoginReq();
           }
         } catch (error) {
           console.log(error);
@@ -340,7 +376,7 @@ function Signup() {
                 Collaborate and share knowledge with a private group for FREE.
               </span>
               <br />
-              <Link to="">
+              <Link to={() => false}>
                 Get Stack Overflow for Teams free for up to 50 users.
               </Link>
             </Introduce>
@@ -510,7 +546,7 @@ function Signup() {
             <ConsentGuide>
               <p>
                 By clicking “Sign up”, you agree to our
-                <Link to="">
+                <Link to={() => false}>
                   terms of service, privacy policy and cookie policy
                 </Link>
               </p>

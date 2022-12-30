@@ -45,7 +45,7 @@ const ButtonBox = styled.div`
 `;
 
 const Button = styled.button`
-  padding: 10px 0;
+  padding: 6px 0;
   margin: 5px 0;
   border-radius: 5px;
   width: 100%;
@@ -119,14 +119,19 @@ const InputBox = styled.div`
 `;
 
 const LoginButton = styled.button`
-  background-color: #0a95ff;
-  border: none;
   width: 100%;
   border-radius: 3px;
   padding: 10px 20px;
   margin: 10px 0;
-  color: white;
   cursor: pointer;
+  color: #fff;
+  background-color: #0a95ff;
+  border: 1px solid #0a95ff;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+  :hover {
+    background-color: #0074cc;
+    border-color: #0074cc;
+  }
 `;
 
 const Signup = styled.div`
@@ -139,11 +144,15 @@ const Signup = styled.div`
   a {
     color: #0074cc;
     text-decoration: none;
+    :hover {
+      color: #0a95ff;
+    }
   }
 `;
 
 function Login() {
   const [tokenCookie, setTokenCookie] = useCookies(['Authorization']);
+  const [refreshCookie, setRefreshCookie] = useCookies(['Refresh']);
   const [memberIdCookie, setMemberIdCookie] = useCookies(['memberId']);
 
   const [account, setAccount] = useState({
@@ -195,12 +204,16 @@ function Login() {
         try {
           const response = await axios.post('/api/login', reqBody);
           const jwtToken = response.headers.get('Authorization');
+          const refreshToken = response.headers.get('Refresh');
           const memberId = response.data.memberId;
           setTokenCookie('Authorization', jwtToken, {
             maxAge: 60 * 30000,
           }); // 60초 * 30000분
+          setRefreshCookie('Refresh', refreshToken, {
+            maxAge: 60 * 30000,
+          }); // 60초 * 30000분
           setMemberIdCookie('memberId', memberId, { maxAge: 60 * 30000 });
-          if (tokenCookie && memberIdCookie) {
+          if (tokenCookie && memberIdCookie && refreshCookie) {
             dispatch(authActions.login());
           }
           setTimeout(() => {
@@ -273,7 +286,7 @@ function Login() {
           <InputBox>
             <div>
               <p>Password</p>
-              <Link to={() => false}>Forgot password?</Link>
+              {/* <Link to={() => false}>Forgot password?</Link> */}
             </div>
             <input
               name="password"
@@ -304,9 +317,9 @@ function Login() {
           <p>
             Don’t have an account?<Link to="/signup"> Sign up</Link>
           </p>
-          <p>
+          {/* <p>
             Are you an employer?<Link to={() => false}> Sign up on Talent</Link>
-          </p>
+          </p> */}
         </Signup>
       </Content>
     </Container>
