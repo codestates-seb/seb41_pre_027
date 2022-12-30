@@ -7,12 +7,12 @@ import google from '../Img/google.png';
 import github from '../Img/github.png';
 import facebook from '../Img/facebook.png';
 import React, { useState } from 'react';
-import avatar1 from '../Img/avatar1.png';
-import avatar2 from '../Img/avatar2.png';
-import avatar3 from '../Img/avatar3.png';
-import avatar4 from '../Img/avatar4.png';
-import avatar5 from '../Img/avatar5.png';
-import avatar6 from '../Img/avatar6.png';
+import avatar1 from '../assets/images/avatar/1_@1x.png';
+import avatar2 from '../assets/images/avatar/2_@1x.png';
+import avatar3 from '../assets/images/avatar/3_@1x.png';
+import avatar4 from '../assets/images/avatar/4_@1x.png';
+import avatar5 from '../assets/images/avatar/5_@1x.png';
+import avatar6 from '../assets/images/avatar/6_@1x.png';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -299,7 +299,10 @@ function Signup() {
   const [memberIdCookie, setMemberIdCookie] = useCookies(['memberId']);
   const sendLoginReq = async () => {
     try {
-      const response = await axios.post('/api/login', reqLoginBody);
+      const response = await axios.post(
+        process.env.REACT_APP_DB_HOST + '/api/login',
+        reqLoginBody
+      );
       const jwtToken = response.headers.get('Authorization');
       const refreshToken = response.headers.get('Refresh');
       const memberId = response.data.memberId;
@@ -335,7 +338,10 @@ function Signup() {
 
       const sendSignUpReq = async () => {
         try {
-          const response = await axios.post('/api/member', reqSignupBody);
+          const response = await axios.post(
+            process.env.REACT_APP_DB_HOST + '/api/member',
+            reqSignupBody
+          );
           if (response.status === 201) {
             alert('환영합니다.');
             sendLoginReq();

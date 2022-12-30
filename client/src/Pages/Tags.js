@@ -172,7 +172,9 @@ const Tags = () => {
 
   const getTags = async () => {
     try {
-      const response = await axios.get(`/api/member?page=${page - 1}`);
+      const response = await axios.get(
+        process.env.REACT_APP_DB_HOST + `/api/member?page=${page - 1}`
+      );
       setTagList(response.data.data);
       setCountTags(response.data.count);
     } catch (error) {
@@ -199,7 +201,8 @@ const Tags = () => {
   const getSearchTags = async (keyword) => {
     try {
       const response = await axios.get(
-        `/api/member/search/?search=${keyword}&page=${page - 1}`
+        process.env.REACT_APP_DB_HOST +
+          `/api/member/search/?search=${keyword}&page=${page - 1}`
       );
       setTagList(response.data.data);
       setCountTags(response.data.count);

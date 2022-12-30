@@ -155,7 +155,9 @@ const Users = () => {
 
   const getUsers = async () => {
     try {
-      const response = await axios.get(`/api/member?page=${page - 1}`);
+      const response = await axios.get(
+        process.env.REACT_APP_DB_HOST + `/api/member?page=${page - 1}`
+      );
       setUserList(response.data.data);
       setCountUsers(response.data.count);
     } catch (error) {
@@ -182,7 +184,8 @@ const Users = () => {
   const getSearchUsers = async (keyword) => {
     try {
       const response = await axios.get(
-        `/api/member/search/?search=${keyword}&page=${page - 1}`
+        process.env.REACT_APP_DB_HOST +
+          `/api/member/search/?search=${keyword}&page=${page - 1}`
       );
       setUserList(response.data.data);
       setCountUsers(response.data.count);

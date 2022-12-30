@@ -39,12 +39,22 @@ const StyledNewestPosts = styled.div`
         background-color: #5eba7d;
       }
 
-      a {
-        flex-grow: 10000;
+      .question__title {
+        flex-basis: 90%;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* 몇 줄까지 보여줄 지 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         color: #0074cc;
         :hover {
           color: #0a95ff;
         }
+      }
+      .question__createdAt {
+        flex-basis: 60px;
+        flex-shrink: 0;
+        text-align: right;
       }
     }
   }
@@ -58,7 +68,9 @@ const NewestPosts = () => {
 
   const getUserQuestion = async () => {
     try {
-      const response = await axios.get(`/api/questions/member/${memberId}`);
+      const response = await axios.get(
+        process.env.REACT_APP_DB_HOST + `/api/questions/member/${memberId}`
+      );
       setUserQuestions(response.data.data);
       setCountUserQuestions(response.data.count);
     } catch (error) {
@@ -123,7 +135,7 @@ const NewestPosts = () => {
                 >
                   {el.title}
                 </Link>
-                <p className="question__content">
+                <p className="question__createdAt">
                   {changeStringToDate(el.createdAt)}
                 </p>
               </li>

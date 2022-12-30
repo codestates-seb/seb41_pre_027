@@ -11,7 +11,9 @@ const userView = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(`/api/member/${memberId}`);
+      const response = await axios.get(
+        process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`
+      );
       setUserData(response.data);
     } catch (error) {
       if (error.response) {
@@ -36,7 +38,12 @@ const userView = () => {
 
   return (
     <div
-      style={{ width: '100%', padding: '24px', border: '1px solid #e3e6e8' }}
+      style={{
+        width: '100%',
+        padding: '24px',
+        border: '1px solid #e3e6e8',
+        boxSizing: 'border-box',
+      }}
     >
       <h2>유저정보</h2>
       {Object.keys(userData).length ? (

@@ -202,7 +202,10 @@ function Login() {
       };
       const sendLoginReq = async () => {
         try {
-          const response = await axios.post('/api/login', reqBody);
+          const response = await axios.post(
+            process.env.REACT_APP_DB_HOST + '/api/login',
+            reqBody
+          );
           const jwtToken = response.headers.get('Authorization');
           const refreshToken = response.headers.get('Refresh');
           const memberId = response.data.memberId;

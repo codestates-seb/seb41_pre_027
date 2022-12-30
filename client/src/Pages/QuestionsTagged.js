@@ -4,12 +4,7 @@ import Pagination from '../Components/UI/Pagination';
 import SidebarWidget from '../Components/Questions/SidebarWidget';
 import styled from 'styled-components';
 import axios from 'axios';
-import avatar1 from '../assets/images/avatar/1_@1x.png';
-import avatar2 from '../assets/images/avatar/2_@1x.png';
-import avatar3 from '../assets/images/avatar/3_@1x.png';
-import avatar4 from '../assets/images/avatar/4_@1x.png';
-import avatar5 from '../assets/images/avatar/5_@1x.png';
-import avatar6 from '../assets/images/avatar/6_@1x.png';
+import QuestionsList from '../Components/Questions/QuestionsList';
 
 const StyledQuestions = styled.section`
   padding: 24px 24px 24px 0;
@@ -20,11 +15,19 @@ const StyledQuestions = styled.section`
   gap: 24px;
   border-left: 1px solid #d6d9dc;
 
+  .questionlist__pagination {
+    padding-left: 24px;
+  }
+
   @media screen and (max-width: 640px) {
     padding: 24px 0;
+
+    .questionlist__pagination {
+      padding-left: 16px;
+    }
   }
 `;
-const QuestionsList = styled.section`
+const ViewQuestionsList = styled.section`
   display: flex;
   flex-grow: 10000;
   justify-content: space-between;
@@ -75,82 +78,8 @@ const QuestionsList = styled.section`
     margin-top: 20px;
   }
 
-  .questions__list {
-    width: 100%;
-    margin: 20px auto 40px;
-    border-bottom: 1px solid #e3e3e3;
-    > li {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      border-top: 1px solid #e3e6e8;
-      padding: 16px;
-      gap: 16px;
-
-      .question__response {
-        width: 15%;
-        color: #6a737c;
-        text-align: right;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-      .question__preview {
-        width: calc(100% - 15% - 16px);
-      }
-      a {
-        display: block;
-        color: #0074cc;
-        :hover {
-          color: #0a95ff;
-        }
-      }
-      .question__title {
-        font-size: 1.3rem;
-      }
-      .question__content {
-        width: 100%;
-        margin: 12px 0;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-word;
-        line-height: 1.5;
-        color: #3b4045;
-
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* 몇 줄까지 보여줄 지 */
-        -webkit-box-orient: vertical;
-      }
-      .question__author {
-        width: calc(100% - 8px);
-        flex-direction: row;
-        justify-content: flex-end;
-        gap: 4px;
-        img {
-          width: 28px;
-          height: 28px;
-          margin-top: 2px;
-        }
-      }
-    }
-  }
-
   @media screen and (max-width: 1200px) {
     max-width: 100%;
-    .questions__list {
-      > li {
-        flex-direction: column;
-        gap: 12px;
-        .question__response {
-          width: 100%;
-          text-align: left;
-          flex-direction: row;
-        }
-        .question__preview {
-          width: 100%;
-        }
-      }
-    }
   }
   @media screen and (max-width: 640px) {
     max-width: 100%;
@@ -163,22 +92,13 @@ const QuestionsList = styled.section`
     .questions__volume {
       padding-left: 16px;
     }
-    .questions__list {
-      margin: 16px auto 24px;
-      > li {
-        padding: 16px;
-        .question__content {
-          margin: 8px 0;
-        }
-      }
-    }
   }
 `;
 
 const QuestionsTagged = () => {
   const location = useLocation().pathname;
   const tag = location.slice(18);
-  const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
+
   const [questionList, setQuestionList] = useState([]);
   const [countQuestions, setCountQuestions] = useState(0);
   const [page, setPage] = useState(1);
@@ -186,7 +106,9 @@ const QuestionsTagged = () => {
 
   const getQuestions = async () => {
     try {
-      const response = await axios.get(`/api/questions/tags?tagName=${tag}`);
+      const response = await axios.get(
+        process.env.REACT_APP_DB_HOST + `/api/questions/tags?tagName=${tag}`
+      );
       setQuestionList(response.data.data);
       setCountQuestions(response.data.count);
     } catch (error) {
@@ -212,7 +134,7 @@ const QuestionsTagged = () => {
 
   return (
     <StyledQuestions>
-      <QuestionsList>
+      <ViewQuestionsList>
         <div className="questions__header flex-vertical-center">
           <h2>Questions tagged [{tag}]</h2>
           <div className="questions__header--button btn-style1">
@@ -220,44 +142,20 @@ const QuestionsTagged = () => {
           </div>
         </div>
         <p className="questions__volume">{countQuestions} results</p>
-        <ul className="questions__list">
-          {questionList.length ? (
-            questionList.map((el) => {
-              return (
-                <li key={el.questionId}>
-                  <ul className="question__response">
-                    <li>{el.ratingScore} votes</li>
-                    <li>{el.answerCount} answers</li>
-                    <li>{el.views} views</li>
-                  </ul>
-                  <div className="question__preview">
-                    <Link
-                      to={'/questions/' + el.questionId}
-                      className="question__title"
-                    >
-                      {el.title}
-                    </Link>
-                    <p className="question__content">{el.text}</p>
-                    <div className="question__author flex-vertical-center">
-                      <img src={avatars[el.memberImage - 1]} alt="유저아바타" />
-                      <Link to={'/users/' + el.memberID}>{el.name}</Link>
-                    </div>
-                  </div>
-                </li>
-              );
-            })
-          ) : (
-            <li>데이터가 없음</li>
-          )}
-        </ul>
+
+        {/* 질문 목록 */}
+        <QuestionsList questionList={questionList} />
+
         {/* 페이지네이션 */}
-        <Pagination
-          totalPage={totalPage}
-          limit={5}
-          page={page}
-          setPage={setPage}
-        />
-      </QuestionsList>
+        <div className="questionlist__pagination">
+          <Pagination
+            totalPage={totalPage}
+            limit={5}
+            page={page}
+            setPage={setPage}
+          />
+        </div>
+      </ViewQuestionsList>
       <SidebarWidget />
     </StyledQuestions>
   );

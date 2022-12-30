@@ -72,7 +72,9 @@ const LoggedInHeader = () => {
 
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(`/api/member/${memberId}`);
+      const response = await axios.get(
+        process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`
+      );
       setUserInfo(response.data);
     } catch (error) {
       if (error.response) {

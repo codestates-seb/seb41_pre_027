@@ -4,12 +4,7 @@ import Pagination from '../Components/UI/Pagination';
 import SidebarWidget from '../Components/Questions/SidebarWidget';
 import styled from 'styled-components';
 import axios from 'axios';
-import avatar1 from '../assets/images/avatar/1_@1x.png';
-import avatar2 from '../assets/images/avatar/2_@1x.png';
-import avatar3 from '../assets/images/avatar/3_@1x.png';
-import avatar4 from '../assets/images/avatar/4_@1x.png';
-import avatar5 from '../assets/images/avatar/5_@1x.png';
-import avatar6 from '../assets/images/avatar/6_@1x.png';
+import QuestionsList from '../Components/Questions/QuestionsList';
 
 const StyledQuestions = styled.section`
   padding: 24px 24px 24px 0;
@@ -32,7 +27,7 @@ const StyledQuestions = styled.section`
     }
   }
 `;
-const QuestionsList = styled.section`
+const ViewQuestionsList = styled.section`
   display: flex;
   flex-grow: 10000;
   justify-content: space-between;
@@ -186,7 +181,6 @@ const QuestionsList = styled.section`
 const SearchResult = () => {
   const params = new URLSearchParams(location.search);
   const keyword = params.get('search');
-  const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
   const [questionList, setQuestionList] = useState([]);
   const [countQuestions, setCountQuestions] = useState(0);
   const [page, setPage] = useState(1);
@@ -195,7 +189,8 @@ const SearchResult = () => {
   const getQuestions = async () => {
     try {
       const response = await axios.get(
-        `/api/questions/search?search=${keyword}&page=${page - 1}`
+        process.env.REACT_APP_DB_HOST +
+          `/api/questions/search?search=${keyword}&page=${page - 1}`
       );
       setQuestionList(response.data.data);
       setCountQuestions(response.data.count);
@@ -222,7 +217,7 @@ const SearchResult = () => {
 
   return (
     <StyledQuestions>
-      <QuestionsList>
+      <ViewQuestionsList>
         <div className="questions__header flex-vertical-center">
           <h2>Search Results</h2>
           <div className="questions__header--button btn-style1">
@@ -230,36 +225,10 @@ const SearchResult = () => {
           </div>
         </div>
         <p className="questions__volume">{countQuestions} results</p>
-        <ul className="questions__list">
-          {questionList.length ? (
-            questionList.map((el) => {
-              return (
-                <li key={el.questionId}>
-                  <ul className="question__response">
-                    <li>{el.ratingScore} votes</li>
-                    <li>{el.answerCount} answers</li>
-                    <li>{el.views} views</li>
-                  </ul>
-                  <div className="question__preview">
-                    <Link
-                      to={'/questions/' + el.questionId}
-                      className="question__title"
-                    >
-                      {el.title}
-                    </Link>
-                    <p className="question__content">{el.text}</p>
-                    <div className="question__author flex-vertical-center">
-                      <img src={avatars[el.memberImage - 1]} alt="유저아바타" />
-                      <Link to={'/users/' + el.memberID}>{el.name}</Link>
-                    </div>
-                  </div>
-                </li>
-              );
-            })
-          ) : (
-            <li>데이터가 없음</li>
-          )}
-        </ul>
+
+        {/* 질문 목록 */}
+        <QuestionsList questionList={questionList} />
+
         {/* 페이지네이션 */}
         <div className="questionlist__pagination">
           <Pagination
@@ -269,7 +238,7 @@ const SearchResult = () => {
             setPage={setPage}
           />
         </div>
-      </QuestionsList>
+      </ViewQuestionsList>
       <SidebarWidget />
     </StyledQuestions>
   );
