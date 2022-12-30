@@ -1,5 +1,8 @@
 //api 문서화
 import axios from 'axios';
+import { Cookies } from 'react-cookie';
+const cookies = new Cookies();
+const accessToken = cookies.get('Authorization');
 
 const BASE_URL = `/`;
 const BOARD_URL = '/api/questions/';
@@ -48,13 +51,16 @@ export const fetchPatch = (url, id, data) => {
 };
 
 export const fetchCreateComment = (url, id, data) => {
-  fetch(`${url}${id}`, {
+  fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
+    },
     body: JSON.stringify(data),
   })
     .then(() => {
-      window.location.href = `/questions/${id}`;
+      window.location.href = `/api/questions/${id}`;
     })
     .catch((error) => {
       console.error('Error', error);
@@ -62,7 +68,7 @@ export const fetchCreateComment = (url, id, data) => {
 };
 
 export const fetchDeleteComment = (url, id) => {
-  fetch(`${url}${id}`, {
+  fetch(url, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -79,7 +85,7 @@ export const fetchDeleteComment = (url, id) => {
 export const fetchPatchComment = (url, id, data) => {
   fetch(`${url}${id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'Application/json' },
+    headers: { 'Content-Type': 'Application/json', Authorization: accessToken },
     body: JSON.stringify(data),
   })
     .then(() => {
