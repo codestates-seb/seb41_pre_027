@@ -8,12 +8,13 @@ import useInput from '../../utils/useInput';
 
 const BigContainer = styled.div`
   .content {
+    background-color: white;
     border: 1px solid #edeff1; //이렇게 바꿨다가도 다시 새로고침하면 이상하게 됨
     padding: 30px 30px 20px 20px;
     border-radius: 5px;
     margin: 20px 0px;
   }
-  .content__ {
+  .content__container {
     margin-bottom: 8px;
   }
   .content__title {
@@ -61,7 +62,7 @@ const Button = styled.div`
 `;
 //
 export default function ToastAsk() {
-  const [title, setTitle] = useInput('');
+  const [title, setTitle] = useInput('asdf');
   // Editor DOM 선택용
   const editorRef = useRef();
 
@@ -96,7 +97,7 @@ export default function ToastAsk() {
       <BigContainer>
         <form onSubmit={handleRegisterButton} name="asksubmit">
           <div className="content">
-            <div className="content__">
+            <div className="content__container">
               <h3 className="content__title">Title</h3>
               <span className="content__title__description">
                 Be specific and imagine you’re asking a question to another
@@ -104,7 +105,7 @@ export default function ToastAsk() {
               </span>
             </div>
             <div>
-              <input type="text" value={setTitle} name="asktitle"></input>
+              <input type="text" {...title} name="asktitle"></input>
             </div>
           </div>
           <Container>
