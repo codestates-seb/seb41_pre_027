@@ -11,7 +11,6 @@ const Container = styled.div`
 
 const Head = styled.div`
   display: flex;
-  margin-left: 7rem;
   .head__title {
     font-size: larger;
     padding-top: 4rem;
@@ -45,13 +44,12 @@ const Description = styled.div`
 `;
 
 const Main = styled.div`
-  margin-left: 7rem;
   margin-right: 40rem;
-  .content {
+  /* .content {
     border: 1px solid black;
     margin: 13px;
     background-color: white;
-  }
+  } */
 `;
 function CreateBoard({ boards }) {
   //const [title, setTitle] = useInput('');
