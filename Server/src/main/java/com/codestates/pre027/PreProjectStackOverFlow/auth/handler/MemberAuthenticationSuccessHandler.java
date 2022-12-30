@@ -31,6 +31,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
         Member member = (Member) authentication.getPrincipal();
         LoginResponseDto dto = new LoginResponseDto();
         dto.setMemberId(member.getMemberId());
+        dto.setMemberImage(member.getMemberImage());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(gson.toJson(dto, LoginResponseDto.class));
     }

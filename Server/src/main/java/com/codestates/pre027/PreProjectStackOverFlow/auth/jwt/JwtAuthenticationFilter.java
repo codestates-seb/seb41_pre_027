@@ -1,14 +1,11 @@
-package com.codestates.pre027.PreProjectStackOverFlow.auth.filter;
+package com.codestates.pre027.PreProjectStackOverFlow.auth.jwt;
 
-
-import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
 import com.codestates.pre027.PreProjectStackOverFlow.auth.dto.LoginDto;
+//import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Duration;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +24,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
+//    private final RedisDao redisDao;
+
 
     //  메서드 내부에서 인증을 시도하는 로직을 구현
     @SneakyThrows
@@ -59,49 +58,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Member member = (Member) authResult.getPrincipal();
 
         //  delegateAccessToken(member) 메서드를 이용해 Access Token 을 생성
-        String accessToken = delegateAccessToken(member);
+        String accessToken = jwtTokenizer.delegateAccessToken(member);
 
         //  delegateRefreshToken(member) 메서드를 이용해 Refresh Token 을 생성
-        String refreshToken = delegateRefreshToken(member);
+        String refreshToken = jwtTokenizer.delegateRefreshToken(member);
 
+        //  redis 에 정보 저장
+//        redisDao.setValues(member.getEmail(), refreshToken, Duration.ofMinutes(jwtTokenizer.getRefreshTokenExpirationMinutes()));
+
+        // response header 에 token 값 저장
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
 
         //  AuthenticationSuccessHandler 의 onAuthenticationSuccess() 메서드를 호출
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
-    }
-
-    // Access Token 과 Refresh Token 을 생성하는 구체적인 로직
-    private String delegateAccessToken(Member member) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("memberId", member.getMemberId());
-        claims.put("userEmail", member.getEmail());
-        claims.put("roles", member.getRoles());
-
-        String subject = member.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(
-            jwtTokenizer.getAccessTokenExpirationMinutes());
-
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
-            jwtTokenizer.getSecretKey());
-
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration,
-            base64EncodedSecretKey);
-
-        return accessToken;
-    }
-
-    //      Access Token 과 Refresh Token 을 생성하는 구체적인 로직
-    private String delegateRefreshToken(Member member) {
-        String subject = member.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(
-            jwtTokenizer.getRefreshTokenExpirationMinutes());
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
-            jwtTokenizer.getSecretKey());
-
-        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration,
-            base64EncodedSecretKey);
-
-        return refreshToken;
     }
 }

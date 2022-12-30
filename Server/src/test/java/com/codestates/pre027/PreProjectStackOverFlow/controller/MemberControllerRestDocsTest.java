@@ -106,14 +106,14 @@ public class MemberControllerRestDocsTest {
                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
                         fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비밀번호"),
                         fieldWithPath("memberImage").type(JsonFieldType.NUMBER)
-                            .description("멤버 이미지")
+                            .description("회원 이미지")
                     )
                 ),
                 responseFields(
                     fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                     fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
                     fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
-                    fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("멤버 이미지")
+                    fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지")
                 )
             ));
     }
@@ -179,7 +179,7 @@ public class MemberControllerRestDocsTest {
                         fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
                         fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
                         fieldWithPath("memberImage").type(JsonFieldType.NUMBER)
-                            .description("멤버 이미지")
+                            .description("회원 이미지")
                     )
                 )
             ));
@@ -217,7 +217,7 @@ public class MemberControllerRestDocsTest {
                     fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
                     fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
                     fieldWithPath("name").type(JsonFieldType.STRING).description("회원 닉네임"),
-                    fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("멤버 이미지")
+                    fieldWithPath("memberImage").type(JsonFieldType.NUMBER).description("회원 이미지")
                 )
             ));
     }
@@ -276,7 +276,7 @@ public class MemberControllerRestDocsTest {
                     fieldWithPath("data[].email").type(JsonFieldType.STRING).description("회원 이메일"),
                     fieldWithPath("data[].name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("data[].memberImage").type(JsonFieldType.NUMBER)
-                        .description("멤버 이미지"),
+                        .description("회원 이미지"),
                     fieldWithPath("count").type(JsonFieldType.NUMBER).description("전체 회원 수")
                 )
             ));
@@ -369,7 +369,7 @@ public class MemberControllerRestDocsTest {
                     fieldWithPath("data[].email").type(JsonFieldType.STRING).description("회원 이메일"),
                     fieldWithPath("data[].name").type(JsonFieldType.STRING).description("회원 닉네임"),
                     fieldWithPath("data[].memberImage").type(JsonFieldType.NUMBER)
-                        .description("멤버 이미지"),
+                        .description("회원 이미지"),
                     fieldWithPath("count").type(JsonFieldType.NUMBER).description("검색된 회원 수")
                 )
             ));
