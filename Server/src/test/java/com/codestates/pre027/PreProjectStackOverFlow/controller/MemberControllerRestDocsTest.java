@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
+import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
 import com.codestates.pre027.PreProjectStackOverFlow.member.controller.MemberController;
 import com.codestates.pre027.PreProjectStackOverFlow.member.dto.MemberDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
@@ -60,6 +61,9 @@ public class MemberControllerRestDocsTest {
 
     @MockBean
     private JwtTokenizer jwtTokenizer;
+
+    @MockBean
+    private RedisDao redisDao;
 
     @Autowired
     private Gson gson;

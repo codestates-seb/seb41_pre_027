@@ -1,10 +1,10 @@
 package com.codestates.pre027.PreProjectStackOverFlow.auth.jwt;
 
-
-//import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
+import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JwtTokenizer {
 
-//    private final RedisDao redisDao;
+    private final RedisDao redisDao;
 
 
     //    JWT 생성 및 검증 시 사용되는 Secret Key 정보입니다
@@ -64,12 +65,13 @@ public class JwtTokenizer {
     }
 
     //    Refresh Token 을 생성하는 메서드입니다.
-    public String generateRefreshToken(String subject, Date expiration,
+    public String generateRefreshToken(Map<String, Object> claims, String subject, Date expiration,
         String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
             .setSubject(subject)
+            .setClaims(claims)
             .setIssuedAt(Calendar.getInstance().getTime())
             .setExpiration(expiration)
             .signWith(key)
@@ -146,7 +148,7 @@ public class JwtTokenizer {
         String base64EncodedSecretKey = encodeBase64SecretKey(
             getSecretKey());
 
-        String refreshToken = generateRefreshToken(subject, expiration,
+        String refreshToken = generateRefreshToken(claims, subject, expiration,
             base64EncodedSecretKey);
 
         return refreshToken;
@@ -168,17 +170,14 @@ public class JwtTokenizer {
         return parseToken(token).get("memberId", Long.class);
     }
 
-//    public void deleteRtk(Member member) throws JwtException {
-//        redisDao.deleteValues(member.getEmail());
-//    }
-//
-//    public String reissueAtk(Member member) throws JwtException {
-//        String rtkInRedis = redisDao.getValues(member.getEmail());
-//        if (Objects.isNull(rtkInRedis)) {
-//            throw new JwtException("인증 정보가 만료되었습니다.");
-//        }
-//
-//        String atk = delegateAccessToken(member);
-//        return atk;
-//    }
+    // redis 에 저장된 refreshToken 삭제
+    public void deleteRtk(Member member) throws JwtException {
+        redisDao.deleteValues(member.getEmail());
+    }
+
+    // accessToken 재발급
+    public String reissueAtk(Member member) throws JwtException {
+        String atk = delegateAccessToken(member);
+        return atk;
+    }
 }

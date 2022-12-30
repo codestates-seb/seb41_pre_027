@@ -115,7 +115,7 @@ public class RatingControllerRestDocsTest {
             new RatingDto.QuestionResponse(
                 1L,
                 1L,
-                1,
+                -1,
                 false,
                 true
             );
@@ -203,7 +203,7 @@ public class RatingControllerRestDocsTest {
             new RatingDto.AnswerResponse(
                 1L,
                 1L,
-                1,
+                -1,
                 false,
                 true
             );

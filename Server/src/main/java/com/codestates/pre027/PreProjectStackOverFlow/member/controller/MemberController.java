@@ -2,12 +2,18 @@ package com.codestates.pre027.PreProjectStackOverFlow.member.controller;
 
 
 import com.codestates.pre027.PreProjectStackOverFlow.auth.jwt.JwtTokenizer;
+import com.codestates.pre027.PreProjectStackOverFlow.auth.redis.RedisDao;
 import com.codestates.pre027.PreProjectStackOverFlow.dto.CountMultiResponseDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.dto.MemberDto;
 import com.codestates.pre027.PreProjectStackOverFlow.member.entity.Member;
 import com.codestates.pre027.PreProjectStackOverFlow.member.mapper.MemberMapper;
 import com.codestates.pre027.PreProjectStackOverFlow.member.service.MemberService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.JwtException;
 import java.util.List;
+import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -43,6 +50,7 @@ public class MemberController {
 
     //    JwtTokenizer 클래스 DI
     private final JwtTokenizer jwtTokenizer;
+    private final RedisDao redisDao;
 
 
     //    전체 회원 조회하기
@@ -116,6 +124,34 @@ public class MemberController {
         return new ResponseEntity<>(new CountMultiResponseDto<>(
             memberMapper.membersToMemberResponseDtos(searchMember), searchMemberCount),
             HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(@RequestHeader("Authorization") String token) {
+        long memberId = jwtTokenizer.getMemberId(token);
+        String email = memberService.findMember(memberId).getEmail();
+        redisDao.deleteValues(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/reissue")
+    public ResponseEntity reissue(@RequestHeader("Refresh") String token) throws JwtException {
+
+        long memberId = jwtTokenizer.getMemberId(token);
+        Member member = memberService.findMember(memberId);
+        String rtk = redisDao.getValues(member.getEmail());
+
+        if(Objects.isNull(rtk)){
+            throw new JwtException("토큰 만료");
+        }
+
+        jwtTokenizer.deleteRtk(member);
+        String atk = jwtTokenizer.reissueAtk(member);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + atk);
+
+        return ResponseEntity.ok().headers(headers).build();
     }
 }
 
