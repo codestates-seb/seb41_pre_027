@@ -4,12 +4,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
 import { authActions } from '../../Redux/auth';
-import avatar1 from '../../assets/images/avatar/1_@1x.png';
-import avatar2 from '../../assets/images/avatar/2_@1x.png';
-import avatar3 from '../../assets/images/avatar/3_@1x.png';
-import avatar4 from '../../assets/images/avatar/4_@1x.png';
-import avatar5 from '../../assets/images/avatar/5_@1x.png';
-import avatar6 from '../../assets/images/avatar/6_@1x.png';
+import avatars from '../../utils/avatarImage';
 import { Cookies } from 'react-cookie';
 
 const StyledLoggedInHeader = styled.ul`
@@ -66,7 +61,6 @@ const LoggedInHeader = () => {
     window.location.reload();
   };
 
-  const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
   const [userInfo, setUserInfo] = useState({});
   const memberId = cookies.get('memberId');
 

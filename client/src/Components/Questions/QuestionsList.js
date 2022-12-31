@@ -1,12 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import avatar1 from '../../assets/images/avatar/1_@1x.png';
-import avatar2 from '../../assets/images/avatar/2_@1x.png';
-import avatar3 from '../../assets/images/avatar/3_@1x.png';
-import avatar4 from '../../assets/images/avatar/4_@1x.png';
-import avatar5 from '../../assets/images/avatar/5_@1x.png';
-import avatar6 from '../../assets/images/avatar/6_@1x.png';
+import avatars from '../../utils/avatarImage';
 
 const StyledQuestionsList = styled.div`
   width: 100%;
@@ -99,7 +94,6 @@ const StyledQuestionsList = styled.div`
 `;
 
 const QuestionsList = ({ questionList }) => {
-  const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
   return (
     <StyledQuestionsList>
       {questionList.length ? (

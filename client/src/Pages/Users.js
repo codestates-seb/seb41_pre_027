@@ -3,12 +3,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '../Components/UI/Pagination';
 import styled from 'styled-components';
 import axios from 'axios';
-import avatar1 from '../assets/images/avatar/1_@1x.png';
-import avatar2 from '../assets/images/avatar/2_@1x.png';
-import avatar3 from '../assets/images/avatar/3_@1x.png';
-import avatar4 from '../assets/images/avatar/4_@1x.png';
-import avatar5 from '../assets/images/avatar/5_@1x.png';
-import avatar6 from '../assets/images/avatar/6_@1x.png';
+import avatars from '../utils/avatarImage';
 
 const StyledUsers = styled.section`
   padding: 24px;
@@ -148,7 +143,6 @@ const StyledUsers = styled.section`
 const Users = () => {
   const [inputValue, setInputValue] = useState('');
   const [userList, setUserList] = useState([]);
-  const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
   const [countUsers, setCountUsers] = useState(0);
   const [page, setPage] = useState(1);
   const totalPage = Math.ceil(countUsers / 20) || 1;
@@ -255,7 +249,7 @@ const Users = () => {
                 </div>
                 <div className="users__list--info">
                   <Link to={'/users/' + el.memberId}>{el.name}</Link>
-                  <span>{el.memberId}</span>
+                  <span>{el.email}</span>
                 </div>
               </li>
             );

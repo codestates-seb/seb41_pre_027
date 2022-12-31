@@ -7,12 +7,7 @@ import google from '../Img/google.png';
 import github from '../Img/github.png';
 import facebook from '../Img/facebook.png';
 import React, { useState } from 'react';
-import avatar1 from '../assets/images/avatar/1_@1x.png';
-import avatar2 from '../assets/images/avatar/2_@1x.png';
-import avatar3 from '../assets/images/avatar/3_@1x.png';
-import avatar4 from '../assets/images/avatar/4_@1x.png';
-import avatar5 from '../assets/images/avatar/5_@1x.png';
-import avatar6 from '../assets/images/avatar/6_@1x.png';
+import avatars from '../utils/avatarImage';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -479,7 +474,7 @@ function Signup() {
                     checked={account.memberImage === '1'}
                     onChange={onChangeInput}
                   />
-                  <img src={avatar1} alt="avatar1" className="avatar1" />
+                  <img src={avatars[0]} alt="avatar1" className="avatar1" />
                 </label>
                 <label htmlFor="avt2">
                   <input
@@ -490,7 +485,7 @@ function Signup() {
                     checked={account.memberImage === '2'}
                     onChange={onChangeInput}
                   />
-                  <img src={avatar2} alt="avatar2" className="avatar2" />
+                  <img src={avatars[1]} alt="avatar2" className="avatar2" />
                 </label>
                 <label htmlFor="avt3">
                   <input
@@ -501,7 +496,7 @@ function Signup() {
                     checked={account.memberImage === '3'}
                     onChange={onChangeInput}
                   />
-                  <img src={avatar3} alt="avatar3" className="avatar3" />
+                  <img src={avatars[2]} alt="avatar3" className="avatar3" />
                 </label>
                 <label htmlFor="avt4">
                   <input
@@ -512,7 +507,7 @@ function Signup() {
                     checked={account.memberImage === '4'}
                     onChange={onChangeInput}
                   />
-                  <img src={avatar4} alt="avatar4" className="avatar4" />
+                  <img src={avatars[3]} alt="avatar4" className="avatar4" />
                 </label>
                 <label htmlFor="avt5">
                   <input
@@ -523,7 +518,7 @@ function Signup() {
                     checked={account.memberImage === '5'}
                     onChange={onChangeInput}
                   />
-                  <img src={avatar5} alt="avatar5" className="avatar5" />
+                  <img src={avatars[4]} alt="avatar5" className="avatar5" />
                 </label>
                 <label htmlFor="avt6">
                   <input
@@ -534,7 +529,7 @@ function Signup() {
                     checked={account.memberImage === '6'}
                     onChange={onChangeInput}
                   />
-                  <img src={avatar6} alt="avatar6" className="avatar6" />
+                  <img src={avatars[5]} alt="avatar6" className="avatar6" />
                 </label>
               </AvatarBox>
             </InputBox>

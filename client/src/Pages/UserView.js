@@ -2,6 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import NewestPosts from '../Components/Users/NewestPosts';
+import styled from 'styled-components';
+import avatars from '../utils/avatarImage';
+
+const StyledUserView = styled.div`
+  width: 100%;
+  padding: 24px;
+  border-left: 1px solid #d6d9dc;
+`;
 
 const userView = () => {
   const location = useLocation().pathname;
@@ -37,28 +45,23 @@ const userView = () => {
   }, []);
 
   return (
-    <div
-      style={{
-        width: '100%',
-        padding: '24px',
-        border: '1px solid #e3e6e8',
-        boxSizing: 'border-box',
-      }}
-    >
+    <StyledUserView>
       <h2>유저정보</h2>
       {Object.keys(userData).length ? (
         <div>
+          <img
+            src={avatars[userData.memberImage - 1]}
+            alt={`${userData.name}아바타이미지`}
+          />
           <h3>{userData.name}</h3>
-          <p>{userData.memberId}</p>
-          <p>{userData.email}</p>
-          <p>{userData.memberImage}</p>
+          <a href={`mailto:${userData.email}`}>{userData.email}</a>
         </div>
       ) : (
         <p>데이터없음</p>
       )}
       <hr />
       <NewestPosts />
-    </div>
+    </StyledUserView>
   );
 };
 
