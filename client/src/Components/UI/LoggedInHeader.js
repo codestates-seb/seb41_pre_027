@@ -53,10 +53,21 @@ const LoggedInHeader = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const postLogout = async () => {
+    try {
+      const response = await axios.post('/api/member/logout');
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const logoutHandler = () => {
+    postLogout();
     dispatch(authActions.logout());
     cookies.remove('Authorization');
     cookies.remove('memberId');
+    cookies.remove('Refresh');
     navigate('/');
     window.location.reload();
   };
