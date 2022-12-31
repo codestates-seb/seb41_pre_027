@@ -1,5 +1,9 @@
 import useFetch from '../../utils/useFetch';
-import { fetchCreateComment } from '../../utils/api';
+import {
+  fetchCreateComment,
+  fetchDeleteComment,
+  fetchPatchComment,
+} from '../../utils/api';
 import useInput from '../../utils/useInput';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -29,15 +33,41 @@ const Text = styled.div``;
 function CommentCreateDetail() {
   const { id } = useParams();
   //comment 가져오기
-  const comment = useFetch(`/api/questions/${id}/comments`);
-  const getcomment = comment[0];
+  const comment = useFetch(
+    process.env.REACT_APP_DB_HOST + `/api/questions/${id}/comments`
+  );
+  const getcomment = comment[0]; //배열 안으로 접근
   //comment 생성하기
-  const commentContent = useInput('');
+  const [commentContent, bindCommentContent, resetCommentContent] =
+    useInput('');
 
-  const submitForm = () => {
-    fetchCreateComment(`/api/questions/1/comments`, id, {
-      text: '올라가라',
-    });
+  const submitForm = (e) => {
+    e.preventDefault();
+    fetchCreateComment(
+      process.env.REACT_APP_DB_HOST + `/api/questions/${id}/comments`,
+      id,
+      {
+        text: commentContent,
+      }
+    );
+    resetCommentContent();
+  };
+
+  const deleteForm = (commentId) => {
+    alert(`${commentId}`);
+    fetchDeleteComment(
+      process.env.REACT_APP_DB_HOST + `/api/comments/${commentId}`,
+      id
+    );
+  };
+
+  const patchForm = (commentId) => {
+    alert(`${commentId}`);
+    fetchPatchComment(
+      process.env.REACT_APP_DB_HOST + `/api/comments/${commentId}`,
+      id
+      //데이터 들어가야함
+    );
   };
 
   return (
@@ -49,6 +79,12 @@ function CommentCreateDetail() {
               getcomment.map((el) => {
                 return (
                   <div className="comment__read--id" key={el.commentId}>
+                    <button onClick={(e) => patchForm(el.commentId)}>
+                      수정
+                    </button>
+                    <button onClick={(e) => deleteForm(el.commentId)}>
+                      삭제
+                    </button>
                     <div className="comment__read--text">{el.text}</div>
                   </div>
                 );
@@ -56,16 +92,14 @@ function CommentCreateDetail() {
           </div>
         </CommentRead>
         <CommentPost>
-          <form onSubmit>
+          <form onSubmit={(e) => submitForm(e)}>
             <div className="comment__post">
               <input
                 type="text"
                 placeholder="Add a comment"
-                {...commentContent}
+                {...bindCommentContent}
               ></input>
-              <button type="submit" onClick={submitForm}>
-                제출
-              </button>
+              <button type="submit">제출</button>
             </div>
           </form>
         </CommentPost>
