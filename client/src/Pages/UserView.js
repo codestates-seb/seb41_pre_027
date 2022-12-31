@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import NewestPosts from '../Components/Users/NewestPosts';
 import styled from 'styled-components';
-import { avatars, avatarsM } from '../utils/avatarImage';
+import { avatarsM } from '../utils/avatarImage';
 
 const StyledUserView = styled.div`
   width: 100%;
@@ -120,7 +120,7 @@ const userView = () => {
         <p>데이터없음</p>
       )}
 
-      <NewestPosts />
+      <NewestPosts memberId={memberId} />
     </StyledUserView>
   );
 };

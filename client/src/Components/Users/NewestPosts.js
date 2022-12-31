@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -62,9 +61,7 @@ const StyledNewestPosts = styled.div`
   }
 `;
 
-const NewestPosts = () => {
-  const location = useLocation().pathname;
-  const memberId = location.slice(7);
+const NewestPosts = ({ memberId }) => {
   const [userQuestions, setUserQuestions] = useState([]);
   const [countUserQuestions, setCountUserQuestions] = useState(0);
 
