@@ -3,14 +3,12 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { windowWidthActions } from './Redux/windowWidth';
 import { debounce } from 'lodash';
-import useFetch from './utils/useFetch'; //cr추가
 import useScrollTop from './utils/useScrollTop';
 import Header from './Components/UI/Header';
 import GNB from './Components/UI/GNB';
 import Questions from './Pages/Questions';
 import Tags from './Pages/Tags';
 import Users from './Pages/Users';
-import MyPage from './Pages/Mypage';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import AskAQuestion from './Pages/AskAQuestion';
@@ -25,6 +23,7 @@ import styled from 'styled-components';
 import { authActions } from './Redux/auth';
 import { Cookies } from 'react-cookie';
 import Editprofile from './Pages/EditProfile';
+import MyPageView from './Pages/Mymypage';
 
 const StyledApp = styled.div`
   width: 100%;
@@ -123,12 +122,11 @@ function App() {
           <Route exact path="/users" element={<Users />} /> {/* 유저 목록 */}
           <Route path="/users/:memberId" element={<UserView />} />
           {/* 개별 유저 보기 */}
-          <Route path="/mypage" element={<MyPage />} /> {/* 마이페이지 */}
+          <Route path="/mypage" element={<MyPageView />} /> {/* 마이페이지 */}
           <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
           <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
           <Route path="/mypage/editprofile" element={<Editprofile />} />
           {/* 편집하기 */}
-          {/* 등록된 게시물 하나하나 페이지 */}
           <Route path="*" element={<NotFound />} />{' '}
           {/* 잘못된 경로 접속했을 때 */}
         </Routes>
