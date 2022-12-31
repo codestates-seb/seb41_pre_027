@@ -120,11 +120,6 @@ const StyledTags = styled.section`
   }
 
   @media screen and (max-width: 1200px) {
-    .tags__header {
-      br {
-        display: none;
-      }
-    }
     .tags__search {
       input {
         max-width: 50%;
@@ -134,6 +129,14 @@ const StyledTags = styled.section`
       margin: 12px auto 24px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px 12px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    .tags__header {
+      br {
+        display: none;
+      }
     }
   }
 
