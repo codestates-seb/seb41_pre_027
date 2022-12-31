@@ -9,6 +9,40 @@ const StyledUserView = styled.div`
   width: 100%;
   padding: 24px;
   border-left: 1px solid #d6d9dc;
+
+  .user__profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d6d9dc;
+
+    .user__profile--info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    h3 {
+      font-weight: 500;
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      color: #232629;
+    }
+    a {
+      font-size: 1.15rem;
+      color: #6a737c;
+      :hover {
+        color: #232629;
+      }
+      span {
+        font-size: 1.5rem;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 4px;
+      }
+    }
+  }
 `;
 
 const userView = () => {
@@ -46,20 +80,24 @@ const userView = () => {
 
   return (
     <StyledUserView>
-      <h2>유저정보</h2>
       {Object.keys(userData).length ? (
-        <div>
+        <div className="user__profile">
           <img
             src={avatars[userData.memberImage - 1]}
             alt={`${userData.name}아바타이미지`}
           />
-          <h3>{userData.name}</h3>
-          <a href={`mailto:${userData.email}`}>{userData.email}</a>
+          <div className="user__profile--info">
+            <h3>{userData.name}</h3>
+            <a href={`mailto:${userData.email}`}>
+              <span>📧</span>
+              {userData.email}
+            </a>
+          </div>
         </div>
       ) : (
         <p>데이터없음</p>
       )}
-      <hr />
+
       <NewestPosts />
     </StyledUserView>
   );

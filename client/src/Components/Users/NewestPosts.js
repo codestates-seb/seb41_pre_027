@@ -121,7 +121,7 @@ const NewestPosts = () => {
       <h4>Newest posts</h4>
       <ul className="questions__list">
         {countUserQuestions ? (
-          userQuestions.slice(0, 10).map((el) => {
+          userQuestions.map((el) => {
             return (
               <li key={el.questionId}>
                 <div
