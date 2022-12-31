@@ -104,7 +104,7 @@ const LoggedInHeader = () => {
 
   return (
     <StyledLoggedInHeader>
-      <li>
+      <li title={userInfo.name}>
         <Link to="/mypage">
           <img src={avatars[userInfo.memberImage - 1]} alt="아바타이미지" />
         </Link>
