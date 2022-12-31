@@ -16,40 +16,73 @@ import { authActions } from '../Redux/auth';
 import { useCookies } from 'react-cookie';
 
 const Container = styled.div`
-  width: 100%;
-  background-color: #f1f2f3;
-  min-height: 1000px;
+  width: 95%;
+  padding: 24px;
+  min-height: calc(100vh - 53px);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (max-width: 1200px) {
+    padding: 24px 16px;
+    min-height: max-content;
+  }
 `;
 
 const Content = styled.div`
-  width: 80%;
-  margin: 0 10%;
   display: flex;
+  gap: 48px;
+  font-size: 1.3rem;
+  line-height: 30px;
+  color: #232629;
+  align-items: center;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
-const LeftBox = styled.div`
-  min-width: 600px;
-  width: 50%;
-  height: 500px;
-  position: relative;
+const MobileHeader = styled.div`
+  display: none;
+
+  @media screen and (max-width: 1200px) {
+    display: flex;
+    width: 70%;
+    h1 {
+      font-size: 1.6rem;
+      text-align: center;
+      font-weight: 400;
+      letter-spacing: -0.05px;
+    }
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
+  }
 `;
 
 const LeftContent = styled.div`
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 60%;
-  height: 300px;
+  box-sizing: border-box;
+  padding-left: 40px;
   h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: -0.05px;
+    margin-bottom: 32px;
   }
   p {
-    margin: 30px 0;
+    margin-bottom: 24px;
+    font-size: 1.15rem;
   }
   img {
     width: 25px;
     vertical-align: middle;
     margin-right: 15px;
+  }
+
+  @media screen and (max-width: 1200px) {
+    display: none;
   }
 `;
 const Introduce = styled.div`
@@ -64,31 +97,31 @@ const Introduce = styled.div`
 `;
 
 const RightBox = styled.div`
-  min-width: 600px;
-  width: 45%;
-  height: 500px;
-  box-sizing: border-box;
+  width: 300px;
 `;
 
 const ButtonBox = styled.div`
-  margin: 20px 0 5px 5px;
-  width: 50%;
+  margin: 16px 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
 
 const Button = styled.button`
-  padding: 10px 0;
+  padding: 6px 0;
   margin: 5px 0;
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
-  border: 1px solid ${(props) => props.borderColor};
-  color: ${(props) => props.color};
-  background-color: ${(props) => props.bgColor};
+  box-sizing: border-box;
+  font-size: 1rem;
+
+  background-color: ${(props) => props.background};
   &:hover {
-    background-color: ${(props) => props.hoverColor};
+    background-color: ${(props) => props.hover};
   }
+  border: 1px solid ${(props) => props.bordercolor};
+  color: ${(props) => props.color};
   img {
     width: 20px;
     vertical-align: middle;
@@ -99,45 +132,77 @@ const Button = styled.button`
 const InputForm = styled.form`
   background-color: white;
   border: 1px solid #d6d6d6;
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-  margin: 5px;
-  width: 50%;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05), 0 20px 48px rgba(0, 0, 0, 0.05),
+    0 1px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
+  width: 100%;
   padding: 20px;
+  box-sizing: border-box;
 `;
 
 const InputBox = styled.div`
   padding: 5px;
   p {
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 10px 0;
+    font-weight: 700;
+    font-size: 1.15rem;
   }
   input[type='text'],
   input[type='email'],
   input[type='password'] {
     width: 100%;
-    padding: 10px 0;
+    padding: 0.6em 0.7em;
+    border: 1px solid #babfc4;
+    background-color: #fff;
+    color: #0c0d0e;
+    border-radius: 3px;
+    font-size: 1rem;
+    box-sizing: border-box;
     &:focus {
-      box-shadow: 0 0 5px 5px rgba(28, 107, 138, 0.3);
+      box-shadow: 0 0 0 4px rgba(0, 116, 204, 0.15);
+      border-color: #6bbbf7;
+      outline: none;
     }
   }
   span {
-    color: red;
-    font-size: 14px;
+    color: #ff0000;
+    font-size: 1rem;
     margin-top: 10px;
+    line-height: 1.3;
+    display: inline-block;
+    text-align: left;
   }
 `;
 
 const SignUpButton = styled.button`
-  background-color: #0a95ff;
-  border: none;
   width: 100%;
   border-radius: 3px;
   padding: 10px 20px;
   margin: 10px 0;
-  color: white;
   cursor: pointer;
+  color: #fff;
+  background-color: #0a95ff;
+  border: 1px solid #0a95ff;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+  :hover {
+    background-color: #0074cc;
+    border-color: #0074cc;
+  }
+`;
+
+const Login = styled.div`
+  text-align: center;
+  font-size: 12px;
+  margin: 40px 0;
+  p {
+    margin: 4px 0;
+  }
+  a {
+    color: #0074cc;
+    text-decoration: none;
+    :hover {
+      color: #0a95ff;
+    }
+  }
 `;
 
 const ConsentGuide = styled.div`
@@ -152,94 +217,26 @@ const ConsentGuide = styled.div`
 const AvatarBox = styled.div`
   text-align: center;
   display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 12px 0;
 
-  .avatar1 {
-    width: 3rem;
-    height: 3rem;
-    margin: 2px;
-    margin-bottom: 10px;
-    background-color: white;
-    transition: all 0.2s linear;
-    border: 1px solid #d6d6d6;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    &:hover {
-      transform: scale(1.2);
+  label {
+    input[type='radio'] {
+      margin-right: 8px;
     }
-  }
-
-  .avatar2 {
-    width: 3rem;
-    height: 3rem;
-    margin: 2px;
-    margin-bottom: 10px;
-    border: 1px solid #d6d6d6;
-    background-color: white;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    transition: all 0.2s linear;
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-
-  .avatar3 {
-    width: 3rem;
-    height: 3rem;
-    margin: 2px;
-    margin-bottom: 10px;
-    border: 1px solid #d6d6d6;
-    background-color: white;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    transition: all 0.2s linear;
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-
-  .avatar4 {
-    width: 3rem;
-    height: 3rem;
-    margin: 2px;
-    margin-bottom: 10px;
-    border: 1px solid #d6d6d6;
-    background-color: white;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    transition: all 0.2s linear;
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-
-  .avatar5 {
-    width: 3rem;
-    height: 3rem;
-    margin: 2px;
-    margin-bottom: 10px;
-    border: 1px solid #d6d6d6;
-    background-color: white;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    transition: all 0.2s linear;
-    &:hover {
-      transform: scale(1.2);
-    }
-  }
-
-  .avatar6 {
-    width: 3rem;
-    height: 3rem;
-    margin: 2px;
-    margin-bottom: 10px;
-    border: 1px solid #d6d6d6;
-    background-color: white;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    transition: all 0.2s linear;
-    &:hover {
-      transform: scale(1.2);
+    img {
+      width: 3rem;
+      height: 3rem;
+      background-color: #fff;
+      transition: all 0.2s linear;
+      border: 1px solid #d6d6d6;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05),
+        0 20px 48px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
 `;
@@ -353,61 +350,65 @@ function Signup() {
   return (
     <Container>
       <Content>
-        <LeftBox>
-          <LeftContent>
-            <h1>Join the Stack Overflow community</h1>
-            <p>
-              <img src={message} alt="message" />
-              Get unstuck — ask a question
-            </p>
-            <p>
-              <img src={vote} alt="vote" />
-              Unlock new privileges like voting and commenting
-            </p>
-            <p>
-              <img src={bookmark} alt="bookmark" />
-              Save your favorite tags, filters, and jobs
-            </p>
-            <p>
-              <img src={trophy} alt="trophy" />
-              Earn reputation and badges
-            </p>
-            <Introduce>
-              <span>
-                Collaborate and share knowledge with a private group for FREE.
-              </span>
-              <br />
-              <Link to={() => false}>
-                Get Stack Overflow for Teams free for up to 50 users.
-              </Link>
-            </Introduce>
-          </LeftContent>
-        </LeftBox>
+        <MobileHeader>
+          <h1>
+            Create your Stack Overflow account. It’s free and only takes a
+            minute.
+          </h1>
+        </MobileHeader>
+        <LeftContent>
+          <h1>Join the Stack Overflow community</h1>
+          <p>
+            <img src={message} alt="message" />
+            Get unstuck — ask a question
+          </p>
+          <p>
+            <img src={vote} alt="vote" />
+            Unlock new privileges like voting and commenting
+          </p>
+          <p>
+            <img src={bookmark} alt="bookmark" />
+            Save your favorite tags, filters, and jobs
+          </p>
+          <p>
+            <img src={trophy} alt="trophy" />
+            Earn reputation and badges
+          </p>
+          {/* <Introduce>
+            <span>
+              Collaborate and share knowledge with a private group for FREE.
+            </span>
+            <br />
+            <Link to={() => false}>
+              Get Stack Overflow for Teams free for up to 50 users.
+            </Link>
+          </Introduce> */}
+        </LeftContent>
         <RightBox>
           <ButtonBox>
             <Button
-              bgColor="white"
+              background="white"
               color="black"
-              borderColor="gray"
-              hoverColor="#f1f1f1"
+              bordercolor="hsl(210deg 8% 85%)"
+              hover="#f1f1f1"
             >
               <img src={google} alt="google" />
               Sign up with Google
             </Button>
             <Button
+              background="rgba(1,1,1)"
               color="white"
-              bgColor="rgba(1,1,1)"
-              borderColor="rgba(0,0,0)"
-              hoverColor="black"
+              bordercolor="rgba(0,0,0)"
+              hover="black"
             >
               <img src={github} alt="github" />
               Sign up with Github
             </Button>
             <Button
-              bgColor="#385499"
+              background="#385499"
               color="white"
-              borderColor="#385499"
-              hoverColor="#00108A"
+              bordercolor="#385499"
+              hover="#00108A"
             >
               <img src={facebook} alt="facebook" />
               Sign up with Facebook
@@ -424,7 +425,7 @@ function Signup() {
               />
             </InputBox>
             <InputBox>
-              <p>email</p>
+              <p>Email</p>
               <input
                 name="email"
                 type="email"
@@ -432,17 +433,13 @@ function Signup() {
                 onChange={onChangeInput}
               />
               <span>
-                <span>
-                  {email === false && signSta === true ? (
-                    <span>The email is not a valid email address.</span>
-                  ) : (
-                    <span></span>
-                  )}
-                </span>
+                {email === false && signSta === true
+                  ? 'The email is not a valid email address.'
+                  : null}
               </span>
             </InputBox>
             <InputBox>
-              <p>password</p>
+              <p>Password</p>
               <input
                 name="password"
                 type="password"
@@ -450,20 +447,13 @@ function Signup() {
                 onChange={onChangeInput}
               />
               <span>
-                <span>
-                  {password === false && signSta === true ? (
-                    <span>
-                      Passwords must contain at least eight characters,
-                      including at least 1 letter and 1 number.
-                    </span>
-                  ) : (
-                    <span></span>
-                  )}
-                </span>
+                {password === false && signSta === true
+                  ? 'Passwords must contain at least eight characters, including at least 1 letter and 1 number.'
+                  : null}
               </span>
             </InputBox>
             <InputBox>
-              <p>avatar</p>
+              <p>Avatar</p>
               <AvatarBox>
                 <label htmlFor="avt1">
                   <input
@@ -544,15 +534,21 @@ function Signup() {
             >
               Sign up
             </SignUpButton>
-            <ConsentGuide>
+            {/* <ConsentGuide>
               <p>
                 By clicking “Sign up”, you agree to our
                 <Link to={() => false}>
                   terms of service, privacy policy and cookie policy
                 </Link>
               </p>
-            </ConsentGuide>
+            </ConsentGuide> */}
           </InputForm>
+          <Login>
+            <p>
+              Already have an account?
+              <Link to="/login"> Log in</Link>
+            </p>
+          </Login>
         </RightBox>
       </Content>
     </Container>
