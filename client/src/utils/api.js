@@ -4,53 +4,10 @@ import { Cookies } from 'react-cookie';
 const cookies = new Cookies();
 const accessToken = cookies.get('Authorization');
 
-const BASE_URL = `/`;
-const BOARD_URL = '/api/questions/';
+// const BASE_URL = `/`;
+// const BOARD_URL = '/api/questions/';
 
-export const fetchCreate = (url, data) => {
-  fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  })
-    .then(() => {
-      window.location.href = BASE_URL;
-    })
-    .catch((error) => {
-      console.error('Error', error);
-    });
-};
-
-export const fetchDelete = (url, id) => {
-  fetch(`${url}${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(() => {
-      window.location.href = BASE_URL;
-    })
-    .catch((error) => {
-      console.error('Error', error);
-    });
-};
-
-export const fetchPatch = (url, id, data) => {
-  fetch(`${url}${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'Application/json' },
-    body: JSON.stringify(data),
-  })
-    .then(() => {
-      window.location.href = `${BOARD_URL}${id}`;
-    })
-    .catch((error) => {
-      console.error('Error', error);
-    });
-};
-
-export const fetchCreateComment = (url, id, data) => {
+export const fetchCreate = (url, id, data) => {
   fetch(url, {
     method: 'POST',
     headers: {
@@ -67,15 +24,66 @@ export const fetchCreateComment = (url, id, data) => {
     });
 };
 
+export const fetchDelete = (url, id) => {
+  fetch(`url`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
+    },
+  })
+    .then(() => {
+      window.location.href = `/api/questions/${id}`;
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+};
+
+export const fetchPatch = (url, id, data) => {
+  fetch(`url`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'Application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
+    },
+    body: JSON.stringify(data),
+  })
+    .then(() => {
+      window.location.href = `/api/questions/${id}`;
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+};
+
+export const fetchCreateComment = (url, id, data) => {
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
+    },
+    body: JSON.stringify(data),
+  })
+    .then(() => {
+      window.location.href = `/questions/${id}?`;
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+};
+
 export const fetchDeleteComment = (url, id) => {
   fetch(url, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
     },
   })
     .then(() => {
-      window.location.href = `${BOARD_URL}${id}`;
+      window.location.href = `/questions/${id}?`;
     })
     .catch((error) => {
       console.error('Error', error);
@@ -83,13 +91,66 @@ export const fetchDeleteComment = (url, id) => {
 };
 
 export const fetchPatchComment = (url, id, data) => {
-  fetch(`${url}${id}`, {
+  fetch(url, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'Application/json', Authorization: accessToken },
+    headers: {
+      'Content-Type': 'Application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
+    },
     body: JSON.stringify(data),
   })
     .then(() => {
-      window.location.href = `${BOARD_URL}${id}`;
+      window.location.href = `/questions/${id}?`;
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+};
+
+export const fetchCreateAnswer = (url, id, data) => {
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
+    },
+    body: JSON.stringify(data),
+  })
+    .then(() => {
+      window.location.href = `/questions/${id}?`;
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+};
+
+export const fetchDeleteAnswer = (url, id) => {
+  fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
+    },
+  })
+    .then(() => {
+      window.location.href = `/questions/${id}?`;
+    })
+    .catch((error) => {
+      console.error('Error', error);
+    });
+};
+
+export const fetchPatchAnswer = (url, id, data) => {
+  fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'Application/json',
+      Authorization: `Bearer ` + accessToken.slice(7),
+    },
+    body: JSON.stringify(data),
+  })
+    .then(() => {
+      window.location.href = `/questions/${id}?`;
     })
     .catch((error) => {
       console.error('Error', error);
