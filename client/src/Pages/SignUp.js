@@ -7,7 +7,7 @@ import google from '../Img/google.png';
 import github from '../Img/github.png';
 import facebook from '../Img/facebook.png';
 import React, { useState } from 'react';
-import avatars from '../utils/avatarImage';
+import { avatars } from '../utils/avatarImage';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import axios from 'axios';

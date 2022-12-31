@@ -57,6 +57,10 @@ const ViewQuestionsList = styled.section`
     .questions__header--button {
       padding: 0.8em;
       border-radius: 3px;
+      min-width: 90px;
+      text-align: center;
+      white-space: nowrap;
+      box-sizing: border-box;
     }
   }
 

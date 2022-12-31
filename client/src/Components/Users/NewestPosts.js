@@ -46,6 +46,8 @@ const StyledNewestPosts = styled.div`
         -webkit-line-clamp: 1; /* 몇 줄까지 보여줄 지 */
         -webkit-box-orient: vertical;
         overflow: hidden;
+        height: 1.3rem;
+        line-height: 1.3rem;
         color: #0074cc;
         :hover {
           color: #0a95ff;

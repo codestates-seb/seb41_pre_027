@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
 import { authActions } from '../../Redux/auth';
-import avatars from '../../utils/avatarImage';
+import { avatars } from '../../utils/avatarImage';
 import { Cookies } from 'react-cookie';
 
 const StyledLoggedInHeader = styled.ul`

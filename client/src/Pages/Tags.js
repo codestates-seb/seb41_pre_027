@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '../Components/UI/Pagination';
 import styled from 'styled-components';
 import axios from 'axios';
-import avatars from '../utils/avatarImage';
+import { avatars } from '../utils/avatarImage';
 
 const StyledTags = styled.section`
   padding: 24px;
@@ -25,8 +25,7 @@ const StyledTags = styled.section`
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    flex-grow: 10000;
-    width: calc(100% - 300px - 24px);
+    width: 100%;
 
     h2 {
       font-size: 2.07rem;

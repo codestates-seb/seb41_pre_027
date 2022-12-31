@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import NewestPosts from '../Components/Users/NewestPosts';
 import styled from 'styled-components';
-import avatars from '../utils/avatarImage';
+import { avatars, avatarsM } from '../utils/avatarImage';
 
 const StyledUserView = styled.div`
   width: 100%;
@@ -17,6 +17,10 @@ const StyledUserView = styled.div`
     padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid #d6d9dc;
+
+    img {
+      width: 128px;
+    }
 
     .user__profile--info {
       display: flex;
@@ -40,6 +44,24 @@ const StyledUserView = styled.div`
         display: inline-block;
         vertical-align: middle;
         margin-right: 4px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    .user__profile {
+      img {
+        width: 96px;
+      }
+    }
+    h3 {
+      font-size: 2rem;
+    }
+    a {
+      font-size: 1rem;
+      span {
+        font-size: 1.3rem;
+        margin-bottom: 4px;
       }
     }
   }
@@ -83,7 +105,7 @@ const userView = () => {
       {Object.keys(userData).length ? (
         <div className="user__profile">
           <img
-            src={avatars[userData.memberImage - 1]}
+            src={avatarsM[userData.memberImage - 1]}
             alt={`${userData.name}아바타이미지`}
           />
           <div className="user__profile--info">

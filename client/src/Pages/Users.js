@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '../Components/UI/Pagination';
 import styled from 'styled-components';
 import axios from 'axios';
-import avatars from '../utils/avatarImage';
+import { avatars } from '../utils/avatarImage';
 
 const StyledUsers = styled.section`
   padding: 24px;
@@ -23,8 +23,7 @@ const StyledUsers = styled.section`
   .users__header {
     margin-bottom: 12px;
     justify-content: space-between;
-    flex-grow: 10000;
-    width: calc(100% - 300px - 24px);
+    width: 100%;
 
     h2 {
       font-size: 2.07rem;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import avatars from '../../utils/avatarImage';
+import { avatars } from '../../utils/avatarImage';
 
 const StyledQuestionsList = styled.div`
   width: 100%;
@@ -40,6 +40,8 @@ const StyledQuestionsList = styled.div`
       display: -webkit-box;
       -webkit-line-clamp: 1; /* 몇 줄까지 보여줄 지 */
       -webkit-box-orient: vertical;
+      height: 1.3rem;
+      line-height: 1.3rem;
     }
     .question__content {
       width: 100%;
