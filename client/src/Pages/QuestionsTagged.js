@@ -65,17 +65,6 @@ const ViewQuestionsList = styled.section`
     }
   }
 
-  .btn-style1 {
-    color: #fff;
-    background-color: #0a95ff;
-    border: 1px solid #0a95ff;
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
-    :hover {
-      background-color: #0074cc;
-      border-color: #0074cc;
-    }
-  }
-
   .questions__volume {
     padding-left: 24px;
     color: #232629;

@@ -74,6 +74,27 @@ const GlobalStyle = createGlobalStyle`
         fill: currentColor;
     }
 
+    .btn-style1 {
+    color: #fff;
+    background-color: #0a95ff;
+    border: 1px solid #0a95ff;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+    :hover {
+      background-color: #0074cc;
+      border-color: #0074cc;
+    }
+  }
+  .btn-style2 {
+      color: #39739d;
+      background-color: #e1ecf4;
+      border: 1px solid #7aa7c7;
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
+      :hover {
+        background-color: #b3d3ea;
+        color: #2c5877;
+      }
+    }
+
     @media screen and (max-width: 640px) {
         html {
             font-size: 11px;
