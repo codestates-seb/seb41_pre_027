@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Pagination from '../Components/UI/Pagination';
 import styled from 'styled-components';
 import axios from 'axios';
 import { avatars } from '../utils/avatarImage';
@@ -92,16 +91,7 @@ const StyledTags = styled.section`
       padding: 12px;
     }
   }
-  .tags__list--avatar {
-    width: 48px;
-    height: 48px;
-    overflow: hidden;
 
-    img {
-      max-width: 100%;
-      margin-top: 4px;
-    }
-  }
   .tags__list--info {
     display: flex;
     flex-direction: column;
@@ -163,16 +153,14 @@ const Tags = () => {
   const [inputValue, setInputValue] = useState('');
   const [tagList, setTagList] = useState([]);
   const [countTags, setCountTags] = useState(0);
-  const [page, setPage] = useState(1);
-  const totalPage = Math.ceil(countTags / 20) || 1;
 
   const getTags = async () => {
     try {
       const response = await axios.get(
-        process.env.REACT_APP_DB_HOST + `/api/member?page=${page - 1}`
+        process.env.REACT_APP_DB_HOST + `/api/tags`
       );
-      setTagList(response.data.data);
-      setCountTags(response.data.count);
+      setTagList(response.data);
+      setCountTags(response.data.length);
     } catch (error) {
       if (error.response) {
         // 요청이 전송되었고, 서버에서 20x 외의 코드로 응답 됨
@@ -192,13 +180,12 @@ const Tags = () => {
 
   useEffect(() => {
     getTags();
-  }, [page]);
+  }, []);
 
   const getSearchTags = async (keyword) => {
     try {
       const response = await axios.get(
-        process.env.REACT_APP_DB_HOST +
-          `/api/member/search/?search=${keyword}&page=${page - 1}`
+        process.env.REACT_APP_DB_HOST + `/api/tags`
       );
       setTagList(response.data.data);
       setCountTags(response.data.count);
@@ -269,12 +256,10 @@ const Tags = () => {
           tagList.map((el) => {
             return (
               <li key={el.memberId}>
-                <div className="tags__list--avatar">
-                  <img src={avatars[el.memberImage - 1]} alt="유저네임아바타" />
-                </div>
                 <div className="tags__list--info">
-                  <Link to={'/questions/tagged/' + el.name}>{el.name}</Link>
-                  <span>{el.memberId}</span>
+                  <Link to={'/questions/tagged/' + el.tagName}>
+                    {el.tagName}
+                  </Link>
                 </div>
               </li>
             );
@@ -283,13 +268,6 @@ const Tags = () => {
           <p>데이터가없음</p>
         )}
       </ul>
-      {/* 페이지네이션 */}
-      <Pagination
-        totalPage={totalPage}
-        limit={5}
-        page={page}
-        setPage={setPage}
-      />
     </StyledTags>
   );
 };
