@@ -5,83 +5,109 @@ import { Editor, Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 //
 import useInput from '../../utils/useInput';
-import { useNavigate, useParams } from 'react-router';
-import { fetchCreate } from '../../utils/api';
+import { useNavigate } from 'react-router';
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+
 const BigContainer = styled.div`
+  padding-bottom: 80px;
   .content {
     background-color: white;
-    border: 1px solid #edeff1; //이렇게 바꿨다가도 다시 새로고침하면 이상하게 됨
-    padding: 30px 30px 20px 20px;
+    border: 1px solid #edeff1;
+    padding: 24px;
     border-radius: 5px;
     margin: 20px 0px;
   }
   .content__container {
-    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
   .content__title {
-    margin-top: -2px;
-    margin-bottom: 5px;
+    color: #0c0d0e;
+    font-size: 1.15rem;
+    line-height: 1.3;
   }
   .content__title__description {
+    color: #3b4045;
+    font-size: 0.92rem;
+    line-height: 1.3;
   }
+
   input {
     width: 100%;
-    border: 1px solid #c3c7cb;
+    border: 1px solid #babfc4;
+    background-color: #fff;
+    color: #3b4045;
     border-radius: 3px;
-    height: 30px;
+    padding: 0.6em 0.7em;
+    box-sizing: border-box;
+    ::placeholder {
+      color: #babfc4;
+    }
+  }
+  input:focus {
+    border-color: #6bbbf7;
+    box-shadow: 0 0 0 4px rgba(122, 167, 199, 0.15);
+    outline: none;
+  }
+
+  @media screen and (max-width: 640px) {
+    .content__container {
+      gap: 4px;
+    }
   }
 `;
 const Container = styled.div`
   border: 1px solid #edeff1;
   background-color: white;
-  padding: 30px 25px;
+  padding: 24px;
   border-radius: 5px;
-  h3 {
-    margin-top: -8px;
-    margin-bottom: 4px;
-  }
   .ask__body {
-    margin-bottom: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    h3 {
+      color: #0c0d0e;
+      font-size: 1.15rem;
+      line-height: 1.3;
+    }
+    > span {
+      color: #3b4045;
+      font-size: 0.92rem;
+      line-height: 1.3;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .ask__body {
+      gap: 4px;
+    }
   }
 `;
 
 const Button = styled.div`
-  margin-top: 12px;
+  margin-top: 24px;
   button {
-    background-color: #81c7fc;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    width: 180px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    margin-bottom: 80px;
+    border-radius: 3px;
+    font-size: 1.05em;
+    padding: 12px;
   }
 `;
 //
 export default function ToastAsk() {
   const navigate = useNavigate();
   const cookies = new Cookies();
-  const { id } = useParams();
   // Editor DOM 선택용
   const editorRef = useRef();
-  const [askTitle, bindAskTitle, resetAskTitle] = useInput('');
+  const [askTitle, bindAskTitle] = useInput('');
 
   // 등록 버튼 핸들러
   const handleRegisterButton = (e) => {
     // 입력창에 입력한 내용을 HTML 태그 형태로 취득
     e.preventDefault();
-    alert(editorRef.current?.getInstance().getMarkdown());
-    // fetchCreate(process.env.REACT_APP_DB_HOST + `/api/questions/posting`, id, {
-    //   title: askTitle,
-    //   text: editorRef.current?.getInstance().getMarkdown(),
-    // });
 
     const sendPosting = async () => {
       try {
@@ -119,31 +145,34 @@ export default function ToastAsk() {
                 Be specific and imagine you’re asking a question to another
                 person.
               </span>
-            </div>
-            <div>
-              <input type="text" {...bindAskTitle}></input>
+              <input
+                type="text"
+                placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
+                maxLength="300"
+                {...bindAskTitle}
+              ></input>
             </div>
           </div>
           <Container>
             <div className="ask__body">
               <h3>What are the details of your problem?</h3>
               <span className="ask__body--detail">
-                Introduce the problem and expand on what you put in the
-                title.Minimum 20 characters.
+                Introduce the problem and expand on what you put in the title.
+                Minimum 20 characters.
               </span>
             </div>
             <Viewer />
             <Editor
               ref={editorRef} // DOM 선택용 useRef
               placeholder="내용을 입력해주세요."
-              previewStyle="vertical" // 미리보기 스타일 지정
+              previewStyle="horizon" // 미리보기 스타일 지정
               height="300px" // 에디터 창 높이
               initialEditType="markdown" //
               toolbarItems={[
                 // 툴바 옵션 설정
                 ['heading', 'bold', 'italic', 'strike'],
                 ['hr', 'quote'],
-                ['ul', 'ol', 'task', 'indent', 'outdent'],
+                ['ul', 'ol', 'task'],
                 ['table', 'image', 'link'],
                 ['code', 'codeblock'],
               ]}
@@ -152,7 +181,7 @@ export default function ToastAsk() {
             ></Editor>
           </Container>
           <Button>
-            <button>Review your question</button>
+            <button className="btn-style1">Review your question</button>
           </Button>
         </form>
       </BigContainer>
