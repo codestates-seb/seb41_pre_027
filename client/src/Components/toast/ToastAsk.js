@@ -1,14 +1,15 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
 // Toast 에디터
-import { Editor } from '@toast-ui/react-editor';
+import { Editor, Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 //
 import useInput from '../../utils/useInput';
-import { useParams } from 'react-router';
-import { Viewer } from '@toast-ui/react-editor';
+import { useNavigate, useParams } from 'react-router';
 import { fetchCreate } from '../../utils/api';
 import '@toast-ui/editor/dist/i18n/ko-kr';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 const BigContainer = styled.div`
   .content {
     background-color: white;
@@ -65,18 +66,47 @@ const Button = styled.div`
 `;
 //
 export default function ToastAsk() {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
   const { id } = useParams();
   // Editor DOM 선택용
   const editorRef = useRef();
   const [askTitle, bindAskTitle, resetAskTitle] = useInput('');
+
   // 등록 버튼 핸들러
   const handleRegisterButton = (e) => {
     // 입력창에 입력한 내용을 HTML 태그 형태로 취득
+    e.preventDefault();
     alert(editorRef.current?.getInstance().getMarkdown());
-    fetchCreate(process.env.REACT_APP_DB_HOST + `/api/questions/posting`, id, {
-      title: askTitle,
-      text: editorRef.current?.getInstance().getMarkdown(),
-    });
+    // fetchCreate(process.env.REACT_APP_DB_HOST + `/api/questions/posting`, id, {
+    //   title: askTitle,
+    //   text: editorRef.current?.getInstance().getMarkdown(),
+    // });
+
+    const sendPosting = async () => {
+      try {
+        const response = await axios.post(
+          process.env.REACT_APP_DB_HOST + '/api/questions/posting',
+          {
+            title: askTitle,
+            text: editorRef.current?.getInstance().getHTML(),
+          },
+          {
+            headers: {
+              Authorization: cookies.get('Authorization'),
+            },
+          }
+        );
+        setTimeout(() => {
+          navigate(`/questions/${response.data.questionId}`);
+          window.location.reload();
+        }, 150);
+      } catch (error) {
+        console.log(error);
+        alert('요청실패');
+      }
+    };
+    sendPosting();
   };
   return (
     <div>
@@ -122,9 +152,7 @@ export default function ToastAsk() {
             ></Editor>
           </Container>
           <Button>
-            <button type="submit" onClick={handleRegisterButton}>
-              Review your question
-            </button>
+            <button>Review your question</button>
           </Button>
         </form>
       </BigContainer>
