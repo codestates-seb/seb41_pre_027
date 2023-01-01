@@ -12,5 +12,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Page<Question> findByTitleContainingOrTextContaining(String title, String text, Pageable pageable);
     List<Question> findByTitleContaining(String search);
     @Query(value = "SELECT r FROM QUESTIONS r WHERE MEMBER_ID = :num")
-    List<Question> findByMember(@Param("num") long memberId);
+    List<Question> findByMember(@Param("num") long memberId, Pageable pageable);
 }

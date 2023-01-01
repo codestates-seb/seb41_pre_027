@@ -144,6 +144,9 @@ include::{snippets}/get-member-questionList/curl-request.adoc[]
 .http-request
 include::{snippets}/get-member-questionList/http-request.adoc[]
 
+.request-parameter
+include::{snippets}/get-member-questionList/request-parameters.adoc[]
+
 .path-parameters
 include::{snippets}/get-member-questionList/path-parameters.adoc[]
 

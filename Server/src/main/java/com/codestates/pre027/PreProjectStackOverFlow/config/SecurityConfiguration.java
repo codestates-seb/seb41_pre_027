@@ -41,7 +41,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .headers().frameOptions().sameOrigin()
+            .headers().frameOptions().disable()
             .and()
             .csrf().disable()
             .cors(withDefaults())
@@ -62,7 +62,6 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.DELETE, "/member/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/logout").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/questions").permitAll()
-                .antMatchers(HttpMethod.GET, "/tags").permitAll()
                 .antMatchers(HttpMethod.POST, "/questions").hasRole("USER")
                 .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/questions/**").hasRole("USER")
@@ -92,8 +91,12 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
+        configuration.addAllowedOriginPattern("http://pre-project-group-27.s3-website.ap-northeast-2.amazonaws.com/");
+        configuration.addAllowedOriginPattern("http://localhost:3000");
+        configuration.addExposedHeader("*");
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
+        configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

@@ -575,7 +575,7 @@ public class QuestionControllerRestDocsTest {
         long count = 3L;
         long memberId = 1L;
 
-        given(questionService.memberQuestionList(Mockito.anyLong()))
+        given(questionService.memberQuestionList(Mockito.anyLong(),Mockito.any()))
             .willReturn(list);
 
         List<Question> questions = List.of(question1, question2, question3);
@@ -627,6 +627,7 @@ public class QuestionControllerRestDocsTest {
 
         ResultActions resultActions = mockMvc.perform(
             RestDocumentationRequestBuilders.get("/api/questions/member/{member-id}",memberId)
+                .param("page", "0")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         );
@@ -647,6 +648,8 @@ public class QuestionControllerRestDocsTest {
             .andDo(document("get-member-questionList",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                requestParameters(parameterWithName("page").description("조회할 페이지")
+                ),
                 pathParameters(parameterWithName("member-id").description("회원 식별자")
                 ),
                 responseFields(
