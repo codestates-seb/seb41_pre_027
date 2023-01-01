@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import ask from '../../assets/images/ask.png';
 
-import useInput from '../../utils/useInput';
-import { fetchCreate } from '../../utils/api';
 import ToastAsk from '../toast/ToastAsk';
 
 const Container = styled.div`
@@ -45,21 +43,8 @@ const Description = styled.div`
 
 const Main = styled.div`
   margin-right: 40rem;
-  /* .content {
-    border: 1px solid black;
-    margin: 13px;
-    background-color: white;
-  } */
 `;
-function CreateBoard({ boards }) {
-  //const [title, setTitle] = useInput('');
-  //const [body, setBody] = useInput('');
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const data = { title, body };
-  //   fetchCreate('/api/questions/posting', data);
-  // };
+function CreateBoard() {
   return (
     <>
       <Container>
@@ -104,26 +89,6 @@ function CreateBoard({ boards }) {
               </div>
             </div>
           </Description>
-          {/* <form onSubmit={handleSubmit}>
-            <div className="content">
-              <div className="content__title">Title</div>
-              <div className="content__title__description">
-                Be specific and imagine you’re asking a question to another
-                person.
-              </div>
-              <Input label={'제목'} value={setTitle}></Input>
-            </div>
-            <div>
-              <h4>What are the details of your problem?</h4>
-              <h5>
-                Introduce the problem and expand on what you put in the title.
-                Minimum 20 characters.
-              </h5>
-              <Input label={'내용'} value={setBody}></Input>
-              {/* <ToastAnswer handleSubmit={handleSubmit} /> */}
-          {/* </div>
-            <button onSubmit={handleSubmit}>제출</button>
-          </form> */}
           <ToastAsk />
         </Main>
       </Container>
