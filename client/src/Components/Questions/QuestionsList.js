@@ -114,7 +114,9 @@ const QuestionsList = ({ questionList }) => {
                 >
                   {el.title}
                 </Link>
-                <p className="question__content">{el.text}</p>
+                <p className="question__content">
+                  {el.text.replace(/(<([^>]+)>)/gi, '')}
+                </p>
                 <div className="question__author flex-vertical-center">
                   <img src={avatars[el.memberImage - 1]} alt="유저아바타" />
                   <Link to={'/users/' + el.memberId}>{el.name}</Link>
