@@ -169,7 +169,7 @@ function Editprofile() {
       return alert('Your password is not enough to pass');
     } else {
       try {
-        await axios.post(
+        await axios.patch(
           process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`,
           { name: account.displayname, password: account.newpassword }
         );
