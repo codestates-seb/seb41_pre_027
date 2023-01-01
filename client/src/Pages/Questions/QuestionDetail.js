@@ -20,6 +20,12 @@ const Container = styled.div`
     margin-bottom: 80px;
     flex-basis: calc(100% - 300px - 24px);
   }
+
+  @media screen and (max-width: 1200px) {
+    .board__details {
+      flex-basis: auto;
+    }
+  }
 `;
 const Content = styled.div`
   .detail__header {
