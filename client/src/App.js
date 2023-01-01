@@ -117,8 +117,8 @@ function App() {
           {/* 태그를 눌렀을 때 태그 검색하는 질문들 */}
           <Route exact path="/questions/ask" element={<AskAQuestion />} />
           <Route path="/questions/:id" element={<QuestionDetail />} />
-          <Route path="/patch/:id" element={<PatchQuestion />} />
-          <Route path="/patch/answer/:id" element={<PatchAnswer />} />
+          <Route path="/patch" element={<PatchQuestion />} />
+          <Route path="/patch/answer" element={<PatchAnswer />} />
           {/* 질문 생성 */}
           <Route path="/tags" element={<Tags />} /> {/* 태그 목록들*/}
           <Route exact path="/users" element={<Users />} /> {/* 유저 목록 */}

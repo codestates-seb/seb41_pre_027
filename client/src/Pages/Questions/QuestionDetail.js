@@ -7,6 +7,8 @@ import CommentCreateDetail from '../../Components/Question/CommentCreateDetail';
 import AnswerDetail from '../../Components/Question/AnswerDetail';
 import SidebarWidget from '../../Components/Questions/SidebarWidget';
 import { Viewer } from '@toast-ui/react-editor';
+import { modifyActions } from '../../Redux/modify';
+import { useDispatch } from 'react-redux';
 
 const Container = styled.div`
   display: flex;
@@ -52,7 +54,6 @@ const Dates = styled.div`
     color: #939596;
   }
 `;
-const Count = styled.div``;
 const Clicks = styled.div`
   display: flex;
   padding: 40px 0px;
@@ -74,9 +75,12 @@ const Clicks = styled.div`
 `;
 
 function BoardDetail() {
+  const dispatch = useDispatch();
   const { id } = useParams();
 
-  const [board, isPending, error] = useFetch(`/api/questions/${id}`);
+  const [board, isPending, error] = useFetch(
+    process.env.REACT_APP_DB_HOST + `/api/questions/${id}`
+  );
   useScrollTop();
 
   return (
@@ -110,14 +114,18 @@ function BoardDetail() {
           </article>
         )}
         <Clicks>
-          <div className="detail__share">
-            <span>Share</span>
-          </div>
           <div className="detail__edit">
-            <Link to="/patch/${id}">
-              <span>Edit</span>
+            <Link to="/patch">
+              <button
+                onClick={() => {
+                  dispatch(modifyActions.modifyQuestion(id));
+                }}
+              >
+                Edit
+              </button>
             </Link>
           </div>
+
           <div className="detail__follow">
             <span>Follow</span>
           </div>

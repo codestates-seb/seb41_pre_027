@@ -34,7 +34,6 @@ function AnswerDetail() {
   const { id } = useParams();
   const answer = useFetch(`/api/questions/${id}/answers`);
   const getanswer = answer[0];
-  console.log(getanswer);
 
   const [answerContent, bindAnswerContent, resetAnswerContent] = useInput('');
   const deleteForm = (answerId) => {
@@ -55,7 +54,7 @@ function AnswerDetail() {
                 return (
                   <div className="answer__read--id" key={el.answerId}>
                     <div className="answer__read--text">{el.text}</div>
-                    <Link to={`/patch/answer/${el.answerId}`}>
+                    <Link to={'/patch/answer'}>
                       <button
                         onClick={() => {
                           dispatch(modifyActions.modifyAnswer(el.answerId));

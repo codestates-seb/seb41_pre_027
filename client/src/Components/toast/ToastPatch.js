@@ -1,11 +1,14 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
 // Toast 에디터
-import { Editor } from '@toast-ui/react-editor';
+import { Editor, Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 //
 import useInput from '../../utils/useInput';
-
+import { useParams } from 'react-router';
+import { fetchPatch } from '../../utils/api';
+import '@toast-ui/editor/dist/i18n/ko-kr';
+import { useSelector } from 'react-redux';
 const BigContainer = styled.div`
   .content {
     background-color: white;
@@ -61,41 +64,28 @@ const Button = styled.div`
   }
 `;
 //
-export default function ToastPatch() {
-  const [title, setTitle] = useInput('asdf');
+const ToastPatch = () => {
+  const questionId = useSelector((state) => state.modify.questionId);
+  console.log(questionId);
+  const { id } = useParams();
   // Editor DOM 선택용
   const editorRef = useRef();
+  const [patchTitle, bindPatchTitle, resetPatchTitle] = useInput('');
 
   // 등록 버튼 핸들러
-  const handleRegisterButton = (e) => {
-    // 입력창에 입력한 내용을 HTML 태그 형태로 취득
-    console.log(editorRef.current?.getInstance().getMarkdown());
-    const text = editorRef.current?.getInstance().getMarkdown();
-    fetch(`/api/questions/posting`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        //  Authorization: token,
-      },
-      body: JSON.stringify({
-        title: title,
-        text: text,
-      }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw Error('could not fetch the data for that resource');
-        }
-        window.location.reload();
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
+  const submitQuestionForm = (e) => {
+    e.preventDefault();
+    fetchPatch(process.env.REACT_APP_DB_HOST + `/api/questions/${id}`, id, {
+      questionId: questionId,
+      title: patchTitle,
+      text: editorRef.current?.getInstance().getHTML(),
+    });
+    resetPatchTitle();
   };
   return (
     <div>
       <BigContainer>
-        <form onSubmit={handleRegisterButton} name="asksubmit">
+        <form onSubmit={submitQuestionForm} name="asksubmit">
           <div className="content">
             <div className="content__container">
               <h3 className="content__title">Title</h3>
@@ -105,7 +95,7 @@ export default function ToastPatch() {
               </span>
             </div>
             <div>
-              <input type="text" {...title} name="asktitle"></input>
+              <input type="text" {...bindPatchTitle}></input>
             </div>
           </div>
           <Container>
@@ -116,12 +106,13 @@ export default function ToastPatch() {
                 title.Minimum 20 characters.
               </span>
             </div>
+            <Viewer />
             <Editor
               ref={editorRef} // DOM 선택용 useRef
               placeholder="내용을 입력해주세요."
               previewStyle="vertical" // 미리보기 스타일 지정
               height="300px" // 에디터 창 높이
-              initialEditType="wysiwyg" //
+              initialEditType="markdown" //
               toolbarItems={[
                 // 툴바 옵션 설정
                 ['heading', 'bold', 'italic', 'strike'],
@@ -131,15 +122,17 @@ export default function ToastPatch() {
                 ['code', 'codeblock'],
               ]}
               useCommandShortcut={false} // 키보드 입력 컨트롤 방지
+              language="ko-KR"
+              initialValue=""
             ></Editor>
           </Container>
           <Button>
-            <button type="submit" onClick={handleRegisterButton}>
-              Review your question
-            </button>
+            <button>Review your question</button>
           </Button>
         </form>
       </BigContainer>
     </div>
   );
-}
+};
+
+export default ToastPatch;

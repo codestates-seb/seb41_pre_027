@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import useFetch from '../../utils/useFetch';
-import useInput from '../../utils/useInput';
 import ToastPatch from '../../Components/toast/ToastPatch';
 const Container = styled.div`
   padding: 50px;

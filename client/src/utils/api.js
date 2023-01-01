@@ -41,7 +41,7 @@ export const fetchDelete = (url, id) => {
 };
 
 export const fetchPatch = (url, id, data) => {
-  fetch(`url`, {
+  fetch(url, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'Application/json',
@@ -50,7 +50,7 @@ export const fetchPatch = (url, id, data) => {
     body: JSON.stringify(data),
   })
     .then(() => {
-      window.location.href = `/api/questions/${id}`;
+      window.location.href = `/questions/${id}`;
     })
     .catch((error) => {
       console.error('Error', error);
