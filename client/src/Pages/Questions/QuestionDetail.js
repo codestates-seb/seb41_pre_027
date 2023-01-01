@@ -35,12 +35,26 @@ const Content = styled.div`
     padding-bottom: 13px;
     border-bottom: 1px solid #e6e9ea;
   }
+  .detail__header--top {
+    display: flex;
+    justify-content: space-between;
+  }
   .detail__title {
     margin-bottom: 15px;
     color: #3b4045;
     font-weight: 500;
     font-size: 2.07rem;
     line-height: 1.3;
+  }
+  .question__vote {
+    display: flex;
+    gap: 8px;
+    button {
+      height: fit-content;
+      padding: 4px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
   }
   .detail__body {
     margin-top: 20px;
@@ -114,6 +128,47 @@ function BoardDetail() {
     deleteQuestion();
   };
 
+  const questionUprating = () => {
+    const postUprating = async () => {
+      try {
+        await axios.post(
+          process.env.REACT_APP_DB_HOST + `/api/questions/${id}/upratings`,
+          '',
+          {
+            headers: {
+              Authorization: accessToken,
+            },
+          }
+        );
+        alert('추천완료');
+      } catch (error) {
+        console.log(error);
+        alert('요청실패');
+      }
+    };
+    postUprating();
+  };
+  const questionDownrating = () => {
+    const postDownrating = async () => {
+      try {
+        await axios.post(
+          process.env.REACT_APP_DB_HOST + `/api/questions/${id}/downratings`,
+          '',
+          {
+            headers: {
+              Authorization: accessToken,
+            },
+          }
+        );
+        alert('비추천완료');
+      } catch (error) {
+        console.log(error);
+        alert('요청실패');
+      }
+    };
+    postDownrating();
+  };
+
   return (
     <Container>
       <div className="board__details">
@@ -124,10 +179,29 @@ function BoardDetail() {
             <article>
               <Content>
                 <div className="detail__header">
-                  <h2 className="detail__title">{board.title}</h2>
-
+                  <div className="detail__header--top">
+                    <h2 className="detail__title">{board.title}</h2>
+                    <div className="question__vote">
+                      <button
+                        type="button"
+                        className="btn-style1"
+                        name="upratings"
+                        onClick={questionUprating}
+                      >
+                        추천
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-style2"
+                        name="downratings"
+                        onClick={questionDownrating}
+                      >
+                        비추천
+                      </button>
+                    </div>
+                  </div>
                   <Dates>
-                    <div className="date__asked">
+                    <div>
                       Asked
                       <span>
                         {new Date(board.createdAt + 'Z').toLocaleString(
@@ -135,7 +209,7 @@ function BoardDetail() {
                         )}
                       </span>
                     </div>
-                    <div className="date__modified">
+                    <div>
                       Modified
                       <span>
                         {new Date(board.modifiedAt + 'Z').toLocaleString(
@@ -143,8 +217,11 @@ function BoardDetail() {
                         )}
                       </span>
                     </div>
-                    <div className="date__viewed">
+                    <div>
                       Viewed<span>{board.views} times</span>
+                    </div>
+                    <div>
+                      <span>{board.ratingScore}</span> rating
                     </div>
                   </Dates>
                 </div>
