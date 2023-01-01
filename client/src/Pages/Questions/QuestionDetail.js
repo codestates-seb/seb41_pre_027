@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Loading from '../../Components/Loading';
 import { fetchDelete } from '../../utils/api';
 import useFetch from '../../utils/useFetch';
@@ -7,25 +7,21 @@ import styled from 'styled-components';
 import CommentCreateDetail from '../../Components/Question/CommentCreateDetail';
 import AnswerDetail from '../../Components/Question/AnswerDetail';
 import SidebarWidget from '../../Components/Questions/SidebarWidget';
-import { Link } from 'react-router-dom';
 
 //오잉 이 부분이 적용이 안되는 것 같은데?
-const Side = styled.div`
-  .side {
-    margin-bottom: 80px;
-  }
-`;
+
 const Container = styled.div`
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  border-left: 1px solid #d6d9dc;
   .board__details {
-    padding-left: 25px;
-    padding-right: 30px;
-    border-left: 1px solid #e5e7e9;
     margin-bottom: 80px;
+    flex-basis: calc(100% - 300px - 24px);
   }
 `;
 const Content = styled.div`
   .detail__header {
-    margin-top: 25px;
     padding-bottom: 13px;
     border-bottom: 1px solid #e6e9ea;
   }
@@ -35,7 +31,6 @@ const Content = styled.div`
   .detail__body {
     margin-top: 20px;
     line-height: 1.4rem;
-    padding-right: 400px;
   }
   span {
     font-size: 13px;
@@ -85,59 +80,53 @@ function BoardDetail() {
     fetchDelete(`http://localhost:4000/boards`, id);
   };
   return (
-    <>
-      <Container>
-        <div className="board__details">
-          {isPending && <Loading />}
-          {error && <div>{error}</div>}
-          {board && (
-            <article>
-              <Content>
-                <div className="detail__header">
-                  <div className="detail__title">
-                    <h2>{board.title}</h2>
+    <Container>
+      <div className="board__details">
+        {isPending && <Loading />}
+        {error && <div>{error}</div>}
+        {board && (
+          <article>
+            <Content>
+              <div className="detail__header">
+                <div className="detail__title">
+                  <h2>{board.title}</h2>
+                </div>
+                <Dates>
+                  <div className="date__asked">
+                    <span>Asked 14years, 5 months ago</span>
                   </div>
-                  <Dates>
-                    <div className="date__asked">
-                      <span>Asked 14years, 5 months ago</span>
-                    </div>
-                    <div className="date__modified">
-                      <span>Modified {board.modifiedAt} months ago</span>
-                    </div>
-                    <div className="date__viewed">
-                      <span>Viewed 250k times</span>
-                    </div>
-                  </Dates>
-                </div>
-                <div className="detail__body">
-                  <span>{board.text}</span>
-                </div>
-              </Content>
-            </article>
-          )}
-          <Clicks>
-            <div className="detail__share">
-              <span>Share</span>
-            </div>
-            <div className="detail__edit">
-              <Link to="/patch/${id}">
-                <span>Edit</span>
-              </Link>
-            </div>
-            <div className="detail__follow">
-              <span>Follow</span>
-            </div>
-          </Clicks>
-          <CommentCreateDetail />
-          <AnswerDetail />
-        </div>
-      </Container>
-      <Side>
-        <div className="side">
-          <SidebarWidget />
-        </div>
-      </Side>
-    </>
+                  <div className="date__modified">
+                    <span>Modified {board.modifiedAt} months ago</span>
+                  </div>
+                  <div className="date__viewed">
+                    <span>Viewed 250k times</span>
+                  </div>
+                </Dates>
+              </div>
+              <div className="detail__body">
+                <span>{board.text}</span>
+              </div>
+            </Content>
+          </article>
+        )}
+        <Clicks>
+          <div className="detail__share">
+            <span>Share</span>
+          </div>
+          <div className="detail__edit">
+            <Link to="/patch/${id}">
+              <span>Edit</span>
+            </Link>
+          </div>
+          <div className="detail__follow">
+            <span>Follow</span>
+          </div>
+        </Clicks>
+        <CommentCreateDetail />
+        <AnswerDetail />
+      </div>
+      <SidebarWidget />
+    </Container>
   );
 }
 

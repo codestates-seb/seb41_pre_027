@@ -5,30 +5,81 @@ import {
   fetchPatchComment,
 } from '../../utils/api';
 import useInput from '../../utils/useInput';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { ModalComment } from './ModalComment';
-const Container = styled.div``;
+
+const Container = styled.div`
+  /* border: 1px solid red; */
+`;
 const CommentPatch = styled.div``;
 const CommentPost = styled.div`
+  padding: 16px 8px 16px 0;
   .comment__post {
-    border: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
   }
   input {
-    border: none;
-    font-size: 9px;
-    width: 400px;
+    border: 0;
+    border-bottom: 1px solid #e6e9ea;
+    background-color: #fff;
+    padding: 0.6em 0.8em;
+    flex-grow: 100;
+    color: #3b4045;
     ::placeholder {
-      color: #e4e6e7;
+      color: #838c95;
     }
+  }
+  input:focus {
+    border-color: #6bbbf7;
+    outline: none;
+  }
+  .comment__post--button {
+    height: fit-content;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
   }
 `;
 const CommentRead = styled.div`
+  border-top: 1px solid #e6e9ea;
+  box-sizing: border-box;
+  .comment__read {
+  }
+  .comment__read--id {
+    padding: 12px 8px;
+    border-bottom: 1px solid #e6e9ea;
+  }
+  .comment__read--head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .comment__read--user {
+    font-weight: 500;
+    color: #6a737c;
+    :hover {
+      color: #0074cc;
+    }
+  }
+  .comment__read--buttoncontainer {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    button {
+      cursor: pointer;
+    }
+  }
   .comment__read--text {
-    border-bottom: 1px solid #f1f2f3;
-    margin-bottom: 18px;
-    padding: 20px;
+    color: #232629;
+  }
+  .comment__read--text {
+  }
+  .comment__delete--button {
+    border-radius: 3px;
+    height: fit-content;
   }
 `;
 const Text = styled.div``;
@@ -91,18 +142,30 @@ function CommentCreateDetail() {
               getcomment.map((el) => {
                 return (
                   <div className="comment__read--id" key={el.commentId}>
-                    <span className="comment__read--user">{el.memberNick}</span>
-                    <ModalComment
-                      onClick={(e) => toggleInput(el.commentId)}
-                      commentId={el.commentId}
-                      id={id}
-                      commentContent={commentContent}
-                      bindCommentContent={bindCommentContent}
-                      resetCommentContent={resetCommentContent}
-                    />
-                    <button onClick={(e) => deleteForm(el.commentId)}>
-                      삭제
-                    </button>
+                    <div className="comment__read--head">
+                      <Link
+                        to={`/users/${el.memberId}`}
+                        className="comment__read--user"
+                      >
+                        {el.memberNick}
+                      </Link>
+                      <div className="comment__read--buttoncontainer">
+                        <ModalComment
+                          onClick={(e) => toggleInput(el.commentId)}
+                          commentId={el.commentId}
+                          id={id}
+                          commentContent={commentContent}
+                          bindCommentContent={bindCommentContent}
+                          resetCommentContent={resetCommentContent}
+                        />
+                        <button
+                          onClick={(e) => deleteForm(el.commentId)}
+                          className="comment__delete--button btn-style2"
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    </div>
                     <div className="comment__read--text">{el.text}</div>
                   </div>
                 );
@@ -117,7 +180,12 @@ function CommentCreateDetail() {
                 placeholder="Add a comment"
                 {...bindCommentContent}
               ></input>
-              <button type="submit">제출</button>
+              <button
+                className="comment__post--button btn-style1"
+                type="submit"
+              >
+                제출
+              </button>
             </div>
           </form>
         </CommentPost>
