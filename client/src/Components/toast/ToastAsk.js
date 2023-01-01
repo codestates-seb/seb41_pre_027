@@ -165,7 +165,7 @@ export default function ToastAsk() {
             <Editor
               ref={editorRef} // DOM 선택용 useRef
               placeholder="내용을 입력해주세요."
-              previewStyle="horizon" // 미리보기 스타일 지정
+              previewStyle="tab" // 미리보기 스타일 지정
               height="300px" // 에디터 창 높이
               initialEditType="markdown" //
               toolbarItems={[
@@ -173,7 +173,6 @@ export default function ToastAsk() {
                 ['heading', 'bold', 'italic', 'strike'],
                 ['hr', 'quote'],
                 ['ul', 'ol', 'task'],
-                ['table', 'image', 'link'],
                 ['code', 'codeblock'],
               ]}
               useCommandShortcut={false} // 키보드 입력 컨트롤 방지
