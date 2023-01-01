@@ -4,73 +4,109 @@ import ask from '../../assets/images/ask.png';
 import ToastAsk from '../toast/ToastAsk';
 
 const Container = styled.div`
-  background-color: #f8f9f9;
+  width: 100%;
+  @media screen and (max-width: 1200px) {
+    padding: 24px 16px;
+    box-sizing: border-box;
+  }
 `;
 
 const Head = styled.div`
   display: flex;
-  .head__title {
-    font-size: larger;
-    padding-top: 4rem;
-    padding-right: 20rem;
+  align-items: center;
+  height: 130px;
+  background: url(${ask}) no-repeat right bottom;
+  background-size: auto 130px;
+  h2 {
+    font-size: 2.07rem;
+    line-height: 1.3;
+    letter-spacing: -0.025;
+    color: #232629;
   }
-  .head__img {
+
+  @media screen and (max-width: 1200px) {
+    background: none;
+    height: fit-content;
+    margin-bottom: 12px;
+    h2 {
+      margin-bottom: 2.8rem;
+    }
   }
 `;
 const Description = styled.div`
+  margin-top: 16px;
   border: 1px solid #afd3ef;
   border-radius: 3px;
   background-color: #ebf4fb;
-  padding: 25px 20px;
+  padding: 24px;
+  box-sizing: border-box;
+
   h3 {
-    font-size: 20px;
+    font-size: 1.5rem;
+    letter-spacing: -0.025;
+    line-height: 1.3;
+    margin-bottom: 1em;
     font-weight: 400;
+    margin-bottom: 12px;
   }
   .description__head--detail {
-    margin-top: 15px;
-    font-size: 15px;
-    line-height: 1.4rem;
-    margin-bottom: 15px;
+    margin-bottom: 24px;
+    p {
+      font-size: 1.15rem;
+      line-height: 1.4;
+      color: #3b4045;
+      span {
+        color: #0074cc;
+      }
+    }
   }
   h4 {
-    margin-bottom: 13px;
+    margin-bottom: 12px;
+    font-weight: 500;
   }
   li {
-    margin-left: 15px;
+    margin-left: 32px;
     line-height: 1.4rem;
+    list-style: disc;
+    color: #3b4045;
+  }
+
+  @media screen and (max-width: 640px) {
+    .description__head--detail {
+      p {
+        font-size: 1.3rem;
+      }
+    }
   }
 `;
 
 const Main = styled.div`
-  margin-right: 40rem;
+  margin-right: 30rem;
+  @media screen and (max-width: 1200px) {
+    margin-right: auto;
+  }
 `;
 function CreateBoard() {
   return (
     <>
       <Container>
         <Head>
-          <div className="head__title">
-            <h2>Ask a public question</h2>
-          </div>
-          <div className="head__img">
-            <img src={ask} alt="ask"></img>
-          </div>
+          <h2>Ask a public question</h2>
         </Head>
         <Main>
           <Description>
             <div className="description__head">
               <h3>Writing a good question</h3>
               <div className="description__head--detail">
-                <span>
-                  You’re ready to ask a programming-related question and this
-                  form will help guide you through the process.
-                </span>
-                <div>
-                  <span>
-                    Looking to ask a non-programming question? See the topics
-                    here to find a relevant site.
-                  </span>
-                </div>
+                <p>
+                  You’re ready to <span>ask</span> a
+                  <span> programming-related question</span> and this form will
+                  help guide you through the process.
+                </p>
+                <p>
+                  Looking to ask a non-programming question? See
+                  <span> the topics here</span> to find a relevant site.
+                </p>
               </div>
               <div className="description__tail">
                 <h4>Steps</h4>
@@ -84,7 +120,7 @@ function CreateBoard() {
                     Add “tags” which help surface your question to members of
                     the community.
                   </li>
-                  <li>Review your question and post it to the site.s</li>
+                  <li>Review your question and post it to the site.</li>
                 </ul>
               </div>
             </div>
