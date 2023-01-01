@@ -3,11 +3,9 @@ import styled from 'styled-components';
 import { useParams } from 'react-router';
 import useFetch from '../../utils/useFetch';
 import useInput from '../../utils/useInput';
-import {
-  fetchCreateAnswer,
-  fetchDeleteAnswer,
-  fetchPatchAnswer,
-} from '../../utils/api';
+import { fetchCreateAnswer, fetchDeleteAnswer } from '../../utils/api';
+import ToastAnswerPatch from '../toast/ToastAnswerPatch';
+import { Link } from 'react-router-dom';
 const AnswerPost = styled.div``;
 const AnswerRead = styled.div`
   .answer__read {
@@ -35,17 +33,6 @@ function AnswerDetail() {
   console.log(getanswer);
 
   const [answerContent, bindAnswerContent, resetAnswerContent] = useInput('');
-  const submitForm = (e) => {
-    e.preventDefault();
-    fetchCreateAnswer(
-      process.env.REACT_APP_DB_HOST + `api/questions/${id}/answers`,
-      id,
-      {
-        text: answerContent,
-      }
-    );
-    resetAnswerContent();
-  };
   const deleteForm = (answerId) => {
     alert(`${answerId}`);
     fetchDeleteAnswer(
@@ -53,14 +40,7 @@ function AnswerDetail() {
       id
     );
   };
-  const patchForm = (answerId) => {
-    alert('수정');
-    fetchPatchAnswer(
-      process.env.REACT_APP_DB_HOST + `/api/answers/${answerId}`,
-      id
-      //데이터 들어가야함
-    );
-  };
+
   return (
     <>
       <Container>
@@ -71,9 +51,15 @@ function AnswerDetail() {
                 return (
                   <div className="answer__read--id" key={el.answerId}>
                     <div className="answer__read--text">{el.text}</div>
-                    <button onClick={(e) => patchForm(el.answerId)}>
-                      수정
-                    </button>
+                    <Link to="/patch/answer/:id">
+                      <button
+                        onClick={() => {
+                          <ToastAnswerPatch answerId={el.answerId} />;
+                        }}
+                      >
+                        수정
+                      </button>
+                    </Link>
                     <button onClick={(e) => deleteForm(el.answerId)}>
                       삭제
                     </button>
