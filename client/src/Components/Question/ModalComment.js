@@ -100,7 +100,7 @@ export const ModalComment = ({
     setIsOpen(!isOpen);
   };
   const patchCommentForm = () => {
-    alert(`${commentId}${commentPatch}`);
+    // alert(`${commentId}${commentPatch}`);
     fetchPatchComment(
       process.env.REACT_APP_DB_HOST + `/api/comments/${commentId}`,
       id,

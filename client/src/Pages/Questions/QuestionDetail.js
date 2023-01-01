@@ -105,27 +105,30 @@ function BoardDetail() {
   useScrollTop();
 
   const questionDeleteHandler = () => {
-    const deleteQuestion = async () => {
-      try {
-        await axios.delete(
-          process.env.REACT_APP_DB_HOST + `/api/questions/${id}`,
-          {
-            headers: {
-              Authorization: accessToken,
-            },
-            data: {},
-          }
-        );
-        setTimeout(() => {
-          navigate('/');
-          window.location.reload();
-        }, 250);
-      } catch (error) {
-        console.log(error);
-        alert('요청 실패');
-      }
-    };
-    deleteQuestion();
+    const isDelete = confirm('게시물을 삭제할까요?');
+    if (isDelete) {
+      const deleteQuestion = async () => {
+        try {
+          await axios.delete(
+            process.env.REACT_APP_DB_HOST + `/api/questions/${id}`,
+            {
+              headers: {
+                Authorization: accessToken,
+              },
+              data: {},
+            }
+          );
+          setTimeout(() => {
+            navigate('/');
+            window.location.reload();
+          }, 250);
+        } catch (error) {
+          console.log(error);
+          alert('요청 실패');
+        }
+      };
+      deleteQuestion();
+    }
   };
 
   const questionUprating = () => {
@@ -141,6 +144,7 @@ function BoardDetail() {
           }
         );
         alert('추천완료');
+        window.location.reload();
       } catch (error) {
         console.log(error);
         alert('요청실패');
@@ -161,6 +165,7 @@ function BoardDetail() {
           }
         );
         alert('비추천완료');
+        window.location.reload();
       } catch (error) {
         console.log(error);
         alert('요청실패');
@@ -262,7 +267,7 @@ function BoardDetail() {
           </>
         )}
         <CommentCreateDetail />
-        <AnswerDetail memberId={memberId} />
+        <AnswerDetail memberId={memberId} questionId={id} />
       </div>
       <SidebarWidget />
     </Container>

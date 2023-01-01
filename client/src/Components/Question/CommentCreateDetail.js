@@ -121,11 +121,14 @@ function CommentCreateDetail() {
   };
 
   const deleteForm = (commentId) => {
-    alert(`${commentId}`);
-    fetchDeleteComment(
-      process.env.REACT_APP_DB_HOST + `/api/comments/${commentId}`,
-      id
-    );
+    // alert(`${commentId}`);
+    const isDelete = confirm('코멘트를 삭제할까요?');
+    if (isDelete) {
+      fetchDeleteComment(
+        process.env.REACT_APP_DB_HOST + `/api/comments/${commentId}`,
+        id
+      );
+    }
   };
 
   const patchForm = (commentId) => {
@@ -198,7 +201,7 @@ function CommentCreateDetail() {
                 className="comment__post--button btn-style1"
                 type="submit"
               >
-                제출
+                등록
               </button>
             </div>
           </form>

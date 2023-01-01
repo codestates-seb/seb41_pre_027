@@ -53,7 +53,7 @@ export default function ToastAnswer() {
         hideModeSwitch
         initialValue=""
         ref={editorRef}
-        language="ru-RU"
+        language="ko-KR"
         useCommandShortcut={true}
       ></Editor>
 

@@ -1,6 +1,7 @@
 //api 문서화
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+
 const cookies = new Cookies();
 const accessToken = cookies.get('Authorization');
 
@@ -150,7 +151,7 @@ export const fetchPatchAnswer = (url, id, data) => {
     body: JSON.stringify(data),
   })
     .then(() => {
-      window.location.href = `/api/questions/${id}?`;
+      window.location.href = `/api/questions/${id}`;
     })
     .catch((error) => {
       console.error('Error', error);

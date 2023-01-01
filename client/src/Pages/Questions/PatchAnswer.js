@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import useFetch from '../../utils/useFetch';
 import useInput from '../../utils/useInput';
 import ToastAnswerPatch from '../../Components/toast/ToastAnswerPatch';
+
 const Container = styled.div`
   padding: 50px;
   border-left: 1px solid #d8d9dc;
@@ -11,6 +12,7 @@ const Container = styled.div`
     background-color: #fdf7e2;
     border-radius: 3px;
     padding: 20px;
+    margin-bottom: 20px;
   }
   .alert__title {
     margin-bottom: 20px;

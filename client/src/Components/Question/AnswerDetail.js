@@ -20,7 +20,7 @@ const AnswerRead = styled.div`
   }
   .answer__read--id {
     background: #f7f7f7;
-    padding: 12px 12px 0;
+    padding: 12px;
     box-sizing: border-box;
     border-radius: 5px;
   }
@@ -57,7 +57,7 @@ const Container = styled.div`
     }
   }
 `;
-function AnswerDetail(memberId) {
+function AnswerDetail({ memberId }) {
   const dispatch = useDispatch();
   const { id } = useParams();
   const answer = useFetch(`/api/questions/${id}/answers`);
@@ -65,11 +65,14 @@ function AnswerDetail(memberId) {
 
   const [answerContent, bindAnswerContent, resetAnswerContent] = useInput('');
   const deleteForm = (answerId) => {
-    alert(`${answerId}`);
-    fetchDeleteAnswer(
-      process.env.REACT_APP_DB_HOST + `/api/answers/${answerId}`,
-      id
-    );
+    // alert(`${answerId}`);
+    const isDelete = confirm('답변을 삭제할까요?');
+    if (isDelete) {
+      fetchDeleteAnswer(
+        process.env.REACT_APP_DB_HOST + `/api/answers/${answerId}`,
+        id
+      );
+    }
   };
 
   return (
@@ -100,6 +103,7 @@ function AnswerDetail(memberId) {
                           type="button"
                           onClick={() => {
                             dispatch(modifyActions.modifyAnswer(el.answerId));
+                            dispatch(modifyActions.modifyQuestion(id));
                           }}
                         >
                           수정

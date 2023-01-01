@@ -9,8 +9,10 @@ import '@toast-ui/editor/dist/i18n/ko-kr';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
+import { Cookies } from 'react-cookie';
+import axios from 'axios';
 
 const Container = styled.div`
   border: 1px solid black;
@@ -36,34 +38,69 @@ const Button = styled.div`
 export default function ToastAnswerPatch() {
   const answerId = useSelector((state) => state.modify.answerId);
   console.log(answerId);
+  const questionId = useSelector((state) => state.modify.questionId);
+  console.log(questionId);
+
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+
   const { id } = useParams();
   const editorRef = useRef();
 
-  const submitFormtoast = () => {
+  const submitFormtoast = (e) => {
     // alert(editorRef.current?.getInstance().getMarkdown());
-    alert(answerId);
-    fetchPatchAnswer(
-      process.env.REACT_APP_DB_HOST + `/api/answers/${answerId}`,
-      id,
-      {
-        answerId: answerId,
-        text: editorRef.current?.getInstance().getMarkdown(),
+    // alert(answerId);
+    // fetchPatchAnswer(
+    //   process.env.REACT_APP_DB_HOST + `/api/answers/${answerId}`,
+    //   questionId,
+    //   {
+    //     answerId: answerId,
+    //     text: editorRef.current?.getInstance().getMarkdown(),
+    //   }
+    // );
+
+    e.preventDefault();
+    const sendPatch = async () => {
+      try {
+        await axios.patch(
+          process.env.REACT_APP_DB_HOST + `/api/answers/${answerId}`,
+          {
+            answerId: answerId,
+            text: editorRef.current?.getInstance().getHTML(),
+          },
+          {
+            headers: {
+              Authorization: cookies.get('Authorization'),
+            },
+          }
+        );
+        setTimeout(() => {
+          navigate(`/questions/${questionId}`);
+          window.location.reload();
+        }, 150);
+      } catch (error) {
+        console.log(error);
+        alert('요청실패');
       }
-    );
+    };
+    sendPatch();
   };
 
   return (
     <>
       <Viewer />
       <Editor
-        previewStyle="vertical"
-        toolbarItems={[['bold', 'italic'], ['ul', 'ol'], ['link']]}
-        height="400px"
+        previewStyle="tab"
+        toolbarItems={[
+          ['heading', 'bold', 'italic'],
+          ['code', 'codeblock'],
+        ]}
+        height="200px"
         initialEditType="markdown"
         hideModeSwitch
         initialValue=""
         ref={editorRef}
-        language="ru-RU"
+        language="ko-KR"
         useCommandShortcut={true}
       ></Editor>
 
