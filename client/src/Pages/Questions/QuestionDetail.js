@@ -12,6 +12,7 @@ import SidebarWidget from '../../Components/Questions/SidebarWidget';
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
   gap: 24px;
   padding: 24px;
   border-left: 1px solid #d6d9dc;
