@@ -24,6 +24,7 @@ import { authActions } from './Redux/auth';
 import { Cookies } from 'react-cookie';
 import Editprofile from './Pages/EditProfile';
 import MyPageView from './Pages/Mymypage';
+import PatchAnswer from './Pages/Questions/PatchAnswer';
 
 const StyledApp = styled.div`
   width: 100%;
@@ -117,6 +118,7 @@ function App() {
           <Route exact path="/questions/ask" element={<AskAQuestion />} />
           <Route path="/questions/:id" element={<QuestionDetail />} />
           <Route path="/patch/:id" element={<PatchQuestion />} />
+          <Route path="/patch/answer/:id" element={<PatchAnswer />} />
           {/* 질문 생성 */}
           <Route path="/tags" element={<Tags />} /> {/* 태그 목록들*/}
           <Route exact path="/users" element={<Users />} /> {/* 유저 목록 */}
