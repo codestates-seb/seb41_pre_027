@@ -29,7 +29,7 @@ const useFetch = (url) => {
           setIsPending(false);
           setError(err.message);
         });
-    }, 1000);
+    }, 150);
 
     // abort the fetch. 완료되기 전에 DOM 요청 중단
     return () => abortCont.abort();

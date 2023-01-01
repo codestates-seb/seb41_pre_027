@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GNB from './GNB';
 import styled from 'styled-components';
 
@@ -85,6 +85,9 @@ const NavInHeader = () => {
   const floatMenuHandler = () => {
     setIsOpened(!isOpened);
   };
+  useEffect(() => {
+    setIsOpened(false);
+  }, []);
   return (
     <StyledNavInHeader>
       <button

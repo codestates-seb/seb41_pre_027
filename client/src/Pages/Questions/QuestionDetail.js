@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Loading from '../../Components/Loading';
 import useFetch from '../../utils/useFetch';
 import useScrollTop from '../../utils/useScrollTop';
@@ -9,6 +9,8 @@ import SidebarWidget from '../../Components/Questions/SidebarWidget';
 import { Viewer } from '@toast-ui/react-editor';
 import { modifyActions } from '../../Redux/modify';
 import { useDispatch } from 'react-redux';
+import { Cookies } from 'react-cookie';
+import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -22,8 +24,9 @@ const Container = styled.div`
   }
 
   @media screen and (max-width: 1200px) {
+    padding: 24px 16px;
     .board__details {
-      flex-basis: auto;
+      flex-basis: 100%;
     }
   }
 `;
@@ -34,6 +37,10 @@ const Content = styled.div`
   }
   .detail__title {
     margin-bottom: 15px;
+    color: #3b4045;
+    font-weight: 500;
+    font-size: 2.07rem;
+    line-height: 1.3;
   }
   .detail__body {
     margin-top: 20px;
@@ -43,39 +50,39 @@ const Content = styled.div`
 `;
 const Dates = styled.div`
   display: flex;
-  .date__asked {
-    margin-right: 8px;
-  }
-  .date__modified {
-    margin-right: 8px;
-  }
+  gap: 20px;
+  color: #939596;
   span {
-    margin-right: 5px;
-    color: #939596;
+    color: #3b4045;
+    display: inline-block;
+    margin-left: 4px;
+  }
+  @media screen and (max-width: 1200px) {
+    gap: 8px;
+    flex-direction: column;
   }
 `;
 const Clicks = styled.div`
-  display: flex;
-  padding: 40px 0px;
-  .detail__share {
-    color: #748089;
-    font-size: 12px;
-    margin-right: 8px;
+  div {
+    display: flex;
+    padding: 16px 0px;
+    gap: 4px;
   }
-  .detail__edit {
-    color: #748089;
-    font-size: 12px;
-    margin-right: 8px;
+  button {
+    border-radius: 3px;
+    cursor: pointer;
   }
-  .detail__follow {
-    color: #748089;
-    font-size: 12px;
-    margin-right: 8px;
+  .hide {
+    display: none !important;
   }
 `;
 
 function BoardDetail() {
+  const cookies = new Cookies();
+  const memberId = Number(cookies.get('memberId'));
+  const accessToken = cookies.get('Authorization');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [board, isPending, error] = useFetch(
@@ -83,55 +90,102 @@ function BoardDetail() {
   );
   useScrollTop();
 
+  const questionDeleteHandler = () => {
+    const deleteQuestion = async () => {
+      try {
+        await axios.delete(
+          process.env.REACT_APP_DB_HOST + `/api/questions/${id}`,
+          {
+            headers: {
+              Authorization: accessToken,
+            },
+            data: {},
+          }
+        );
+        setTimeout(() => {
+          navigate('/');
+          window.location.reload();
+        }, 250);
+      } catch (error) {
+        console.log(error);
+        alert('요청 실패');
+      }
+    };
+    deleteQuestion();
+  };
+
   return (
     <Container>
       <div className="board__details">
         {isPending && <Loading />}
         {error && <div>{error}</div>}
         {board && (
-          <article>
-            <Content>
-              <div className="detail__header">
-                <div className="detail__title">
-                  <h2>{board.title}</h2>
-                </div>
-                <Dates>
-                  <div className="date__asked">
-                    <span>Asked 14years, 5 months ago</span>
-                  </div>
-                  <div className="date__modified">
-                    <span>Modified {board.modifiedAt} months ago</span>
-                  </div>
-                  <div className="date__viewed">
-                    <span>Viewed 250k times</span>
-                  </div>
-                </Dates>
-              </div>
-              <div className="detail__body">
-                <Viewer initialValue={board.text} />
-              </div>
-            </Content>
-          </article>
-        )}
-        <Clicks>
-          <div className="detail__edit">
-            <Link to="/patch">
-              <button
-                onClick={() => {
-                  dispatch(modifyActions.modifyQuestion(id));
-                }}
-              >
-                Edit
-              </button>
-            </Link>
-          </div>
+          <>
+            <article>
+              <Content>
+                <div className="detail__header">
+                  <h2 className="detail__title">{board.title}</h2>
 
-          <div className="detail__follow">
-            <span>Follow</span>
-          </div>
-        </Clicks>
+                  <Dates>
+                    <div className="date__asked">
+                      Asked
+                      <span>
+                        {new Date(board.createdAt + 'Z').toLocaleString(
+                          'ko-KR'
+                        )}
+                      </span>
+                    </div>
+                    <div className="date__modified">
+                      Modified
+                      <span>
+                        {new Date(board.modifiedAt + 'Z').toLocaleString(
+                          'ko-KR'
+                        )}
+                      </span>
+                    </div>
+                    <div className="date__viewed">
+                      Viewed<span>{board.views} times</span>
+                    </div>
+                  </Dates>
+                </div>
+                <div className="detail__body">
+                  <Viewer initialValue={board.text} />
+                </div>
+              </Content>
+            </article>
+
+            <Clicks>
+              <div
+                className={
+                  memberId === board.memberId
+                    ? 'detail__buttoncontainer'
+                    : 'detail__buttoncontainer hide'
+                }
+              >
+                <Link to="/patch">
+                  <button
+                    type="button"
+                    className="btn-style2"
+                    onClick={() => {
+                      dispatch(modifyActions.modifyQuestion(id));
+                    }}
+                  >
+                    Edit
+                  </button>
+                </Link>
+                <button
+                  type="button"
+                  className="btn-style2"
+                  onClick={questionDeleteHandler}
+                >
+                  Delete
+                </button>
+              </div>
+            </Clicks>
+          </>
+        )}
         <CommentCreateDetail />
-        <AnswerDetail />
+        <AnswerDetail memberId={memberId} />
       </div>
       <SidebarWidget />
     </Container>

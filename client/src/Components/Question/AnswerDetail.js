@@ -8,16 +8,36 @@ import ToastAnswerPatch from '../toast/ToastAnswerPatch';
 import { Link } from 'react-router-dom';
 import { modifyActions } from '../../Redux/modify';
 import { useDispatch } from 'react-redux';
+import { Viewer } from '@toast-ui/react-editor';
 
 const AnswerPost = styled.div``;
 const AnswerRead = styled.div`
   .answer__read {
-    margin-top: 30px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .answer__read--id {
+    background: #f7f7f7;
+    padding: 12px 12px 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+  .answer__author {
+    font-weight: 500;
+    color: #6a737c;
+    :hover {
+      color: #0074cc;
+    }
+  }
+  .hide {
+    display: none !important;
   }
 `;
 const Container = styled.div`
   .answer__label {
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 20px;
     line-height: 1.3;
   }
@@ -28,8 +48,16 @@ const Container = styled.div`
     background-color: #0a95ff;
     color: white;
   }
+  .answer__buttoncontainer {
+    display: flex;
+    gap: 4px;
+    button {
+      cursor: pointer;
+      border-radius: 3px;
+    }
+  }
 `;
-function AnswerDetail() {
+function AnswerDetail(memberId) {
   const dispatch = useDispatch();
   const { id } = useParams();
   const answer = useFetch(`/api/questions/${id}/answers`);
@@ -53,19 +81,38 @@ function AnswerDetail() {
               getanswer.map((el) => {
                 return (
                   <div className="answer__read--id" key={el.answerId}>
-                    <div className="answer__read--text">{el.text}</div>
-                    <Link to={'/patch/answer'}>
+                    <div className="answer__author">
+                      <Link to={`/users/${el.memberId}`}>{el.memberNick}</Link>
+                    </div>
+                    <div className="answer__read--text">
+                      <Viewer initialValue={el.text} />
+                    </div>
+                    <div
+                      className={
+                        memberId === el.memberId
+                          ? 'answer__buttoncontainer'
+                          : 'answer__buttoncontainer hide'
+                      }
+                    >
+                      <Link to={'/patch/answer'}>
+                        <button
+                          className="btn-style2"
+                          type="button"
+                          onClick={() => {
+                            dispatch(modifyActions.modifyAnswer(el.answerId));
+                          }}
+                        >
+                          수정
+                        </button>
+                      </Link>
                       <button
-                        onClick={() => {
-                          dispatch(modifyActions.modifyAnswer(el.answerId));
-                        }}
+                        className="btn-style2"
+                        type="button"
+                        onClick={(e) => deleteForm(el.answerId)}
                       >
-                        수정
+                        삭제
                       </button>
-                    </Link>
-                    <button onClick={(e) => deleteForm(el.answerId)}>
-                      삭제
-                    </button>
+                    </div>
                   </div>
                 );
               })}
