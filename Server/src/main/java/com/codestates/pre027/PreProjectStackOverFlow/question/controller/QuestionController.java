@@ -132,8 +132,9 @@ public class QuestionController {
     }
 
     @GetMapping("/member/{member-id}")
-    public ResponseEntity memberQuestionList(@PathVariable("member-id") @Positive long memberId) {
-        List<Question> memberQuestionList = questionService.memberQuestionList(memberId);
+    public ResponseEntity memberQuestionList(@PathVariable("member-id") @Positive long memberId,
+        @PageableDefault(size = 10, sort = "questionId", direction = Sort.Direction.DESC) Pageable pageable) {
+        List<Question> memberQuestionList = questionService.memberQuestionList(memberId,pageable);
         List<QuestionDto.Response> response = questionMapper.questionsToQuestionResponseDtos(memberQuestionList);
         long count = response.size();
 

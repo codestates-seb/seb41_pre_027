@@ -107,8 +107,8 @@ public class QuestionService {
         return questionCount;
     }
 
-    public List<Question> memberQuestionList(long memberId) {
-        List<Question> memberQuestionList = questionRepository.findByMember(memberId);
+    public List<Question> memberQuestionList(long memberId, Pageable pageable) {
+        List<Question> memberQuestionList = questionRepository.findByMember(memberId,pageable);
         return memberQuestionList;
     }
 }
