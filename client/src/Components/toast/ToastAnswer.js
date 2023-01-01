@@ -1,8 +1,16 @@
+import React from 'react';
+import { fetchCreateAnswer } from '../../utils/api';
+
 import { useRef } from 'react';
 import styled from 'styled-components';
 // Toast 에디터
-import { Editor } from '@toast-ui/react-editor';
+import { Editor, Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import '@toast-ui/editor/dist/i18n/ko-kr';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import { useParams } from 'react-router';
 
 const Container = styled.div`
   border: 1px solid black;
@@ -25,36 +33,41 @@ const Button = styled.div`
   }
 `;
 
-export default function ToastAnswer({ handleSubmit }) {
+export default function ToastAnswer() {
+  const { id } = useParams();
   const editorRef = useRef();
-  // 등록 버튼 핸들러
-  const handleRegisterButton = () => {
-    // 입력창에 입력한 내용을 MarkDown 형태로 취득
-    console.log(editorRef.current?.getInstance().getMarkdown());
+
+  const submitFormtoast = () => {
+    fetchCreateAnswer(
+      process.env.REACT_APP_DB_HOST + `/api/questions/${id}/answers`,
+      id,
+      {
+        text: editorRef.current?.getInstance().getMarkdown(),
+      }
+    );
   };
 
   return (
     <>
-      <Container>
-        <Editor
-          ref={editorRef}
-          placeholder={`내용을 입력해주세요`}
-          previewStyle="vertical" // 미리보기 스타일 지정
-          height="300px" // 에디터 창 높이
-          initialEditType="" // 초기 입력모드 설정(디폴트 markdown)
-          toolbarItems={[
-            // 툴바 옵션 설정
-            ['heading', 'bold', 'italic', 'strike'],
-            ['hr', 'quote'],
-            ['ul', 'ol', 'task', 'indent', 'outdent'],
-            ['table', 'image', 'link'],
-            ['code', 'codeblock'],
-          ]}
-          useCommandShortcut={false}
-        ></Editor>
-      </Container>
+      <Viewer />
+      <Editor
+        previewStyle="vertical"
+        toolbarItems={[['bold', 'italic'], ['ul', 'ol'], ['link']]}
+        height="400px"
+        initialEditType="markdown"
+        hideModeSwitch
+        initialValue=""
+        ref={editorRef}
+        language="ru-RU"
+        useCommandShortcut={true}
+      ></Editor>
+
       <Button>
-        <button onClick={handleRegisterButton}>Post Your Answer</button>
+        <form>
+          <button type="submit" onClick={submitFormtoast}>
+            Post Your Answer
+          </button>
+        </form>
       </Button>
     </>
   );
