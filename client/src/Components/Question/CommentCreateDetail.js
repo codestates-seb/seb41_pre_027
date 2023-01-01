@@ -155,7 +155,7 @@ function CommentCreateDetail() {
                         to={`/users/${el.memberId}`}
                         className="comment__read--user"
                       >
-                        {el.memberNick} {el.memberId} {memberId}
+                        {el.memberNick}
                       </Link>
                       <div
                         className={
