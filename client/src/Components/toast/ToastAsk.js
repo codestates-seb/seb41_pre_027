@@ -5,7 +5,10 @@ import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 //
 import useInput from '../../utils/useInput';
-
+import { useParams } from 'react-router';
+import { Viewer } from '@toast-ui/react-editor';
+import { fetchCreate } from '../../utils/api';
+import '@toast-ui/editor/dist/i18n/ko-kr';
 const BigContainer = styled.div`
   .content {
     background-color: white;
@@ -62,35 +65,18 @@ const Button = styled.div`
 `;
 //
 export default function ToastAsk() {
-  const [title, setTitle] = useInput('asdf');
+  const { id } = useParams();
   // Editor DOM 선택용
   const editorRef = useRef();
-
+  const [askTitle, bindAskTitle, resetAskTitle] = useInput('');
   // 등록 버튼 핸들러
   const handleRegisterButton = (e) => {
     // 입력창에 입력한 내용을 HTML 태그 형태로 취득
-    console.log(editorRef.current?.getInstance().getMarkdown());
-    const text = editorRef.current?.getInstance().getMarkdown();
-    fetch(`/api/questions/posting`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        //  Authorization: token,
-      },
-      body: JSON.stringify({
-        title: title,
-        text: text,
-      }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw Error('could not fetch the data for that resource');
-        }
-        window.location.reload();
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
+    alert(editorRef.current?.getInstance().getMarkdown());
+    fetchCreate(process.env.REACT_APP_DB_HOST + `/api/questions/posting`, id, {
+      title: askTitle,
+      text: editorRef.current?.getInstance().getMarkdown(),
+    });
   };
   return (
     <div>
@@ -105,7 +91,7 @@ export default function ToastAsk() {
               </span>
             </div>
             <div>
-              <input type="text" {...title} name="asktitle"></input>
+              <input type="text" {...bindAskTitle}></input>
             </div>
           </div>
           <Container>
@@ -116,12 +102,13 @@ export default function ToastAsk() {
                 title.Minimum 20 characters.
               </span>
             </div>
+            <Viewer />
             <Editor
               ref={editorRef} // DOM 선택용 useRef
               placeholder="내용을 입력해주세요."
               previewStyle="vertical" // 미리보기 스타일 지정
               height="300px" // 에디터 창 높이
-              initialEditType="wysiwyg" //
+              initialEditType="markdown" //
               toolbarItems={[
                 // 툴바 옵션 설정
                 ['heading', 'bold', 'italic', 'strike'],
@@ -131,6 +118,7 @@ export default function ToastAsk() {
                 ['code', 'codeblock'],
               ]}
               useCommandShortcut={false} // 키보드 입력 컨트롤 방지
+              language="ko-KR"
             ></Editor>
           </Container>
           <Button>
