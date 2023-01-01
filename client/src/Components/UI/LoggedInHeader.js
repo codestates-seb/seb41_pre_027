@@ -55,8 +55,20 @@ const LoggedInHeader = () => {
 
   const postLogout = async () => {
     try {
-      const response = await axios.post('/api/member/logout');
+      const response = await axios.post(
+        process.env.REACT_APP_DB_HOST + '/api/member/logout',
+        {
+          payload: {},
+        },
+        {
+          headers: {
+            Authorization: cookies.get('Authorization'),
+          },
+        }
+      );
       console.log(response);
+      navigate('/');
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -68,8 +80,8 @@ const LoggedInHeader = () => {
     cookies.remove('Authorization');
     cookies.remove('memberId');
     cookies.remove('Refresh');
-    navigate('/');
-    window.location.reload();
+    // navigate('/');
+    // window.location.reload();
   };
 
   const [userInfo, setUserInfo] = useState({});
