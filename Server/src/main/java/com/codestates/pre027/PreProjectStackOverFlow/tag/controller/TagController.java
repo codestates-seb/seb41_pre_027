@@ -8,9 +8,14 @@ import com.codestates.pre027.PreProjectStackOverFlow.tag.service.TagService;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,5 +49,16 @@ public class TagController {
         return new ResponseEntity<>(
             response,
             HttpStatus.CREATED);
+    }
+
+    @GetMapping("/tags")
+    public ResponseEntity getTags(@PageableDefault(size = 10, sort = "tagId", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Tag> tagPage = tagService.findTags(pageable);
+        List<Tag> tags = tagPage.getContent();
+
+        List<TagDto.Response> responses = tagMapper.tags_to_TagResponseDtos(tags);
+
+        return new ResponseEntity<>(responses,
+            HttpStatus.OK);
     }
 }
