@@ -1,13 +1,12 @@
 import { useParams, Link } from 'react-router-dom';
 import Loading from '../../Components/Loading';
-import { fetchDelete } from '../../utils/api';
 import useFetch from '../../utils/useFetch';
 import useScrollTop from '../../utils/useScrollTop';
-import Parser from 'html-react-parser';
 import styled from 'styled-components';
 import CommentCreateDetail from '../../Components/Question/CommentCreateDetail';
 import AnswerDetail from '../../Components/Question/AnswerDetail';
 import SidebarWidget from '../../Components/Questions/SidebarWidget';
+import { Viewer } from '@toast-ui/react-editor';
 
 const Container = styled.div`
   display: flex;
@@ -18,10 +17,6 @@ const Container = styled.div`
   .board__details {
     margin-bottom: 80px;
     flex-basis: calc(100% - 300px - 24px);
-
-    li {
-      list-style: disc;
-    }
   }
 
   @media screen and (max-width: 1200px) {
@@ -108,7 +103,9 @@ function BoardDetail() {
                   </div>
                 </Dates>
               </div>
-              <div className="detail__body">{Parser(board.text)}</div>
+              <div className="detail__body">
+                <Viewer initialValue={board.text} />
+              </div>
             </Content>
           </article>
         )}
