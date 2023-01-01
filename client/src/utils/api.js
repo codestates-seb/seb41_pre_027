@@ -150,7 +150,7 @@ export const fetchPatchAnswer = (url, id, data) => {
     body: JSON.stringify(data),
   })
     .then(() => {
-      window.location.href = `/questions/${id}?`;
+      window.location.href = `/api/questions/${id}?`;
     })
     .catch((error) => {
       console.error('Error', error);
