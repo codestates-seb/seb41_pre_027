@@ -4,6 +4,7 @@ import favicons from '../../assets/images/favicons-sprite32.png';
 
 const StyledSidebar = styled.aside`
   width: 300px;
+  height: fit-content;
   border-radius: 3px;
   background-color: #fef7e3;
   border: 1px solid #f1e5bc;
