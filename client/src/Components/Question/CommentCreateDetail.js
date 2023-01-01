@@ -7,7 +7,10 @@ import {
 import useInput from '../../utils/useInput';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { useState } from 'react';
+import { ModalComment } from './ModalComment';
 const Container = styled.div``;
+const CommentPatch = styled.div``;
 const CommentPost = styled.div`
   .comment__post {
     border: none;
@@ -40,7 +43,12 @@ function CommentCreateDetail() {
   //comment 생성하기
   const [commentContent, bindCommentContent, resetCommentContent] =
     useInput('');
+  const [toggle, setToggle] = useState(false);
 
+  function toggleInput(commentId) {
+    setToggle(true);
+    patchForm(commentId);
+  }
   const submitForm = (e) => {
     e.preventDefault();
     fetchCreateComment(
@@ -65,9 +73,13 @@ function CommentCreateDetail() {
     alert(`${commentId}`);
     fetchPatchComment(
       process.env.REACT_APP_DB_HOST + `/api/comments/${commentId}`,
-      id
-      //데이터 들어가야함
+      id,
+      {
+        commentId: commentId,
+        text: commentContent,
+      }
     );
+    resetCommentContent();
   };
 
   return (
@@ -79,9 +91,15 @@ function CommentCreateDetail() {
               getcomment.map((el) => {
                 return (
                   <div className="comment__read--id" key={el.commentId}>
-                    <button onClick={(e) => patchForm(el.commentId)}>
-                      수정
-                    </button>
+                    <span className="comment__read--user">{el.memberNick}</span>
+                    <ModalComment
+                      onClick={(e) => toggleInput(el.commentId)}
+                      commentId={el.commentId}
+                      id={id}
+                      commentContent={commentContent}
+                      bindCommentContent={bindCommentContent}
+                      resetCommentContent={resetCommentContent}
+                    />
                     <button onClick={(e) => deleteForm(el.commentId)}>
                       삭제
                     </button>

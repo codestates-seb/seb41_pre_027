@@ -47,7 +47,7 @@ function AnswerDetail() {
     resetAnswerContent();
   };
   const deleteForm = (answerId) => {
-    alert('삭제');
+    alert(`${answerId}`);
     fetchDeleteAnswer(
       process.env.REACT_APP_DB_HOST + `/api/answers/${answerId}`,
       id
@@ -71,13 +71,12 @@ function AnswerDetail() {
                 return (
                   <div className="answer__read--id" key={el.answerId}>
                     <div className="answer__read--text">{el.text}</div>
-                    <button onClick={(e) => patchForm(el.commentId)}>
+                    <button onClick={(e) => patchForm(el.answerId)}>
                       수정
                     </button>
-                    <button onClick={(e) => deleteForm(el.commentId)}>
+                    <button onClick={(e) => deleteForm(el.answerId)}>
                       삭제
                     </button>
-                    {console.log('이거야', el.answerId)}
                   </div>
                 );
               })}
