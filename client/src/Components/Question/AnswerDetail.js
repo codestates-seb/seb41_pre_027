@@ -6,6 +6,9 @@ import useInput from '../../utils/useInput';
 import { fetchCreateAnswer, fetchDeleteAnswer } from '../../utils/api';
 import ToastAnswerPatch from '../toast/ToastAnswerPatch';
 import { Link } from 'react-router-dom';
+import { modifyActions } from '../../Redux/modify';
+import { useDispatch } from 'react-redux';
+
 const AnswerPost = styled.div``;
 const AnswerRead = styled.div`
   .answer__read {
@@ -27,6 +30,7 @@ const Container = styled.div`
   }
 `;
 function AnswerDetail() {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const answer = useFetch(`/api/questions/${id}/answers`);
   const getanswer = answer[0];
@@ -51,10 +55,10 @@ function AnswerDetail() {
                 return (
                   <div className="answer__read--id" key={el.answerId}>
                     <div className="answer__read--text">{el.text}</div>
-                    <Link to="/patch/answer/:id">
+                    <Link to={`/patch/answer/${el.answerId}`}>
                       <button
                         onClick={() => {
-                          <ToastAnswerPatch answerId={el.answerId} />;
+                          dispatch(modifyActions.modifyAnswer(el.answerId));
                         }}
                       >
                         수정

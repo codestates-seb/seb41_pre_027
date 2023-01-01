@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { fetchPatchAnswer } from '../../utils/api';
 
-import { useRef } from 'react';
 import styled from 'styled-components';
 // Toast 에디터
 import { Editor, Viewer } from '@toast-ui/react-editor';
@@ -11,6 +10,7 @@ import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import { useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 
 const Container = styled.div`
   border: 1px solid black;
@@ -33,7 +33,9 @@ const Button = styled.div`
   }
 `;
 
-export default function ToastAnswerPatch(answerId) {
+export default function ToastAnswerPatch() {
+  const answerId = useSelector((state) => state.modify.answerId);
+  console.log(answerId);
   const { id } = useParams();
   const editorRef = useRef();
 
