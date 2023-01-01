@@ -9,6 +9,7 @@ import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { ModalComment } from './ModalComment';
+import { Cookies } from 'react-cookie';
 
 const Container = styled.div`
   /* border: 1px solid red; */
@@ -81,10 +82,17 @@ const CommentRead = styled.div`
     border-radius: 3px;
     height: fit-content;
   }
+
+  .hide {
+    display: none !important;
+  }
 `;
 const Text = styled.div``;
 
 function CommentCreateDetail() {
+  const cookies = new Cookies();
+  const memberId = Number(cookies.get('memberId'));
+
   const { id } = useParams();
   //comment 가져오기
   const comment = useFetch(
@@ -147,9 +155,15 @@ function CommentCreateDetail() {
                         to={`/users/${el.memberId}`}
                         className="comment__read--user"
                       >
-                        {el.memberNick}
+                        {el.memberNick} {el.memberId} {memberId}
                       </Link>
-                      <div className="comment__read--buttoncontainer">
+                      <div
+                        className={
+                          memberId === el.memberId
+                            ? 'comment__read--buttoncontainer'
+                            : 'comment__read--buttoncontainer hide'
+                        }
+                      >
                         <ModalComment
                           onClick={(e) => toggleInput(el.commentId)}
                           commentId={el.commentId}
