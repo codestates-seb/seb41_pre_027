@@ -115,6 +115,15 @@ public class TagService {
         return tags;
     }
 
+    public Page<Tag> findTags(Pageable pageable){
+        List<Tag> tags = tagRepository.findAll();
+
+        Page<Tag> tagPage = new PageImpl<>(tags,pageable,tags.size());
+
+        return tagPage;
+
+    }
+
     public Page<Question> findQuestionByTag(Pageable pageable,String tagName){
         Tag findTag = findVerifiedTag(tagName);
         List<QuestionTag> questionTags = findTag.getQuestionTags();
