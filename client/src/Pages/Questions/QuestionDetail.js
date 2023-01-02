@@ -57,20 +57,20 @@ const Dates = styled.div`
 const Clicks = styled.div`
   display: flex;
   padding: 40px 0px;
-  .detail__share {
-    color: #748089;
-    font-size: 12px;
-    margin-right: 8px;
-  }
-  .detail__edit {
-    color: #748089;
-    font-size: 12px;
-    margin-right: 8px;
-  }
-  .detail__follow {
-    color: #748089;
-    font-size: 12px;
-    margin-right: 8px;
+  button {
+    background-color: #e1ecf4;
+    border: 1px solid #7aa7c7;
+    border-radius: 2px;
+    color: #7aa7c7;
+    cursor: pointer;
+    &:hover {
+      background-color: #add8e6;
+    }
+    .detail__edit {
+      color: #748089;
+      font-size: 12px;
+      margin-right: 8px;
+    }
   }
 `;
 
@@ -124,10 +124,6 @@ function BoardDetail() {
                 Edit
               </button>
             </Link>
-          </div>
-
-          <div className="detail__follow">
-            <span>Follow</span>
           </div>
         </Clicks>
         <CommentCreateDetail />
