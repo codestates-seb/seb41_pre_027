@@ -1,0 +1,106 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.6'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
+}
+
+group = 'com.codestates.pre027'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+}
+
+configurations {
+	asciidoctorExtensions
+}
+
+dependencies {
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation 'org.mapstruct:mapstruct:1.5.1.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
+
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	implementation 'com.google.code.gson:gson'
+
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+//	implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config:2.2.6.RELEASE'
+}
+
+dependencyManagement {
+	imports {
+//		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.5"
+	}
+}
+
+tasks.named('test') {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+}
+
+
+tasks.named('asciidoctor') {
+	configurations "asciidoctorExtensions"
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("${asciidoctor.outputDir}")
+	into file("src/main/resources/static/docs")
+}
+
+build {
+	dependsOn copyDocument
+}
+
+
+bootJar {
+	dependsOn copyDocument
+	from ("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
+}
