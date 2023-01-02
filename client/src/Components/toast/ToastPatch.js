@@ -75,12 +75,15 @@ const ToastPatch = () => {
   // 등록 버튼 핸들러
   const submitQuestionForm = (e) => {
     e.preventDefault();
-    fetchPatch(process.env.REACT_APP_DB_HOST + `/api/questions/${id}`, id, {
-      questionId: questionId,
-      title: patchTitle,
-      text: editorRef.current?.getInstance().getHTML(),
-    });
-    resetPatchTitle();
+    fetchPatch(
+      process.env.REACT_APP_DB_HOST + `/api/questions/${questionId}`,
+      id,
+      {
+        questionId: questionId,
+        title: patchTitle,
+        text: editorRef.current?.getInstance().getHTML(),
+      }
+    );
   };
   return (
     <div>
