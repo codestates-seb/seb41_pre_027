@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Pagination from '../Components/UI/Pagination';
 import SidebarWidget from '../Components/Questions/SidebarWidget';
 import styled from 'styled-components';
@@ -93,6 +94,7 @@ const Questions = () => {
   const [countQuestions, setCountQuestions] = useState(0);
   const [page, setPage] = useState(1);
   const totalPage = Math.ceil(countQuestions / 10) || 1;
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const getQuestions = async () => {
     try {
@@ -127,9 +129,11 @@ const Questions = () => {
       <ViewQuestionsList>
         <div className="questions__header flex-vertical-center">
           <h2>All Questions</h2>
-          <div className="questions__header--button btn-style1">
-            <Link to="/questions/ask">Ask Question</Link>
-          </div>
+          {isAuth && (
+            <div className="questions__header--button btn-style1">
+              <Link to="/questions/ask">Ask Question</Link>
+            </div>
+          )}
         </div>
         <p className="questions__volume">{countQuestions} questions</p>
 
