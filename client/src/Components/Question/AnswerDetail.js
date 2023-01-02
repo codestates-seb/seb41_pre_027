@@ -19,7 +19,8 @@ const AnswerRead = styled.div`
     gap: 8px;
   }
   .answer__read--id {
-    background: #f7f7f7;
+    background: #fafafa;
+    border: 1px solid #ededed;
     padding: 12px;
     box-sizing: border-box;
     border-radius: 5px;
