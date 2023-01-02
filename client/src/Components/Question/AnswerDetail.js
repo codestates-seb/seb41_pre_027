@@ -77,12 +77,15 @@ function AnswerDetail({ memberId }) {
     }
   };
 
+  console.log(getanswer);
   return (
     <>
       <Container>
         <AnswerRead>
           <div className="answer__read">
-            <div className="answer__length">{getanswer.length} Answer</div>
+            <div className="answer__length">
+              {getanswer ? getanswer.length : 0} Answer
+            </div>
             {getanswer &&
               getanswer.map((el) => {
                 return (
