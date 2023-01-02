@@ -8,11 +8,38 @@ import ToastAnswerPatch from '../toast/ToastAnswerPatch';
 import { Link } from 'react-router-dom';
 import { modifyActions } from '../../Redux/modify';
 import { useDispatch } from 'react-redux';
+import { Viewer } from '@toast-ui/react-editor';
 
 const AnswerPost = styled.div``;
 const AnswerRead = styled.div`
   .answer__read {
     margin-top: 30px;
+  }
+  .answer__length {
+    font-size: large;
+    margin-bottom: 40px;
+  }
+  .answer__read--id {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #e6e9ea;
+    margin-top: 12px;
+  }
+  .answer__read--patchdelete {
+    display: flex;
+    align-items: center;
+  }
+  .answer__read--patch {
+    margin-right: 5px;
+  }
+  .answer__read--delete {
+  }
+  button {
+    height: 24px;
+    color: #3e76ab;
+    background-color: #e1ecf4;
+    border: 1px solid #7aa7c7;
+    border-radius: 3px;
   }
 `;
 const Container = styled.div`
@@ -49,23 +76,34 @@ function AnswerDetail() {
       <Container>
         <AnswerRead>
           <div className="answer__read">
+            <div className="answer__length">{getanswer.length} Answer</div>
             {getanswer &&
               getanswer.map((el) => {
                 return (
                   <div className="answer__read--id" key={el.answerId}>
-                    <div className="answer__read--text">{el.text}</div>
-                    <Link to={'/patch/answer'}>
-                      <button
-                        onClick={() => {
-                          dispatch(modifyActions.modifyAnswer(el.answerId));
-                        }}
-                      >
-                        수정
-                      </button>
-                    </Link>
-                    <button onClick={(e) => deleteForm(el.answerId)}>
-                      삭제
-                    </button>
+                    <div className="answer__read--left">
+                      <div className="">{el.memberNick}</div>
+                      <Viewer initialValue={el.text} />
+                    </div>
+
+                    <div className="answer__read--patchdelete">
+                      <Link to={'/patch/answer'}>
+                        <div className="answer__read--patch">
+                          <button
+                            onClick={() => {
+                              dispatch(modifyActions.modifyAnswer(el.answerId));
+                            }}
+                          >
+                            수정
+                          </button>
+                        </div>
+                      </Link>
+                      <div className="answer__read--delete">
+                        <button onClick={(e) => deleteForm(el.answerId)}>
+                          삭제
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 );
               })}
