@@ -3,7 +3,9 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import React, { useState, useEffect } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { avatarsM } from '../utils/avatarImage';
+import { authActions } from '../Redux/auth';
 
 const Container = styled.div``;
 const Span = styled.span`
@@ -112,6 +114,8 @@ function Editprofile() {
   const [newpassword, setNewpassword] = useState(false);
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
+  const dispatch = useDispatch();
+
   function passwordVal() {
     if (passwordRegex.test(account.newpassword)) {
       return setNewpassword(true);
@@ -160,17 +164,21 @@ function Editprofile() {
     getUser();
   }, []);
 
-  const Patchuser = async () => {
-    if (newpassword === true) {
+  const Patchname = async () => {
+    if (
+      !(account.displayname === userData.name || account.displayname === '')
+    ) {
       try {
         await axios
-          .patch(process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`, {
-            name: account.displayname,
-            password: account.newpassword,
-          })
+          .patch(
+            process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`,
+            {
+              name: account.displayname,
+            },
+            { headers: { Authorization: accessToken } }
+          )
           .then(() => {
-            alert('Your information change completed');
-            navigate('/mypage');
+            alert('Your nickname change completed');
           });
       } catch (error) {
         if (error.response) {
@@ -178,9 +186,49 @@ function Editprofile() {
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
+          return alert('Error');
         } else if (error.request) {
           // 요청이 전송되었지만, 응답이 수신되지 않음
           console.log(error.request);
+          return alert('Error');
+        } else {
+          // 오류가 발생한 요청을 설정하는 데 문제가 생김
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const Patchpassword = async () => {
+    if (!(newpassword === false || account.password === '')) {
+      try {
+        await axios
+          .patch(
+            process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`,
+            {
+              password: account.newpassword,
+            },
+            { headers: { Authorization: accessToken } }
+          )
+          .then(() => {
+            alert('Your password change completed');
+          });
+      } catch (error) {
+        if (error.response) {
+          // 요청이 전송되었고, 서버에서 20x 외의 코드로 응답 됨
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          return alert('Error');
+        } else if (error.request) {
+          // 요청이 전송되었지만, 응답이 수신되지 않음
+          console.log(error.request);
+          return alert('Error');
         } else {
           // 오류가 발생한 요청을 설정하는 데 문제가 생김
           console.log('Error', error.message);
@@ -202,8 +250,13 @@ function Editprofile() {
           headers: { Authorization: accessToken },
         })
         .then(() => {
+          dispatch(authActions.logout());
+          cookies.remove('Authorization');
+          cookies.remove('memberId');
+          cookies.remove('Refresh');
+          window.location.reload();
           alert('Thank you for using it.');
-          navigate('/mypage');
+          navigate('/');
         })
         .catch((err) => alert(err.response.data.message));
     } else {
@@ -261,7 +314,8 @@ function Editprofile() {
           onClick={() => {
             passwordVal();
             setEditSta(true);
-            Patchuser();
+            Patchname();
+            Patchpassword();
           }}
         >
           Save Edits
