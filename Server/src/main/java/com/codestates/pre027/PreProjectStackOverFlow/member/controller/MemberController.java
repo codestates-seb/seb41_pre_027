@@ -131,7 +131,6 @@ public class MemberController {
     public ResponseEntity logout(@RequestHeader("Authorization") String token) {
         long memberId = jwtTokenizer.getMemberId(token);
         String email = memberService.findMember(memberId).getEmail();
-        redisDao.deleteValues(memberId+"");
         redisDao.deleteValues(email);
         return ResponseEntity.ok().build();
     }

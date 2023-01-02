@@ -1,27 +1,3 @@
 spring:
-  datasource:
-    url: jdbc:mysql://seb41-pre027-oheadnah.cmnpihpimlic.ap-northeast-2.rds.amazonaws.com:13306/test?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    username: admin
-    password: 1q2w3e4r!!
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-  redis:
-    host: localhost
-    port: 6379
-    password: 1q2w3e4r!!
-mail:
-  address:
-    admin: admin@gmail.com
-jwt:
-  secret-key: pre027pre027pre027pre027pre027pre027pre027
-  access-token-expiration-minutes: 40
-  refresh-token-expiration-minutes: 420
-config.domain: http://pre-project-group-27.s3-website.ap-northeast-2.amazonaws.com/
+  profiles:
+    include: aws

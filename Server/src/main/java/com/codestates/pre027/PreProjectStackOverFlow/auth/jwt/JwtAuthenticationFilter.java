@@ -65,7 +65,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //  redis 에 정보 저장
         redisDao.setValues(member.getEmail(), refreshToken, Duration.ofMinutes(jwtTokenizer.getRefreshTokenExpirationMinutes()));
-        redisDao.setValues(member.getMemberId()+"", accessToken, Duration.ofMinutes(jwtTokenizer.getAccessTokenExpirationMinutes()));
 
         // response header 에 token 값 저장
         response.setHeader("Authorization", "Bearer " + accessToken);
