@@ -185,7 +185,7 @@ const Tags = () => {
   const getSearchTags = async (keyword) => {
     try {
       const response = await axios.get(
-        process.env.REACT_APP_DB_HOST + `/api/tags`
+        process.env.REACT_APP_DB_HOST + `/api/questions/tags?tagName=${keyword}`
       );
       setTagList(response.data.data);
       setCountTags(response.data.count);
@@ -255,11 +255,10 @@ const Tags = () => {
         {tagList.length ? (
           tagList.map((el) => {
             return (
-              <li key={el.memberId}>
+              <li key={el.tagId}>
                 <div className="tags__list--info">
-                  <Link to={'/questions/tagged/' + el.tagName}>
-                    {el.tagName}
-                  </Link>
+                  {/* <Link to={'/questions/tagged/' + el.tagName}> */}
+                  <Link to={() => false}>{el.tagName}</Link>
                 </div>
               </li>
             );
