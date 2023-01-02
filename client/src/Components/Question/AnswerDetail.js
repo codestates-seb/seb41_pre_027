@@ -60,7 +60,9 @@ const Container = styled.div`
 function AnswerDetail({ memberId }) {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const answer = useFetch(`/api/questions/${id}/answers`);
+  const answer = useFetch(
+    process.env.REACT_APP_DB_HOST + `/api/questions/${id}/answers`
+  );
   const getanswer = answer[0];
 
   const [answerContent, bindAnswerContent, resetAnswerContent] = useInput('');
