@@ -87,9 +87,13 @@ const Button3 = styled.button`
 `;
 
 const Avatarimg = styled.div`
-  .google {
+  .avatarimg {
     width: 8rem;
     height: 8rem;
+    border: 1px solid #d6d6d6;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05), 0 20px 48px rgba(0, 0, 0, 0.05),
+      0 1px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 7px;
   }
 `;
 
@@ -101,7 +105,6 @@ function Editprofile() {
 
   const [account, setAccount] = useState({
     displayname: '',
-    previouspassword: '',
     newpassword: '',
   });
 
@@ -125,6 +128,7 @@ function Editprofile() {
   const navigate = useNavigate();
 
   const cookies = new Cookies();
+  const accessToken = cookies.get('Authorization');
   const memberId = cookies.get('memberId');
 
   const [userData, setUserData] = useState({});
@@ -157,22 +161,17 @@ function Editprofile() {
   }, []);
 
   const Patchuser = async () => {
-    if (
-      account.displayname === userData.name //바꾸고자 하는 닉네임이 서버 데이터와 같으면 경고
-    ) {
-      return alert('Your ninkname is same as previous nickname');
-    } else if (account.newpassword === userData.password) {
-      return alert('Your password is same as previous password');
-    } else if (account.previouspassword !== userData.password) {
-      return alert('Your password is not same as previous password ');
-    } else if (newpassword !== true) {
-      return alert('Your password is not enough to pass');
-    } else {
+    if (newpassword === true) {
       try {
-        await axios.patch(
-          process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`,
-          { name: account.displayname, password: account.newpassword }
-        );
+        await axios
+          .patch(process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`, {
+            name: account.displayname,
+            password: account.newpassword,
+          })
+          .then(() => {
+            alert('Your information change completed');
+            navigate('/mypage');
+          });
       } catch (error) {
         if (error.response) {
           // 요청이 전송되었고, 서버에서 20x 외의 코드로 응답 됨
@@ -199,7 +198,9 @@ function Editprofile() {
     e.preventDefault();
     if (window.confirm('If you click "ok", your account will be deleted')) {
       axios
-        .delete(process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`)
+        .delete(process.env.REACT_APP_DB_HOST + `/api/member/${memberId}`, {
+          headers: { Authorization: accessToken },
+        })
         .then(() => {
           alert('Thank you for using it.');
           navigate('/mypage');
@@ -221,9 +222,10 @@ function Editprofile() {
             <img
               src={avatarsM[userData.memberImage - 1]}
               alt={`${userData.name}아바타이미지`}
+              className="avatarimg"
             />
           ) : (
-            <div></div>
+            <div>error</div>
           )}
         </Avatarimg>
         <SubTitle>Display name</SubTitle>
@@ -238,13 +240,6 @@ function Editprofile() {
         Private information<Span>Not shown publicly</Span>
       </Inform>
       <PubBox>
-        <SubTitle>Previous password</SubTitle>
-        <input
-          type="password"
-          name="previouspassword"
-          value={account.previouspassword}
-          onChange={onChangeprofile}
-        />
         <SubTitle>New password</SubTitle>
         <input
           type="password"
