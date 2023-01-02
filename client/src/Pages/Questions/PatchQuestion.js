@@ -17,7 +17,6 @@ const Container = styled.div`
     line-height: 1.2rem;
   }
 `;
-const Patch = styled.div``;
 function PatchQuestion() {
   return (
     <>
@@ -38,9 +37,7 @@ function PatchQuestion() {
             </span>
           </div>
         </div>
-        <Patch>
-          <ToastPatch />
-        </Patch>
+        <ToastPatch />
       </Container>
     </>
   );
