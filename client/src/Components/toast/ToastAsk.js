@@ -150,6 +150,7 @@ export default function ToastAsk() {
                 placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
                 maxLength="300"
                 {...bindAskTitle}
+                required
               ></input>
             </div>
           </div>

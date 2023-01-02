@@ -80,6 +80,7 @@ function AnswerDetail({ memberId }) {
       <Container>
         <AnswerRead>
           <div className="answer__read">
+            <div className="answer__length">{getanswer.length} Answer</div>
             {getanswer &&
               getanswer.map((el) => {
                 return (

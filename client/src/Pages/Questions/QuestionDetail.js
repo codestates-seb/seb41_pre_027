@@ -230,6 +230,7 @@ function BoardDetail() {
                     </div>
                   </Dates>
                 </div>
+
                 <div className="detail__body">
                   <Viewer initialValue={board.text} />
                 </div>
