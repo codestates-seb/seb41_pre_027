@@ -95,9 +95,6 @@ const QuestionsTagged = () => {
   const tag = location.slice(18);
 
   const [questionList, setQuestionList] = useState([]);
-  const [countQuestions, setCountQuestions] = useState(0);
-  const [page, setPage] = useState(1);
-  const totalPage = Math.ceil(countQuestions / 10) || 1;
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const getQuestions = async () => {
@@ -105,8 +102,7 @@ const QuestionsTagged = () => {
       const response = await axios.get(
         process.env.REACT_APP_DB_HOST + `/api/questions/tags?tagName=${tag}`
       );
-      setQuestionList(response.data.data);
-      setCountQuestions(response.data.count);
+      setQuestionList(response.data);
     } catch (error) {
       if (error.response) {
         // 요청이 전송되었고, 서버에서 20x 외의 코드로 응답 됨
@@ -126,7 +122,7 @@ const QuestionsTagged = () => {
 
   useEffect(() => {
     getQuestions();
-  }, [page]);
+  }, []);
 
   return (
     <StyledQuestions>
@@ -139,20 +135,10 @@ const QuestionsTagged = () => {
             </div>
           )}
         </div>
-        <p className="questions__volume">{countQuestions} results</p>
+        <p className="questions__volume">{questionList.length || 0} results</p>
 
         {/* 질문 목록 */}
         <QuestionsList questionList={questionList} />
-
-        {/* 페이지네이션 */}
-        <div className="questionlist__pagination">
-          <Pagination
-            totalPage={totalPage}
-            limit={5}
-            page={page}
-            setPage={setPage}
-          />
-        </div>
       </ViewQuestionsList>
       <SidebarWidget />
     </StyledQuestions>

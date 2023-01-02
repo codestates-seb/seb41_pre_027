@@ -98,7 +98,7 @@ const StyledQuestionsList = styled.div`
 const QuestionsList = ({ questionList }) => {
   return (
     <StyledQuestionsList>
-      {questionList.length ? (
+      {questionList !== undefined ? (
         questionList.map((el) => {
           return (
             <li key={el.questionId}>

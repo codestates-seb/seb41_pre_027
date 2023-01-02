@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 // Toast 에디터
 import { Editor, Viewer } from '@toast-ui/react-editor';
@@ -103,6 +103,31 @@ export default function ToastAsk() {
   // Editor DOM 선택용
   const editorRef = useRef();
   const [askTitle, bindAskTitle] = useInput('');
+  const [inputTags, setInputTags] = useState('');
+
+  const tagsChangeHandler = (event) => {
+    setInputTags(event.target.value);
+  };
+
+  const postTags = async (questionId) => {
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_DB_HOST + `/api/questions/${questionId}/tags`,
+        {
+          tagString: inputTags,
+        },
+        {
+          headers: {
+            Authorization: cookies.get('Authorization'),
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      alert('태그 등록 실패');
+    }
+  };
 
   // 등록 버튼 핸들러
   const handleRegisterButton = (e) => {
@@ -124,6 +149,7 @@ export default function ToastAsk() {
           }
         );
         setTimeout(() => {
+          postTags(response.data.questionId);
           navigate(`/questions/${response.data.questionId}`);
           window.location.reload();
         }, 150);
@@ -151,6 +177,20 @@ export default function ToastAsk() {
                 maxLength="300"
                 {...bindAskTitle}
                 required
+              ></input>
+            </div>
+          </div>
+          <div className="content">
+            <div className="content__container">
+              <h3 className="content__title">Tags</h3>
+              <span className="content__title__description">
+                Please enter separated by &#39;,&#39; without spaces.
+              </span>
+              <input
+                type="text"
+                placeholder="e.g. java,oracle,spring,react,vscode,javascript,redux,..."
+                value={inputTags}
+                onChange={tagsChangeHandler}
               ></input>
             </div>
           </div>

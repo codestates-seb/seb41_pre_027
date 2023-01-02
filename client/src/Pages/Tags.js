@@ -185,10 +185,17 @@ const Tags = () => {
   const getSearchTags = async (keyword) => {
     try {
       const response = await axios.get(
-        process.env.REACT_APP_DB_HOST + `/api/questions/tags?tagName=${keyword}`
+        process.env.REACT_APP_DB_HOST + `/api/tags`
       );
-      setTagList(response.data.data);
-      setCountTags(response.data.count);
+      const responseData = response.data;
+      const isKeyword = (element) => {
+        if (element.tagName.includes(keyword)) {
+          return true;
+        }
+      };
+      const result = responseData.filter(isKeyword);
+      setTagList(result);
+      setCountTags(result.length);
     } catch (error) {
       if (error.response) {
         // 요청이 전송되었고, 서버에서 20x 외의 코드로 응답 됨
@@ -252,13 +259,14 @@ const Tags = () => {
         </form>
       </div>
       <ul className="tags__list">
-        {tagList.length ? (
+        {tagList !== undefined ? (
           tagList.map((el) => {
             return (
               <li key={el.tagId}>
                 <div className="tags__list--info">
-                  {/* <Link to={'/questions/tagged/' + el.tagName}> */}
-                  <Link to={() => false}>{el.tagName}</Link>
+                  <Link to={'/questions/tagged/' + el.tagName}>
+                    {el.tagName}
+                  </Link>
                 </div>
               </li>
             );

@@ -78,7 +78,6 @@ function AnswerDetail({ memberId }) {
     }
   };
 
-  console.log(getanswer);
   return (
     <>
       <Container>
