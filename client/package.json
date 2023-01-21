@@ -7,11 +7,21 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@toast-ui/editor-plugin-color-syntax": "^3.1.0",
+    "@toast-ui/react-editor": "^3.2.2",
+    "axios": "^1.2.2",
+    "history": "^5.3.0",
     "react": "^18.2.0",
+    "react-click-to-edit": "^1.2.3",
+    "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
-    "react-router-dom": "^6.5.0",
+    "react-router": "^6.6.1",
+    "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
+    "redux": "^4.2.0",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^1.2.2",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },
@@ -24,7 +34,8 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:react/recommended"
     ]
   },
   "browserslist": {
@@ -40,6 +51,8 @@
     ]
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
